@@ -956,7 +956,6 @@ extern "C" {
         taffy_NodeId node;
         size_t child_index;
         size_t child_count;
-
     } taffy_TaffyError;
 
     /* TaffyResult<T> ------------------------------------------------------- */
@@ -1187,7 +1186,6 @@ extern "C" {
 
         taffy_NodeId node, const taffy_Size_of_AvailableSpace* available_space
     );
-
 
 #ifdef __cplusplus
 } /* extern "C" */
