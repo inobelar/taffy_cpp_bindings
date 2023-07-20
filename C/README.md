@@ -22,7 +22,7 @@
    ```shell
    $ cmake ../ -DCMAKE_BUILD_TYPE=Release -DTAFFY_CPP_PATH=`pwd`/../../../taffy_cpp/
    ```
-12. Build (static and shared) libraries:
+6. Build (static and shared) libraries:
     ```shell
     $ make -j4
     ``` 
