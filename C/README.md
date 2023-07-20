@@ -2,9 +2,27 @@
 
 ## Build
 
-1. `$ git clone https://github.com/inobelar/taffy_cpp.git`
-2. `$ git clone https://github.com/inobelar/taffy_cpp_bindings.git` - clone this repository
-3. `$ cd taffy_cpp_bindings/C/`
-4. `$ mkdir build; cd build` - make 'build' directory and go into it
-5. `$ cmake ../ -DCMAKE_BUILD_TYPE=Release -DTAFFY_CPP_PATH=`pwd`/../../../taffy_cpp/` - generate `Makefile`
-6. `$ make -j4` - build libraries
+1. Clone `taffy_cpp` - the main dependency:
+   ```shell
+   $ git clone https://github.com/inobelar/taffy_cpp.git
+   ```
+2. Clone this repository:
+   ```shell
+   $ git clone https://github.com/inobelar/taffy_cpp_bindings.git
+   ```
+3. Go into this directory:
+   ```shell
+   $ cd taffy_cpp_bindings/C/
+   ```
+4. Make 'build' directory and go into it:
+   ```shell
+   $ mkdir build; cd build
+   ```
+5. Generate `Makefile`:
+   ```shell
+   $ cmake ../ -DCMAKE_BUILD_TYPE=Release -DTAFFY_CPP_PATH=`pwd`/../../../taffy_cpp/
+   ```
+12. Build (static and shared) libraries:
+    ```shell
+    $ make -j4
+    ``` 
