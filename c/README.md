@@ -12,7 +12,7 @@
    ```
 3. Go into this directory:
    ```shell
-   $ cd taffy_cpp_bindings/C/
+   $ cd taffy_cpp_bindings/c/
    ```
 4. Make 'build' directory and go into it:
    ```shell
