@@ -2738,6 +2738,84 @@ taffy_Point_of_float* taffy_Layout_get_mut_location(taffy_Layout* self)
 }
 
 // -----------------------------------------------------------------------------
+// Size<AvailableSpace>
+
+taffy_Size_of_AvailableSpace* taffy_Size_of_AvailableSpace_new(const taffy_AvailableSpace* width, const taffy_AvailableSpace* height)
+{
+    ASSERT_NOT_NULL(width);
+    ASSERT_NOT_NULL(height);
+
+    const taffy::AvailableSpace* _width  = reinterpret_cast<const taffy::AvailableSpace*>(width);
+    const taffy::AvailableSpace* _height = reinterpret_cast<const taffy::AvailableSpace*>(height);
+
+    return reinterpret_cast<taffy_Size_of_AvailableSpace*>(
+        new taffy::Size<taffy::AvailableSpace>{ *_width, *_height }
+    );
+}
+
+taffy_Size_of_AvailableSpace* taffy_Size_of_AvailableSpace_new_copy(const taffy_Size_of_AvailableSpace* other)
+{
+    ASSERT_NOT_NULL(other);
+
+    const taffy::Size<taffy::AvailableSpace>* o = reinterpret_cast<const taffy::Size<taffy::AvailableSpace>*>(other);
+    return reinterpret_cast<taffy_Size_of_AvailableSpace*>( new taffy::Size<taffy::AvailableSpace>{*o} );
+}
+
+void taffy_Size_of_AvailableSpace_delete(taffy_Size_of_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    delete reinterpret_cast<taffy::Size<taffy::AvailableSpace>*>(self);
+    self = nullptr;
+}
+
+const taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_width (const taffy_Size_of_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy_AvailableSpace*>( &( reinterpret_cast<const taffy::Size<taffy::AvailableSpace>*>(self)->width ) );
+}
+
+const taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_height(const taffy_Size_of_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy_AvailableSpace*>( &( reinterpret_cast<const taffy::Size<taffy::AvailableSpace>*>(self)->height ) );
+}
+
+void taffy_Size_of_AvailableSpace_set_width(taffy_Size_of_AvailableSpace* self, const taffy_AvailableSpace* width)
+{
+    ASSERT_NOT_NULL(self);
+    ASSERT_NOT_NULL(width);
+
+    const taffy::AvailableSpace* _width = reinterpret_cast<const taffy::AvailableSpace*>(width);
+    reinterpret_cast<taffy::Size<taffy::AvailableSpace>*>(self)->width = *_width;
+}
+
+void taffy_Size_of_AvailableSpace_set_height(taffy_Size_of_AvailableSpace* self, const taffy_AvailableSpace* height)
+{
+    ASSERT_NOT_NULL(self);
+    ASSERT_NOT_NULL(height);
+
+    const taffy::AvailableSpace* _height = reinterpret_cast<const taffy::AvailableSpace*>(height);
+    reinterpret_cast<taffy::Size<taffy::AvailableSpace>*>(self)->height = *_height;
+}
+
+taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_mut_width(taffy_Size_of_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<taffy_AvailableSpace*>( &( reinterpret_cast<taffy::Size<taffy::AvailableSpace>*>(self)->width ) );
+}
+
+taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_mut_height(taffy_Size_of_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<taffy_AvailableSpace*>( &( reinterpret_cast<taffy::Size<taffy::AvailableSpace>*>(self)->height ) );
+}
+
+// -----------------------------------------------------------------------------
 // Taffy
 
 taffy_TaffyError_Type taffy_TaffyError_Type_from_cpp(const taffy::TaffyError::Type t)
@@ -2750,6 +2828,7 @@ taffy_TaffyError_Type taffy_TaffyError_Type_from_cpp(const taffy::TaffyError::Ty
     }
 
     ASSERT_UNREACHABLE();
+    return taffy_TaffyError_Type_InvalidChildNode; // Heh, if this happens, the good way is to return some 'error', not 'ok'. 'InvlidChildNode' was choosen, as arbitrary/common error for it.
 }
 
 taffy_TaffyResult_of_void taffy_TaffyResult_of_void_from_cpp(const taffy::TaffyResult<void>& result)
@@ -2975,6 +3054,7 @@ taffy_Taffy* taffy_Taffy_new_default(void)
         new taffy::Taffy{}
     );
 }
+
 taffy_Taffy* taffy_Taffy_new_with_capacity(size_t capacity)
 {
     return reinterpret_cast<taffy_Taffy*>(
@@ -3287,4 +3367,22 @@ taffy_TaffyResult_of_bool taffy_Taffy_dirty(
     );
 
     return taffy_TaffyResult_of_bool_from_cpp(result);
+}
+
+taffy_TaffyResult_of_void taffy_Taffy_compute_layout(
+    taffy_Taffy* self,
+
+    taffy_NodeId node, const taffy_Size_of_AvailableSpace* available_space
+)
+{
+    ASSERT_NOT_NULL(self);
+    ASSERT_NOT_NULL(available_space);
+
+    const taffy::Size<taffy::AvailableSpace>* _available_space = reinterpret_cast<const taffy::Size<taffy::AvailableSpace>*>(available_space);
+
+    const auto result = reinterpret_cast<taffy::Taffy*>(self)->compute_layout(
+        taffy::NodeId{node.id}, *_available_space
+    );
+
+    return taffy_TaffyResult_of_void_from_cpp(result);
 }

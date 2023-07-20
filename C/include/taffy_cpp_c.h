@@ -1022,6 +1022,33 @@ extern "C" {
 
     /* Taffy ---------------------------------------------------------------- */
 
+        /* specialized types ------------------------------------------------ */
+
+            /* Size<AvailableSpace> ----------------------------------------- */
+
+            typedef struct taffy_Size_of_AvailableSpace taffy_Size_of_AvailableSpace;
+
+            /* constructors */
+            taffy_Size_of_AvailableSpace* taffy_taffy_Size_of_AvailableSpace_new(const taffy_AvailableSpace* width, const taffy_AvailableSpace* height);
+
+            /* copy constructor */
+            taffy_Size_of_AvailableSpace* taffy_Size_of_AvailableSpace_new_copy(const taffy_Size_of_AvailableSpace* other);
+
+            /* destructor */
+            void taffy_Size_of_AvailableSpace_delete(taffy_Size_of_AvailableSpace* self);
+
+            /* getters */
+            const taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_width (const taffy_Size_of_AvailableSpace* self);
+            const taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_height(const taffy_Size_of_AvailableSpace* self);
+
+            /* setters */
+            void taffy_Size_of_AvailableSpace_set_width (taffy_Size_of_AvailableSpace* self, const taffy_AvailableSpace* width );
+            void taffy_Size_of_AvailableSpace_set_height(taffy_Size_of_AvailableSpace* self, const taffy_AvailableSpace* height);
+
+            /* mutators */
+            taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_mut_width (taffy_Size_of_AvailableSpace* self);
+            taffy_AvailableSpace* taffy_Size_of_AvailableSpace_get_mut_height(taffy_Size_of_AvailableSpace* self);
+
     typedef struct taffy_Taffy taffy_Taffy;
 
     /* constructors */
@@ -1150,7 +1177,16 @@ extern "C" {
         taffy_NodeId node
     );
 
-    /* TODO: compute_layout */
+    /* NOTE:
+        in C++ version `compute_layout()` returns `Result<void, TaffyError>`,
+        that is basically the same as `TaffyResult<void>`, thats why here is
+        used `taffy_TaffyResult_of_void`
+    */
+    taffy_TaffyResult_of_void taffy_Taffy_compute_layout(
+        taffy_Taffy* self,
+
+        taffy_NodeId node, const taffy_Size_of_AvailableSpace* available_space
+    );
 
 
 #ifdef __cplusplus
