@@ -1,6 +1,19 @@
 #ifndef TAFFY_CPP_C_H
 #define TAFFY_CPP_C_H
 
+/*
+    taffy_cpp C bindings
+
+    Currently, in that header file, declared only minimal public
+    taffy/taffy_cpp API. It describes the next main parts:
+
+        Taffy       <-- Nodes tree structure
+        +-- Style   <-- Node style description
+        +-- Layout  <-- Node computed location & size
+
+    and the set of types they depend on.
+*/
+
 #include <stdint.h> /* for: {u}int{16,32,64}_t */
 #include <stddef.h> /* for: size_t */
 
@@ -1176,11 +1189,6 @@ extern "C" {
         taffy_NodeId node
     );
 
-    /* NOTE:
-        in C++ version `compute_layout()` returns `Result<void, TaffyError>`,
-        that is basically the same as `TaffyResult<void>`, thats why here is
-        used `taffy_TaffyResult_of_void`
-    */
     taffy_TaffyResult_of_void taffy_Taffy_compute_layout(
         taffy_Taffy* self,
 
