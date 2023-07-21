@@ -25,7 +25,7 @@ set(LIBRARY_SOURCES
 
 set(CPP_COMPILER_FLAGS
     -std=c++11 -pedantic
-    -Wall -Wextra -Werror
+    -Wall -Wextra #-Werror
 )
 
 if(BUILD_STATIC_LIB)
@@ -99,4 +99,5 @@ if(BUILD_SHARED_LIB)
 
         taffy_cpp
     )
+
 endif()

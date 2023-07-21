@@ -2279,7 +2279,7 @@ float taffy_Style_get_flex_shrink(const taffy_Style* self)
     return reinterpret_cast<const taffy::Style*>(self)->flex_shrink;
 }
 
-const taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_rows(const taffy_Style* self)
+taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_rows(const taffy_Style* self)
 {
     ASSERT_NOT_NULL(self);
 
@@ -2291,7 +2291,7 @@ const taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_ro
     return result;
 }
 
-const taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_columns(const taffy_Style* self)
+taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_columns(const taffy_Style* self)
 {
     ASSERT_NOT_NULL(self);
 
@@ -2303,7 +2303,7 @@ const taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_co
     return result;
 }
 
-const taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_rows(const taffy_Style* self)
+taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_rows(const taffy_Style* self)
 {
     ASSERT_NOT_NULL(self);
 
@@ -2315,7 +2315,7 @@ const taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_
     return result;
 }
 
-const taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_columns(const taffy_Style* self)
+taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_columns(const taffy_Style* self)
 {
     ASSERT_NOT_NULL(self);
 
