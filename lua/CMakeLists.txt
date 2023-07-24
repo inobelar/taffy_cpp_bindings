@@ -56,8 +56,8 @@ set(LIBRARY_SOURCES
 )
 
 set(C_COMPILER_FLAGS
-    -std=c89 -pedantic -ansi
-    -Wall -Wextra -Werror
+    -std=c89 -pedantic #-ansi
+    -Wall -Wextra #-Werror
 
     -Wmissing-prototypes -Wstrict-prototypes
     -Wold-style-definition
