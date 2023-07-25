@@ -195,6 +195,16 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
     {
         if(lua_type(L, 1) == LUA_TTABLE)
         {
+            /*
+                First attempt - try to iterpret table like array:
+
+                    {35, 42}
+
+                and make sure, that here is proper indices (default 1 and 2),
+                not something like:
+
+                    {[5] = 35, [2] = 42} // TODO <-- tests such scenario
+            */
             const size_t table_size = lua_rawlen(L, 1);
             if(table_size == 2)
             {
@@ -210,6 +220,7 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                 {
                     if( lua_next(L, 1) != 0 )
                     {
+                        /* uses 'key' (at index -2) and 'value' (at index -1) */
                         const int value_type = lua_type(L, -1);
                         const int key_type   = lua_type(L, -2);
 
@@ -237,6 +248,7 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                 {
                     if( lua_next(L, 1) != 0 )
                     {
+                        /* uses 'key' (at index -2) and 'value' (at index -1) */
                         const int value_type = lua_type(L, -1);
                         const int key_type   = lua_type(L, -2);
 
@@ -280,7 +292,13 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                 }
             }
 
-            /* Table size != 2 OR 'x' and 'y' not in indexes '1' and '2' */
+            /* 
+                Second attempt - try to iterpret table like dictionary: 
+
+                    {x = 35, y = 42}
+                
+                if table size != 2 OR 'x' and 'y' not in indexes '1' and '2' 
+            */
             {
                 /* bool */ int x_found = 0; /* false */
                 /* bool */ int y_found = 0; /* false */
@@ -300,14 +318,14 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                     }
                     else
                     {
-                        lua_pop(L, 1);
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
                     }
                 }
 
                 /* Try to get 'y' */
                 {
-                    const int x_type = lua_getfield(L, 1, "y");
-                    if(x_type == LUA_TNUMBER)
+                    const int y_type = lua_getfield(L, 1, "y");
+                    if(y_type == LUA_TNUMBER)
                     {
                         const lua_Number y_value = lua_tonumber(L, -1);
 
@@ -316,7 +334,7 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                     }
                     else
                     {
-                        lua_pop(L, 1);
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
                     }
                 }
 
