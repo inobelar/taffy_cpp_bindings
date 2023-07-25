@@ -130,7 +130,7 @@ void taffy_Point_of_float_set_y(taffy_Point_of_float* self, float y)
 {
     ASSERT_NOT_NULL(self);
 
-    reinterpret_cast<taffy::Point<float>*>(self)->x = y;
+    reinterpret_cast<taffy::Point<float>*>(self)->y = y;
 }
 
 float* taffy_Point_of_float_get_mut_x(taffy_Point_of_float* self)
@@ -1321,7 +1321,7 @@ taffy_Rect_of_LengthPercentage* taffy_Rect_of_LengthPercentage_new(
     ASSERT_NOT_NULL(left);
     ASSERT_NOT_NULL(top);
     ASSERT_NOT_NULL(right);
-    ASSERT_NOT_NULL(botom);
+    ASSERT_NOT_NULL(bottom);
 
     const taffy::LengthPercentage* _left   = reinterpret_cast<const taffy::LengthPercentage*>(left);
     const taffy::LengthPercentage* _top    = reinterpret_cast<const taffy::LengthPercentage*>(top);
@@ -1454,7 +1454,7 @@ taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new(
     ASSERT_NOT_NULL(left);
     ASSERT_NOT_NULL(top);
     ASSERT_NOT_NULL(right);
-    ASSERT_NOT_NULL(botom);
+    ASSERT_NOT_NULL(bottom);
 
     const taffy::LengthPercentageAuto* _left   = reinterpret_cast<const taffy::LengthPercentageAuto*>(left);
     const taffy::LengthPercentageAuto* _top    = reinterpret_cast<const taffy::LengthPercentageAuto*>(top);
@@ -2089,7 +2089,7 @@ taffy_Style* taffy_Style_new_default(void)
 
 taffy_Style* taffy_Style_new_copy(const taffy_Style* other)
 {
-    ASSERT_NOT_NULL(self);
+    ASSERT_NOT_NULL(other);
 
     const taffy::Style* o = reinterpret_cast<const taffy::Style*>(other);
     return reinterpret_cast<taffy_Style*>( new taffy::Style{*o} );
@@ -2710,7 +2710,7 @@ void taffy_Layout_set_size(taffy_Layout* self, const taffy_Size_of_float* size)
 void taffy_Layout_set_location(taffy_Layout* self, const taffy_Point_of_float* location)
 {
     ASSERT_NOT_NULL(self);
-    ASSERT_NOT_NULL(size);
+    ASSERT_NOT_NULL(location);
 
     const taffy::Point<float>* _location = reinterpret_cast<const taffy::Point<float>*>(location);
     reinterpret_cast<taffy::Layout*>(self)->location = *_location;
