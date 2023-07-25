@@ -11,11 +11,48 @@ print(opt_copy:is_some())
 opt:set_value(nil)
 opt:set_value(42)
 
+-- -----------------------------------------------------------------------------
+
 local p = t.Point_of_float.new(10, 20)
 print(p:get_x())
 print(p:get_y())
 p = t.Point_of_float.ZERO();
-print(p:get_x() .. ' ' .. p:get_y())
+print("x: " .. p:get_x() .. ", y: " .. p:get_y())
+
+p.x = 42
+p.y = 32
+print("x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+p = t.Point_of_float.new({10, 20})
+print("test table-array x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+p = t.Point_of_float.new({x = 10, y = 20})
+print("test table-dict x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+p = t.Point_of_float.new({y = 20, x = 10})
+print("test table-dict x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+
+p = t.Point_of_float.new {10, 20}
+print("test 2 table-array x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+p = t.Point_of_float.new {x = 10, y = 20}
+print("test 2 table-dict x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+-- -----------------------------------------------------------------------------
+
+local s = t.Size_of_float.new(10, 20)
+print(s:get_width())
+print(s:get_height())
+s = t.Size_of_float.ZERO();
+print("width: " .. s:get_width() .. ", height: " .. s:get_height())
+
+s.width  = 42
+s.height = 32
+print("width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+-- -----------------------------------------------------------------------------
+
 
 local avail_space = t.AvailableSpace.Definite(42)
 avail_space = t.AvailableSpace.MinContent(42)

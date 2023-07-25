@@ -8,6 +8,8 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
+#include <string.h> /* for: strcmp() */
+
 /* -------------------------------------------------------------------------- */
 /* Option<float> */
 
@@ -180,10 +182,169 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
             *user_data = object_ptr;
 
             luaL_setmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+
+            return 1; /* number of results */
         }
         else
         {
             return luaL_error(L, "Failed to create taffy_Point_of_float : taffy_Point_of_float_new_default() failed");
+        }
+    } break;
+
+    case 1:
+    {
+        if(lua_type(L, 1) == LUA_TTABLE)
+        {
+            const size_t table_size = lua_rawlen(L, 1);
+            if(table_size == 2)
+            {
+                /* bool */ int x_found = 0; /* false */
+                /* bool */ int y_found = 0; /* false */
+
+                float x = 0.0f;
+                float y = 0.0f;
+
+                lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+
+                /* Try to get 'x' - item at first index */
+                {
+                    if( lua_next(L, 1) != 0 )
+                    {
+                        const int value_type = lua_type(L, -1);
+                        const int key_type   = lua_type(L, -2);
+
+                        if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
+                        {
+                            lua_pushvalue(L, -2); /* copy 'key'   */
+                            lua_pushvalue(L, -2); /* copy 'value' */
+
+                            const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
+                            const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
+
+                            if(key_value == 1.0f) /* ensure, that this is 'first' index: in C its '0', in Lua its '1' */
+                            {
+                                x_found = 1; /* true */
+                                x = value_value;
+                            }
+                        }
+
+                        /* removes 'value'; keeps 'key' for next iteration */
+                        lua_pop(L, 1);
+                    }
+                }
+
+                /* Try to get 'y' - item at second index */
+                {
+                    if( lua_next(L, 1) != 0 )
+                    {
+                        const int value_type = lua_type(L, -1);
+                        const int key_type   = lua_type(L, -2);
+
+                        if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
+                        {
+                            lua_pushvalue(L, -2); /* copy 'key'   */
+                            lua_pushvalue(L, -2); /* copy 'value' */
+
+                            const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
+                            const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
+
+                            if(key_value == 2.0f) /* ensure, that this is 'second' index: in C its '1', in Lua its '2' */
+                            {
+                                y_found = 1; /* true */
+                                y = value_value;
+                            }
+                        }
+
+                        /* removes 'value'; keeps 'key' for next iteration */
+                        lua_pop(L, 1);
+                    }
+                }
+                lua_pop(L, 1); /* pop 'key' from the stack */
+
+                if( (x_found == /* true */ 1) && (y_found == /* true */ 1) )
+                {
+                    taffy_Point_of_float* object_ptr = taffy_Point_of_float_new(x, y);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Point_of_float** user_data = (taffy_Point_of_float**)lua_newuserdata(L, sizeof(taffy_Point_of_float*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Point_of_float : taffy_Point_of_float_new() failed");
+                    }
+                }
+            }
+
+            /* Table size != 2 OR 'x' and 'y' not in indexes '1' and '2' */
+            {
+                /* bool */ int x_found = 0; /* false */
+                /* bool */ int y_found = 0; /* false */
+
+                float x = 0.0f;
+                float y = 0.0f;
+
+                /* Try to get 'x' */
+                {
+                    const int x_type = lua_getfield(L, 1, "x");
+                    if(x_type == LUA_TNUMBER)
+                    {
+                        const lua_Number x_value = lua_tonumber(L, -1);
+
+                        x_found = 1; /* true */
+                        x = x_value;
+                    }
+                    else
+                    {
+                        lua_pop(L, 1);
+                    }
+                }
+
+                /* Try to get 'y' */
+                {
+                    const int x_type = lua_getfield(L, 1, "y");
+                    if(x_type == LUA_TNUMBER)
+                    {
+                        const lua_Number y_value = lua_tonumber(L, -1);
+
+                        y_found = 1; /* true */
+                        y = y_value;
+                    }
+                    else
+                    {
+                        lua_pop(L, 1);
+                    }
+                }
+
+                if( (x_found == /* true */ 1) && (y_found == /* true */ 1) )
+                {
+                    taffy_Point_of_float* object_ptr = taffy_Point_of_float_new(x, y);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Point_of_float** user_data = (taffy_Point_of_float**)lua_newuserdata(L, sizeof(taffy_Point_of_float*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Point_of_float : taffy_Point_of_float_new() failed");
+                    }
+                }
+            }
+
+            /* After all, at this line all attempts to parse table are failed */
+            return luaL_error(L, "Failed to create taffy_Point_of_float : provided table is invalid");
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Point_of_float : provided argument is not a table");
         }
     } break;
 
@@ -199,20 +360,17 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
             *user_data = object_ptr;
 
             luaL_setmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+
+            return 1; /* number of results */
         }
         else
         {
             return luaL_error(L, "Failed to create taffy_Point_of_float : taffy_Point_of_float_new() failed");
         }
     } break;
-
-    default:
-    {
-        return luaL_error(L, "Failed to create taffy_Point_of_float : wrong arguments count");
-    } break;
     }
 
-    return 1; /* number of results */
+    return luaL_error(L, "Failed to create taffy_Point_of_float : wrong arguments count");
 }
 
 static int lua_taffy_Point_of_float_copy(lua_State* L)
@@ -289,8 +447,6 @@ static int lua_taffy_Point_of_float_set_y(lua_State* L)
     return 0; /* number of results */
 }
 
-/* TODO: mutators */
-
 static int lua_taffy_Point_of_float_ZERO(lua_State* L)
 {
     taffy_Point_of_float* object_ptr = taffy_Point_of_float_new_ZERO();
@@ -307,6 +463,78 @@ static int lua_taffy_Point_of_float_ZERO(lua_State* L)
     }
 
     return 1; /* number of results */
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static int lua_taffy_Point_of_float_index(lua_State* L)
+{
+    /* 
+        function mt.__index(table, key) <-- here is 'table' may be 'userdata'
+            return table[key]
+        end
+    */
+
+    /* 
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we 
+        use use this function for indexing our known 'userdata', that have only
+        function names as keys, we dont care about other types for simplicity.
+    */
+
+    taffy_Point_of_float** self = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
+    const char* key = lua_tostring(L, 2);
+
+    if(strcmp(key, "x") == 0)
+    {
+        const float x = taffy_Point_of_float_get_x(*self);
+
+        lua_pushnumber(L, x);
+
+        return 1;
+    }
+    else if(strcmp(key, "y") == 0)
+    {
+        const float y = taffy_Point_of_float_get_y(*self);
+
+        lua_pushnumber(L, y);
+
+        return 1;
+    }
+
+    /* default behavior */
+    luaL_getmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+    lua_pushstring(L, key);
+    lua_rawget(L, -2);
+
+    return 1;
+}
+
+static int lua_taffy_Point_of_float_newindex(lua_State* L)
+{
+    /* 
+        function mt.__newindex(self, key, value)
+            foo[key] = value
+        end
+    */
+
+    taffy_Point_of_float** self = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
+    const char* key = luaL_checkstring(L, 2);
+    const lua_Number value = luaL_checknumber(L, 3);
+
+    if(strcmp(key, "x") == 0)
+    {
+        taffy_Point_of_float_set_x(*self, value);
+    }
+    else if( strcmp(key, "y") == 0)
+    {
+        taffy_Point_of_float_set_y(*self, value);
+    }
+    else
+    {
+        return luaL_error(L, "taffy_Point_of_float 'newindex' failed"); /* TODO: better message*/
+    }
+
+    return 0; /* number of results */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -457,6 +685,77 @@ static int lua_taffy_Size_of_float_ZERO(lua_State* L)
     return 1; /* number of results */
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static int lua_taffy_Size_of_float_index(lua_State* L)
+{
+    /* 
+        function mt.__index(table, key) <-- here is 'table' may be 'userdata'
+            return table[key]
+        end
+    */
+
+    /* 
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we 
+        use use this function for indexing our known 'userdata', that have only
+        function names as keys, we dont care about other types for simplicity.
+    */
+
+    taffy_Size_of_float** self = (taffy_Size_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_float);
+    const char* key = lua_tostring(L, 2);
+
+    if(strcmp(key, "width") == 0)
+    {
+        const float width = taffy_Size_of_float_get_width(*self);
+
+        lua_pushnumber(L, width);
+
+        return 1;
+    }
+    else if(strcmp(key, "height") == 0)
+    {
+        const float height = taffy_Size_of_float_get_height(*self);
+
+        lua_pushnumber(L, height);
+
+        return 1;
+    }
+
+    /* default behavior */
+    luaL_getmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
+    lua_pushstring(L, key);
+    lua_rawget(L, -2);
+
+    return 1;
+}
+
+static int lua_taffy_Size_of_float_newindex(lua_State* L)
+{
+    /* 
+        function mt.__newindex(self, key, value)
+            foo[key] = value
+        end
+    */
+
+    taffy_Size_of_float** self = (taffy_Size_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_float);
+    const char* key = luaL_checkstring(L, 2);
+    const lua_Number value = luaL_checknumber(L, 3);
+
+    if(strcmp(key, "width") == 0)
+    {
+        taffy_Size_of_float_set_width(*self, value);
+    }
+    else if( strcmp(key, "height") == 0)
+    {
+        taffy_Size_of_float_set_height(*self, value);
+    }
+    else
+    {
+        return luaL_error(L, "taffy_Size_of_float 'newindex' failed"); /* TODO: better message*/
+    }
+
+    return 0; /* number of results */
+}
 
 /* -------------------------------------------------------------------------- */
 /* AlignContent */
@@ -890,13 +1189,13 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_float);
             {
+                /* metatable.__index = metatable */
+                lua_pushvalue(L, -1);
+                lua_setfield(L, -2, "__index");
+
                 lua_pushcfunction(L, lua_taffy_Option_float_delete);
                 lua_setfield(L, -2, "__gc");
-            }
 
-            lua_pushvalue(L, -1);
-            lua_setfield(L, -2, "__index");
-            {
                 lua_pushcfunction(L, lua_taffy_Option_float_new);
                 lua_setfield(L, -2, "new");
 
@@ -919,13 +1218,15 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             luaL_newmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
             {
+                lua_pushcfunction(L, lua_taffy_Point_of_float_index);
+                lua_setfield(L, -2, "__index");
+
+                lua_pushcfunction(L, lua_taffy_Point_of_float_newindex);
+                lua_setfield(L, -2, "__newindex");
+
                 lua_pushcfunction(L, lua_taffy_Point_of_float_delete);
                 lua_setfield(L, -2, "__gc");
-            }
 
-            lua_pushvalue(L, -1);
-            lua_setfield(L, -2, "__index");
-            {
                 lua_pushcfunction(L, lua_taffy_Point_of_float_new);
                 lua_setfield(L, -2, "new");
 
@@ -944,8 +1245,6 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_Point_of_float_set_y);
                 lua_setfield(L, -2, "set_y");
 
-                /* TODO: mutators */
-
                 lua_pushcfunction(L, lua_taffy_Point_of_float_ZERO);
                 lua_setfield(L, -2, "ZERO");
             }
@@ -956,13 +1255,15 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             luaL_newmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
             {
+                lua_pushcfunction(L, lua_taffy_Size_of_float_index);
+                lua_setfield(L, -2, "__index");
+
+                lua_pushcfunction(L, lua_taffy_Size_of_float_newindex);
+                lua_setfield(L, -2, "__newindex");
+
                 lua_pushcfunction(L, lua_taffy_Size_of_float_delete);
                 lua_setfield(L, -2, "__gc");
-            }
 
-            lua_pushvalue(L, -1);
-            lua_setfield(L, -2, "__index");
-            {
                 lua_pushcfunction(L, lua_taffy_Size_of_float_new);
                 lua_setfield(L, -2, "new");
 
@@ -993,13 +1294,13 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             luaL_newmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace);
             {
+                /* metatable.__index = metatable */
+                lua_pushvalue(L, -1);
+                lua_setfield(L, -2, "__index");
+
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_delete);
                 lua_setfield(L, -2, "__gc");
-            }
 
-            lua_pushvalue(L, -1);
-            lua_setfield(L, -2, "__index");
-            {
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_Definite);
                 lua_setfield(L, -2, "Definite");
 
@@ -1028,13 +1329,13 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             luaL_newmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
             {
+                /* metatable.__index = metatable */
+                lua_pushvalue(L, -1);
+                lua_setfield(L, -2, "__index");
+
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_delete);
                 lua_setfield(L, -2, "__gc");
-            }
-
-            lua_pushvalue(L, -1);
-            lua_setfield(L, -2, "__index");
-            {
+            
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_Length);
                 lua_setfield(L, -2, "Length");
 
