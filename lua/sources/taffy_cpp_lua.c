@@ -1306,7 +1306,179 @@ static int lua_taffy_LengthPercentage_from_percent(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
+/* LengthPercentageAuto */
 
+#define LUA_META_OBJECT_taffy_LengthPercentageAuto "taffy_LengthPercentageAuto_mt"
+
+static int lua_taffy_LengthPercentageAuto_Length(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_Length(value);
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_Length() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_Percent(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_Percent(value);
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_Percent() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_Auto(lua_State* L)
+{
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_Auto();
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_Auto() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_copy(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    taffy_LengthPercentageAuto* copy = taffy_LengthPercentageAuto_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_copy() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_delete(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    taffy_LengthPercentageAuto_delete(*object);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_ZERO(lua_State* L)
+{
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_ZERO();
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_ZERO() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_from_length(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_from_length(value);
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_from_length() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_from_percent(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_from_percent(value);
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_from_percent() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_from(lua_State* L)
+{
+    taffy_LengthPercentage** length_percentage = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_LengthPercentageAuto* object_ptr = taffy_LengthPercentageAuto_new_from_LengthPercentage(*length_percentage);
+    if(object_ptr != NULL)
+    {
+        taffy_LengthPercentageAuto** user_data = (taffy_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_LengthPercentageAuto*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_LengthPercentageAuto : taffy_LengthPercentageAuto_new_from_LengthPercentage() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
 int luaopen_libtaffy_cpp_lua(lua_State* L);
 int luaopen_libtaffy_cpp_lua(lua_State* L)
@@ -1511,6 +1683,44 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_setfield(L, -2, "from_percent");
             }
             lua_setfield(L, -2, "LengthPercentage");
+        }
+
+        /* Register LengthPercentageAuto */
+        {
+            luaL_newmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+            {
+                /* metatable.__index = metatable */
+                lua_pushvalue(L, -1);
+                lua_setfield(L, -2, "__index");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_delete);
+                lua_setfield(L, -2, "__gc");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Length);
+                lua_setfield(L, -2, "Length");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Percent);
+                lua_setfield(L, -2, "Percent");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Auto);
+                lua_setfield(L, -2, "Auto");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_copy);
+                lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_ZERO);
+                lua_setfield(L, -2, "ZERO");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from_length);
+                lua_setfield(L, -2, "from_length");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from_percent);
+                lua_setfield(L, -2, "from_percent");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from);
+                lua_setfield(L, -2, "from");
+            }
+            lua_setfield(L, -2, "LengthPercentageAuto");
         }
     }
 
