@@ -1477,6 +1477,204 @@ static int lua_taffy_LengthPercentageAuto_from(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
+/* Dimension */
+
+#define LUA_META_OBJECT_taffy_Dimension "taffy_Dimension_mt"
+
+static int lua_taffy_Dimension_Length(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_Dimension* object_ptr = taffy_Dimension_new_Length(value);
+    if(object_ptr != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_Length() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_Percent(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_Dimension* object_ptr = taffy_Dimension_new_Percent(value);
+    if(object_ptr != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_Percent() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_Auto(lua_State* L)
+{
+    taffy_Dimension* object_ptr = taffy_Dimension_new_Auto();
+    if(object_ptr != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_Auto() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_copy(lua_State* L)
+{
+    taffy_Dimension** object = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    taffy_Dimension* copy = taffy_Dimension_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Dimension : taffy_Dimension_new_copy() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_delete(lua_State* L)
+{
+    taffy_Dimension** object = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    taffy_Dimension_delete(*object);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Dimension_ZERO(lua_State* L)
+{
+    taffy_Dimension* object_ptr = taffy_Dimension_new_ZERO();
+    if(object_ptr != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_ZERO() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_from_length(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_Dimension* object_ptr = taffy_Dimension_new_from_length(value);
+    if(object_ptr != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_from_length() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_from_percent(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_Dimension* object_ptr = taffy_Dimension_new_from_percent(value);
+    if(object_ptr != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_from_percent() failed");
+    }
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_from(lua_State* L)
+{
+    /* Try to construct 'Dimension' from 'LengthPercentage' */
+    {
+        taffy_LengthPercentage** length_percentage = luaL_testudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+        if(length_percentage != NULL)
+        {
+            taffy_Dimension* object_ptr = taffy_Dimension_new_from_LengthPercentage(*length_percentage);
+            if(object_ptr != NULL)
+            {
+                taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+                *user_data = object_ptr;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+                return 1; /* number of results */
+            }
+            else
+            {
+                return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_from_LengthPercentage() failed");
+            }
+        }
+    }
+
+    /* Try to construct 'Dimension' from 'LengthPercentageAuto' */
+    {
+        taffy_LengthPercentageAuto** length_percentage_auto = luaL_testudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+        if(length_percentage_auto != NULL)
+        {
+            taffy_Dimension* object_ptr = taffy_Dimension_new_from_LengthPercentageAuto(*length_percentage_auto);
+            if(object_ptr != NULL)
+            {
+                taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+                *user_data = object_ptr;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+                return 1; /* number of results */
+            }
+            else
+            {
+                return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_from_LengthPercentageAuto() failed");
+            }
+        }
+    }
+
+    return luaL_error(L, "Failed to create taffy_Dimension : 'from()' failed - invalid argument");
+}
 
 /* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
@@ -1721,6 +1919,44 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_setfield(L, -2, "from");
             }
             lua_setfield(L, -2, "LengthPercentageAuto");
+        }
+
+        /* Register Dimension */
+        {
+            luaL_newmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+            {
+                /* metatable.__index = metatable */
+                lua_pushvalue(L, -1);
+                lua_setfield(L, -2, "__index");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_delete);
+                lua_setfield(L, -2, "__gc");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_Length);
+                lua_setfield(L, -2, "Length");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_Percent);
+                lua_setfield(L, -2, "Percent");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_Auto);
+                lua_setfield(L, -2, "Auto");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_copy);
+                lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_ZERO);
+                lua_setfield(L, -2, "ZERO");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_from_length);
+                lua_setfield(L, -2, "from_length");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_from_percent);
+                lua_setfield(L, -2, "from_percent");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_from);
+                lua_setfield(L, -2, "from");
+            }
+            lua_setfield(L, -2, "Dimension");
         }
     }
 
