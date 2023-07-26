@@ -174,3 +174,12 @@ gp = gp:copy()
 gp = t.GridPlacement.AUTO()
 gp = t.GridPlacement.from_line_index(42)
 gp = t.GridPlacement.from_span(42)
+
+local gtr = t.GridTrackRepetition.AutoFill()
+gtr = t.GridTrackRepetition.AutoFit()
+gtr = t.GridTrackRepetition.Count(42)
+gtr = gtr:copy()
+gtr = t.GridTrackRepetition.try_from(42)
+gtr = t.GridTrackRepetition.try_from("auto-fill") -- TODO: check not null
+gtr = t.GridTrackRepetition.try_from("auto-fit") -- TODO: check not null
+gtr = t.GridTrackRepetition.try_from("sometext") -- TODO: check is null

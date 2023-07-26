@@ -1898,6 +1898,153 @@ static int lua_taffy_GridPlacement_from_span(lua_State* L)
     }
 }
 
+/* -------------------------------------------------------------------------- */
+/* GridTrackRepetition */
+
+#define LUA_META_OBJECT_taffy_GridTrackRepetition "taffy_GridTrackRepetition_mt"
+
+static int lua_taffy_GridTrackRepetition_AutoFill(lua_State* L)
+{
+    taffy_GridTrackRepetition* object_ptr = taffy_GridTrackRepetition_new_AutoFill();
+    if(object_ptr != NULL)
+    {
+        taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_GridTrackRepetition : taffy_GridTrackRepetition_new_AutoFill() failed");
+    }
+}
+
+static int lua_taffy_GridTrackRepetition_AutoFit(lua_State* L)
+{
+    taffy_GridTrackRepetition* object_ptr = taffy_GridTrackRepetition_new_AutoFit();
+    if(object_ptr != NULL)
+    {
+        taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_GridTrackRepetition : taffy_GridTrackRepetition_new_AutoFit() failed");
+    }
+}
+
+static int lua_taffy_GridTrackRepetition_Count(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    /* TODO: add check is value is 'uint16_t' & warning */
+
+    taffy_GridTrackRepetition* object_ptr = taffy_GridTrackRepetition_new_Count( (uint16_t)value );
+    if(object_ptr != NULL)
+    {
+        taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_GridTrackRepetition : taffy_GridTrackRepetition_new_Count() failed");
+    }
+}
+
+static int lua_taffy_GridTrackRepetition_copy(lua_State* L)
+{
+    taffy_GridTrackRepetition** object = (taffy_GridTrackRepetition**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+    taffy_GridTrackRepetition* copy = taffy_GridTrackRepetition_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_GridTrackRepetition : taffy_GridTrackRepetition_new_copy() failed");
+    }
+}
+
+static int lua_taffy_GridTrackRepetition_delete(lua_State* L)
+{
+    taffy_GridTrackRepetition** object = (taffy_GridTrackRepetition**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+    taffy_GridTrackRepetition_delete(*object);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_GridTrackRepetition_try_from(lua_State* L)
+{
+    switch( lua_type(L, 1) )
+    {
+    case LUA_TNUMBER:
+    {
+        const lua_Number value = lua_tonumber(L, 1);
+
+        /* TODO: add check is value is 'uint16_t' & warning */
+
+        taffy_GridTrackRepetition* object_ptr = taffy_GridTrackRepetition_try_from_u16( (uint16_t)value );
+        if(object_ptr != NULL)
+        {
+            taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+            return 1; /* number of results */
+        }
+        else /* 'try_from_u16' failed - dont raise error, simply return 'nil' */
+        {
+            lua_pushnil(L);
+
+            return 1; /* number of results */
+        }
+
+    } break;
+
+    case LUA_TSTRING:
+    {
+        const char* str = lua_tostring(L, 1);
+
+        taffy_GridTrackRepetition* object_ptr = taffy_GridTrackRepetition_try_from_str( str );
+        if(object_ptr != NULL)
+        {
+            taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+            return 1; /* number of results */
+        }
+        else /* 'try_from_str' failed - dont raise error, simply return 'nil' */
+        {
+            lua_pushnil(L);
+
+            return 1; /* number of results */
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_GridTrackRepetition : invalid argument type");
+}
 
 /* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
@@ -2242,6 +2389,35 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_setfield(L, -2, "from_span");
             }
             lua_setfield(L, -2, "GridPlacement");
+        }
+
+        /* Reginster GridTrackRepetition */
+        {
+            luaL_newmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+            {
+                /* metatable.__index = metatable */
+                lua_pushvalue(L, -1);
+                lua_setfield(L, -2, "__index");
+
+                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_delete);
+                lua_setfield(L, -2, "__gc");
+
+                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFill);
+                lua_setfield(L, -2, "AutoFill");
+
+                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFit);
+                lua_setfield(L, -2, "AutoFit");
+
+                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_Count);
+                lua_setfield(L, -2, "Count");
+
+                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_copy);
+                lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_try_from);
+                lua_setfield(L, -2, "try_from");
+            }
+            lua_setfield(L, -2, "GridTrackRepetition");
         }
     }
 
