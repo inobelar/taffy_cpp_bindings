@@ -196,14 +196,33 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
         if(lua_type(L, 1) == LUA_TTABLE)
         {
             /*
-                First attempt - try to iterpret table like array:
+                First attempt - try to interpret table like 'array':
 
                     {35, 42}
+
+                    {[1] = 35, [2] = 42}
+                    {[2] = 42, [1] = 35}
 
                 and make sure, that here is proper indices (default 1 and 2),
                 not something like:
 
-                    {[5] = 35, [2] = 42} // TODO <-- tests such scenario
+                    {[5] = 35, [3] = 42}
+                    {35, [1] = 42}       <-- table with single item '35'
+                    {[1] = 35, [1] = 42} <-- table with single item '42'
+
+                ----------------------------------------------------------------
+
+                Notice, that during investigations where 'x' and 'y', we looking
+                only for table's 'key' value (that represent index), and NOT
+                expect, that first 'lua_next()' call returns 'first index' and
+                second 'lua_next()' call returns 'second index', since it may
+                not be happened.
+
+                For example - for simple case like '{35, 42}' first 'lua_next()'
+                returns '1' index and second call returns '2' index, BUT for
+                uncommon case like '{[1] = 35, [2] = 42}' order is undefined, 
+                and first item returned by 'lua_next()' may be 
+                {key: 2, value: 42}.
             */
             const size_t table_size = lua_rawlen(L, 1);
             if(table_size == 2)
@@ -215,61 +234,34 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                 float y = 0.0f;
 
                 lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
-
-                /* Try to get 'x' - item at first index */
+                while( lua_next(L, 1) != 0 )
                 {
-                    if( lua_next(L, 1) != 0 )
+                    /* uses 'key' (at index -2) and 'value' (at index -1) */
+                    const int value_type = lua_type(L, -1);
+                    const int key_type   = lua_type(L, -2);
+
+                    if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
                     {
-                        /* uses 'key' (at index -2) and 'value' (at index -1) */
-                        const int value_type = lua_type(L, -1);
-                        const int key_type   = lua_type(L, -2);
+                        lua_pushvalue(L, -2); /* copy 'key'   */
+                        lua_pushvalue(L, -2); /* copy 'value' */
 
-                        if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
+                        const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
+                        const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
+
+                        if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'x' */
                         {
-                            lua_pushvalue(L, -2); /* copy 'key'   */
-                            lua_pushvalue(L, -2); /* copy 'value' */
-
-                            const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
-                            const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
-
-                            if(key_value == 1.0f) /* ensure, that this is 'first' index: in C its '0', in Lua its '1' */
-                            {
-                                x_found = 1; /* true */
-                                x = value_value;
-                            }
+                            x_found = 1; /* true */
+                            x = value_value;
                         }
-
-                        /* removes 'value'; keeps 'key' for next iteration */
-                        lua_pop(L, 1);
-                    }
-                }
-
-                /* Try to get 'y' - item at second index */
-                {
-                    if( lua_next(L, 1) != 0 )
-                    {
-                        /* uses 'key' (at index -2) and 'value' (at index -1) */
-                        const int value_type = lua_type(L, -1);
-                        const int key_type   = lua_type(L, -2);
-
-                        if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
+                        else if(key_value == 2.0f) /* 'second' index (in C its '1', in Lua its '2') is 'y' */
                         {
-                            lua_pushvalue(L, -2); /* copy 'key'   */
-                            lua_pushvalue(L, -2); /* copy 'value' */
-
-                            const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
-                            const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
-
-                            if(key_value == 2.0f) /* ensure, that this is 'second' index: in C its '1', in Lua its '2' */
-                            {
-                                y_found = 1; /* true */
-                                y = value_value;
-                            }
+                            y_found = 1; /* true */
+                            y = value_value;
                         }
-
-                        /* removes 'value'; keeps 'key' for next iteration */
-                        lua_pop(L, 1);
                     }
+
+                    /* removes 'value'; keeps 'key' for next iteration */
+                    lua_pop(L, 1);
                 }
                 lua_pop(L, 1); /* pop 'key' from the stack */
 
@@ -293,7 +285,7 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
             }
 
             /* 
-                Second attempt - try to iterpret table like dictionary: 
+                Second attempt - try to interpret table like 'dictionary': 
 
                     {x = 35, y = 42}
                 

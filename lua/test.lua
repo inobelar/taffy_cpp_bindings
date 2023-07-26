@@ -23,7 +23,7 @@ p.x = 42
 p.y = 32
 print("x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
 
-p = t.Point_of_float.new({10, 20}) -- TODO: test this: {[1] = 10, [2] = 20}
+p = t.Point_of_float.new({10, 20}) 
 print("test table-array x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
 
 p = t.Point_of_float.new({x = 10, y = 20})
@@ -38,6 +38,10 @@ print("test 2 table-array x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
 
 p = t.Point_of_float.new {x = 10, y = 20}
 print("test 2 table-dict x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
+
+
+p = t.Point_of_float.new {[1] = 10, [2] = 20}
+print("test 3 table-array x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
 
 -- -----------------------------------------------------------------------------
 
