@@ -23,7 +23,7 @@ p.x = 42
 p.y = 32
 print("x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
 
-p = t.Point_of_float.new({10, 20}) 
+p = t.Point_of_float.new({10, 20})
 print("test table-array x: " .. tostring(p.x) .. ", y: " .. tostring(p.y) )
 
 p = t.Point_of_float.new({x = 10, y = 20})
@@ -54,6 +54,26 @@ print("width: " .. s:get_width() .. ", height: " .. s:get_height())
 s.width  = 42
 s.height = 32
 print("width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+s = t.Size_of_float.new({10, 20})
+print("test table-array width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+s = t.Size_of_float.new({width = 10, height = 20})
+print("test table-dict width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+s = t.Size_of_float.new({height = 20, width = 10})
+print("test table-dict width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+
+s = t.Size_of_float.new {10, 20}
+print("test 2 table-array width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+s = t.Size_of_float.new {width = 10, height = 20}
+print("test 2 table-dict width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
+
+
+s = t.Size_of_float.new {[1] = 10, [2] = 20}
+print("test 3 table-array width: " .. tostring(s.width) .. ", height: " .. tostring(s.height) )
 
 -- -----------------------------------------------------------------------------
 

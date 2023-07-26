@@ -573,6 +573,152 @@ static int lua_taffy_Size_of_float_new(lua_State* L)
         }
     } break;
 
+    case 1:
+    {
+        if(lua_type(L, 1) == LUA_TTABLE)
+        {
+            /*
+                First attempt - try to interpret table like 'array':
+
+                    {35, 42}
+
+                    {[1] = 35, [2] = 42}
+                    {[2] = 42, [1] = 35}
+            */
+            const size_t table_size = lua_rawlen(L, 1);
+            if(table_size == 2)
+            {
+                /* bool */ int width_found = 0;  /* false */
+                /* bool */ int height_found = 0; /* false */
+
+                float width = 0.0f;
+                float height = 0.0f;
+
+                lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+                while( lua_next(L, 1) != 0 )
+                {
+                    /* uses 'key' (at index -2) and 'value' (at index -1) */
+                    const int value_type = lua_type(L, -1);
+                    const int key_type   = lua_type(L, -2);
+
+                    if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
+                    {
+                        lua_pushvalue(L, -2); /* copy 'key'   */
+                        lua_pushvalue(L, -2); /* copy 'value' */
+
+                        const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
+                        const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
+
+                        if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'width' */
+                        {
+                            width_found = 1; /* true */
+                            width = value_value;
+                        }
+                        else if(key_value == 2.0f) /* 'second' index (in C its '1', in Lua its '2') is 'height' */
+                        {
+                            height_found = 1; /* true */
+                            height = value_value;
+                        }
+                    }
+
+                    /* removes 'value'; keeps 'key' for next iteration */
+                    lua_pop(L, 1);
+                }
+                lua_pop(L, 1); /* pop 'key' from the stack */
+
+                if( (width_found == /* true */ 1) && (height_found == /* true */ 1) )
+                {
+                    taffy_Size_of_float* object_ptr = taffy_Size_of_float_new(width, height);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Size_of_float** user_data = (taffy_Size_of_float**)lua_newuserdata(L, sizeof(taffy_Size_of_float*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Size_of_float : taffy_Size_of_float_new() failed");
+                    }
+                }
+            }
+
+            /*
+                Second attempt - try to interpret table like 'dictionary':
+
+                    {width = 35, height = 42}
+
+                if table size != 2 OR 'width' and 'height' not in indexes '1' and '2'
+            */
+            {
+                /* bool */ int width_found = 0;  /* false */
+                /* bool */ int height_found = 0; /* false */
+
+                float width = 0.0f;
+                float height = 0.0f;
+
+                /* Try to get 'width' */
+                {
+                    const int width_type = lua_getfield(L, 1, "width");
+                    if(width_type == LUA_TNUMBER)
+                    {
+                        const lua_Number width_value = lua_tonumber(L, -1);
+
+                        width_found = 1; /* true */
+                        width = width_value;
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                /* Try to get 'height' */
+                {
+                    const int height_type = lua_getfield(L, 1, "height");
+                    if(height_type == LUA_TNUMBER)
+                    {
+                        const lua_Number height_value = lua_tonumber(L, -1);
+
+                        height_found = 1; /* true */
+                        height = height_value;
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                if( (width_found == /* true */ 1) && (height_found == /* true */ 1) )
+                {
+                    taffy_Size_of_float* object_ptr = taffy_Size_of_float_new(width, height);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Size_of_float** user_data = (taffy_Size_of_float**)lua_newuserdata(L, sizeof(taffy_Size_of_float*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Size_of_float : taffy_Size_of_float_new() failed");
+                    }
+                }
+            }
+
+            /* After all, at this line all attempts to parse table are failed */
+            return luaL_error(L, "Failed to create taffy_Size_of_float : provided table is invalid");
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Size_of_float : provided argument is not a table");
+        }
+    } break;
+
     case 2:
     {
         const lua_Number width  = luaL_checknumber(L, 1);
