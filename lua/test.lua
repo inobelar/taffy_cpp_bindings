@@ -77,6 +77,44 @@ print("test 3 table-array width: " .. tostring(s.width) .. ", height: " .. tostr
 
 -- -----------------------------------------------------------------------------
 
+print('AlignContent.Start       : ' .. tostring(t.AlignContent.Start))
+print('AlignContent.End         : ' .. tostring(t.AlignContent.End))
+print('AlignContent.FlexStart   : ' .. tostring(t.AlignContent.FlexStart))
+print('AlignContent.FlexEnd     : ' .. tostring(t.AlignContent.FlexEnd))
+print('AlignContent.Center      : ' .. tostring(t.AlignContent.Center))
+print('AlignContent.Stretch     : ' .. tostring(t.AlignContent.Stretch))
+print('AlignContent.SpaceBetween: ' .. tostring(t.AlignContent.SpaceBetween))
+print('AlignContent.SpaceEvenly : ' .. tostring(t.AlignContent.SpaceEvenly))
+print('AlignContent.SpaceAround : ' .. tostring(t.AlignContent.SpaceAround))
+
+print('JustifyContent.Start       : ' .. tostring(t.JustifyContent.Start))
+print('JustifyContent.End         : ' .. tostring(t.JustifyContent.End))
+print('JustifyContent.FlexStart   : ' .. tostring(t.JustifyContent.FlexStart))
+print('JustifyContent.FlexEnd     : ' .. tostring(t.JustifyContent.FlexEnd))
+print('JustifyContent.Center      : ' .. tostring(t.JustifyContent.Center))
+print('JustifyContent.Stretch     : ' .. tostring(t.JustifyContent.Stretch))
+print('JustifyContent.SpaceBetween: ' .. tostring(t.JustifyContent.SpaceBetween))
+print('JustifyContent.SpaceEvenly : ' .. tostring(t.JustifyContent.SpaceEvenly))
+print('JustifyContent.SpaceAround : ' .. tostring(t.JustifyContent.SpaceAround))
+
+print('AlignItems.Start    : ' .. tostring(t.AlignItems.Start))
+print('AlignItems.End      : ' .. tostring(t.AlignItems.End))
+print('AlignItems.FlexStart: ' .. tostring(t.AlignItems.FlexStart))
+print('AlignItems.FlexEnd  : ' .. tostring(t.AlignItems.FlexEnd))
+print('AlignItems.Center   : ' .. tostring(t.AlignItems.Center))
+print('AlignItems.Baseline : ' .. tostring(t.AlignItems.Baseline))
+print('AlignItems.Stretch  : ' .. tostring(t.AlignItems.Stretch))
+
+print('AlignSelf.Start    : ' .. tostring(t.AlignSelf.Start))
+print('AlignSelf.End      : ' .. tostring(t.AlignSelf.End))
+print('AlignSelf.FlexStart: ' .. tostring(t.AlignSelf.FlexStart))
+print('AlignSelf.FlexEnd  : ' .. tostring(t.AlignSelf.FlexEnd))
+print('AlignSelf.Center   : ' .. tostring(t.AlignSelf.Center))
+print('AlignSelf.Baseline : ' .. tostring(t.AlignSelf.Baseline))
+print('AlignSelf.Stretch  : ' .. tostring(t.AlignSelf.Stretch))
+
+-- -----------------------------------------------------------------------------
+
 
 local avail_space = t.AvailableSpace.Definite(42)
 avail_space = t.AvailableSpace.MinContent(42)
@@ -110,3 +148,29 @@ d = t.Dimension.from_length(42)
 d = t.Dimension.from_percent(42)
 d = t.Dimension.from( t.LengthPercentage.ZERO() )
 d = t.Dimension.from( t.LengthPercentageAuto.ZERO() )
+
+print('FlexDirection.Row          : ' .. tostring(t.FlexDirection.Row))
+print('FlexDirection.Column       : ' .. tostring(t.FlexDirection.Column))
+print('FlexDirection.RowReverse   : ' .. tostring(t.FlexDirection.RowReverse))
+print('FlexDirection.ColumnReverse: ' .. tostring(t.FlexDirection.ColumnReverse))
+print('FlexDirection.Default      : ' .. tostring(t.FlexDirection.Default))
+
+print('FlexWrap.NoWrap     : ' .. tostring(t.FlexWrap.NoWrap))
+print('FlexWrap.Wrap       : ' .. tostring(t.FlexWrap.Wrap))
+print('FlexWrap.WrapReverse: ' .. tostring(t.FlexWrap.WrapReverse))
+print('FlexWrap.Default    : ' .. tostring(t.FlexWrap.Default))
+
+print('GridAutoFlow.Row        : ' .. tostring(t.GridAutoFlow.Row))
+print('GridAutoFlow.Column     : ' .. tostring(t.GridAutoFlow.Column))
+print('GridAutoFlow.RowDense   : ' .. tostring(t.GridAutoFlow.RowDense))
+print('GridAutoFlow.ColumnDense: ' .. tostring(t.GridAutoFlow.ColumnDense))
+print('GridAutoFlow.Default    : ' .. tostring(t.GridAutoFlow.Default))
+
+local gp = t.GridPlacement.new()
+gp = t.GridPlacement.Auto()
+gp = t.GridPlacement.Line(42)
+gp = t.GridPlacement.Span(42)
+gp = gp:copy()
+gp = t.GridPlacement.AUTO()
+gp = t.GridPlacement.from_line_index(42)
+gp = t.GridPlacement.from_span(42)
