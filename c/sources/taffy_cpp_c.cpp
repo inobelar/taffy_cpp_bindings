@@ -632,7 +632,7 @@ static taffy_FlexDirection taffy_FlexDirection_to_c(const taffy::FlexDirection v
     return taffy_FlexDirection_Row;
 }
 
-taffy_FlexDirection taffy_FlexDirection_Default(void)
+taffy_FlexDirection taffy_FlexDirection_default(void)
 {
     return taffy_FlexDirection_to_c( taffy::FlexDirection{} );
 }
@@ -664,7 +664,7 @@ static taffy_FlexWrap taffy_FlexWrap_to_c(const taffy::FlexWrap v)
     return taffy_FlexWrap_NoWrap;
 }
 
-taffy_FlexWrap taffy_FlexWrap_Default(void)
+taffy_FlexWrap taffy_FlexWrap_default(void)
 {
     return taffy_FlexWrap_to_c( taffy::FlexWrap{} );
 }
@@ -698,7 +698,7 @@ static taffy_GridAutoFlow taffy_GridAutoFlow_to_c(const taffy::GridAutoFlow v)
     return taffy_GridAutoFlow_Row;
 }
 
-taffy_GridAutoFlow taffy_GridAutoFlow_Default(void)
+taffy_GridAutoFlow taffy_GridAutoFlow_default(void)
 {
     return taffy_GridAutoFlow_to_c( taffy::GridAutoFlow{} );
 }
@@ -706,7 +706,7 @@ taffy_GridAutoFlow taffy_GridAutoFlow_Default(void)
 // -----------------------------------------------------------------------------
 // GridPlacement
 
-taffy_GridPlacement* taffy_GridPlacement_new_Default(void)
+taffy_GridPlacement* taffy_GridPlacement_new_default(void)
 {
     return reinterpret_cast<taffy_GridPlacement*>( new taffy::GridPlacement{} );
 }
@@ -1179,7 +1179,7 @@ static taffy_Display taffy_Display_to_c(const taffy::Display v)
     return taffy_Display_Flex;
 }
 
-taffy_Display taffy_Display_Default(void)
+taffy_Display taffy_Display_default(void)
 {
     return taffy_Display_to_c( taffy::Display{} );
 }
@@ -1211,7 +1211,7 @@ static taffy_Overflow taffy_Overflow_to_c(const taffy::Overflow v)
     return taffy_Overflow_Visible;
 }
 
-taffy_Overflow taffy_Overflow_Default(void)
+taffy_Overflow taffy_Overflow_default(void)
 {
     return taffy_Overflow_to_c( taffy::Overflow{} );
 }
@@ -1241,7 +1241,7 @@ static taffy_Position taffy_Position_to_c(const taffy::Position v)
     return taffy_Position_Relative;
 }
 
-taffy_Position taffy_Position_Default(void)
+taffy_Position taffy_Position_default(void)
 {
     return taffy_Position_to_c( taffy::Position{} );
 }

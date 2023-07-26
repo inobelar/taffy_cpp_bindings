@@ -262,7 +262,7 @@ extern "C" {
             taffy_FlexDirection_ColumnReverse
         } taffy_FlexDirection;
 
-        taffy_FlexDirection taffy_FlexDirection_Default(void);
+        taffy_FlexDirection taffy_FlexDirection_default(void);
 
         /* FlexWrap --------------------------------------------------------- */
 
@@ -272,7 +272,7 @@ extern "C" {
             taffy_FlexWrap_WrapReverse
         } taffy_FlexWrap;
 
-        taffy_FlexWrap taffy_FlexWrap_Default(void);
+        taffy_FlexWrap taffy_FlexWrap_default(void);
 
     /* grid types ----------------------------------------------------------- */
 
@@ -285,14 +285,14 @@ extern "C" {
             taffy_GridAutoFlow_ColumnDense
         } taffy_GridAutoFlow;
 
-        taffy_GridAutoFlow taffy_GridAutoFlow_Default(void);
+        taffy_GridAutoFlow taffy_GridAutoFlow_default(void);
 
         /* GridPlacement ---------------------------------------------------- */
 
         typedef struct taffy_GridPlacement taffy_GridPlacement;
 
         /* constructors */
-        taffy_GridPlacement* taffy_GridPlacement_new_Default(void);
+        taffy_GridPlacement* taffy_GridPlacement_new_default(void);
         taffy_GridPlacement* taffy_GridPlacement_new_Auto(void);
         taffy_GridPlacement* taffy_GridPlacement_new_Line(int16_t value);
         taffy_GridPlacement* taffy_GridPlacement_new_Span(uint16_t value);
@@ -443,7 +443,7 @@ extern "C" {
         taffy_Display_None
     } taffy_Display;
 
-    taffy_Display taffy_Display_Default(void);
+    taffy_Display taffy_Display_default(void);
 
     /* Overflow ------------------------------------------------------------- */
 
@@ -453,7 +453,7 @@ extern "C" {
         taffy_Overflow_Scroll
     } taffy_Overflow;
 
-    taffy_Overflow taffy_Overflow_Default(void);
+    taffy_Overflow taffy_Overflow_default(void);
 
     /* Position ------------------------------------------------------------- */
 
@@ -462,7 +462,7 @@ extern "C" {
         taffy_Position_Absolute
     } taffy_Position;
 
-    taffy_Position taffy_Position_Default(void);
+    taffy_Position taffy_Position_default(void);
 
     /* Style ---------------------------------------------------------------- */
 
