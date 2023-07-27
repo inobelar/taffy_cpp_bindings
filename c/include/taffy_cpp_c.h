@@ -42,6 +42,8 @@ extern "C" {
 
         /* getters */
         /* bool */ int taffy_Option_float_is_some(const taffy_Option_float* self);
+
+        /* call only if 'is_some()' is 'true */
         float taffy_Option_float_get_value(const taffy_Option_float* self);
 
         /* setters */
