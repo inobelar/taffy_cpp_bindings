@@ -400,7 +400,7 @@ extern "C" {
 
         /* setters */
         void taffy_NonRepeatedTrackSizingFunction_set_min(taffy_NonRepeatedTrackSizingFunction* self, const taffy_MinTrackSizingFunction* min);
-        void taffy_NonRepeatedTrackSizingFunction_set_max(taffy_NonRepeatedTrackSizingFunction* self, const taffy_MinTrackSizingFunction* max);
+        void taffy_NonRepeatedTrackSizingFunction_set_max(taffy_NonRepeatedTrackSizingFunction* self, const taffy_MaxTrackSizingFunction* max);
 
         /* mutators */
         taffy_MinTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_mut_min(taffy_NonRepeatedTrackSizingFunction* self);

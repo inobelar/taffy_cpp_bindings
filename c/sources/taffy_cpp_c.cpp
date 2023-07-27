@@ -1031,7 +1031,7 @@ void taffy_NonRepeatedTrackSizingFunction_set_min(taffy_NonRepeatedTrackSizingFu
     reinterpret_cast<taffy::NonRepeatedTrackSizingFunction*>(self)->min = *_min;
 }
 
-void taffy_NonRepeatedTrackSizingFunction_set_max(taffy_NonRepeatedTrackSizingFunction* self, const taffy_MinTrackSizingFunction* max)
+void taffy_NonRepeatedTrackSizingFunction_set_max(taffy_NonRepeatedTrackSizingFunction* self, const taffy_MaxTrackSizingFunction* max)
 {
     ASSERT_NOT_NULL(self);
     ASSERT_NOT_NULL(max);
