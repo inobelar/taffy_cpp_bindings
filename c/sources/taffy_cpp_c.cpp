@@ -1148,6 +1148,59 @@ void taffy_GridTrackRepetition_delete(taffy_GridTrackRepetition* self)
     self = nullptr;
 }
 
+int taffy_GridTrackRepetition_eq(const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::GridTrackRepetition* _lhs = reinterpret_cast<const taffy::GridTrackRepetition*>(lhs);
+    const taffy::GridTrackRepetition* _rhs = reinterpret_cast<const taffy::GridTrackRepetition*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_GridTrackRepetition_neq(const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::GridTrackRepetition* _lhs = reinterpret_cast<const taffy::GridTrackRepetition*>(lhs);
+    const taffy::GridTrackRepetition* _rhs = reinterpret_cast<const taffy::GridTrackRepetition*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_GridTrackRepetition_is_AutoFill(const taffy_GridTrackRepetition* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::GridTrackRepetition* _self = reinterpret_cast<const taffy::GridTrackRepetition*>(self);
+    return (_self->type() == taffy::GridTrackRepetition::Type::AutoFill) ? 1 : 0;
+}
+
+int taffy_GridTrackRepetition_is_AutoFit(const taffy_GridTrackRepetition* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::GridTrackRepetition* _self = reinterpret_cast<const taffy::GridTrackRepetition*>(self);
+    return (_self->type() == taffy::GridTrackRepetition::Type::AutoFit) ? 1 : 0;
+}
+
+int taffy_GridTrackRepetition_is_Count(const taffy_GridTrackRepetition* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::GridTrackRepetition* _self = reinterpret_cast<const taffy::GridTrackRepetition*>(self);
+    return (_self->type() == taffy::GridTrackRepetition::Type::Count) ? 1 : 0;
+}
+
+uint16_t taffy_GridTrackRepetition_get_value(const taffy_GridTrackRepetition* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::GridTrackRepetition*>(self)->value();
+}
+
 taffy_GridTrackRepetition* taffy_GridTrackRepetition_try_from_u16(uint16_t value)
 {
     const auto result = taffy::GridTrackRepetition::try_from(value);

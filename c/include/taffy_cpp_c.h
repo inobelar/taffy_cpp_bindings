@@ -407,6 +407,19 @@ extern "C" {
         /* destructor */
         void taffy_GridTrackRepetition_delete(taffy_GridTrackRepetition* self);
 
+        /* comparison operators */
+        /* bool */ int taffy_GridTrackRepetition_eq (const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs);
+        /* bool */ int taffy_GridTrackRepetition_neq(const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs);
+
+        /* type checking */
+        /* bool */ int taffy_GridTrackRepetition_is_AutoFill(const taffy_GridTrackRepetition* self);
+        /* bool */ int taffy_GridTrackRepetition_is_AutoFit (const taffy_GridTrackRepetition* self);
+        /* bool */ int taffy_GridTrackRepetition_is_Count   (const taffy_GridTrackRepetition* self);
+
+        /* getters */
+        /* call only if 'is_Count()' is 'true' */
+        uint16_t taffy_GridTrackRepetition_get_value(const taffy_GridTrackRepetition* self);
+
         /* extras */
         /* null on failure */ taffy_GridTrackRepetition* taffy_GridTrackRepetition_try_from_u16(uint16_t value);
         /* null on failure */ taffy_GridTrackRepetition* taffy_GridTrackRepetition_try_from_str(const char* str);
