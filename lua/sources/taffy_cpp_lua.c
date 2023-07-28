@@ -3693,6 +3693,37 @@ static int lua_taffy_TrackSizingFunction_from_flex(lua_State *L)
     }
 }
 
+/*
+    Special message string, used for metatable protection (to disallow change it
+    via 'setmeatable()' call). Reference: https://www.lua.org/pil/13.3.html
+
+    ----------------------------------------------------------------------------
+
+    NOTE: instead of string, assigned as:
+
+        Lua:
+            metatable.__metatable = "message"
+        Lua C API:
+            lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+            lua_setfield(L, -2, "__metatable");
+
+    for optimization, we can assign 'boolean' value. For example:
+
+        Lua:
+            metatable.__metatable = false
+        Lua C API:
+            lua_pushboolean(L, 0);
+            lua_setfield(L, -2, "__metatable");
+
+    But its good to show 'explicit message' for users, that not familiar with
+    such Lua tricks, instead some silent 'false' magic :)
+
+    ----------------------------------------------------------------------------
+
+    TODO: is 'metatable protection' must be used for enums?
+*/
+static const char LUA_METATABLE_PROTECTION_MESSAGE[] = "protected metatable";
+
 /* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
 int luaopen_libtaffy_cpp_lua(lua_State* L);
@@ -3720,6 +3751,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Option_float_delete);
                 lua_setfield(L, -2, "__gc");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_Option_float_new);
                 lua_setfield(L, -2, "new");
@@ -3757,6 +3792,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Point_of_float_add);
                 lua_setfield(L, -2, "__add");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_Point_of_float_new);
                 lua_setfield(L, -2, "new");
@@ -3803,6 +3842,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Size_of_float_sub);
                 lua_setfield(L, -2, "__sub");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_Size_of_float_new);
                 lua_setfield(L, -2, "new");
@@ -3866,6 +3909,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_eq);
                 lua_setfield(L, -2, "__eq");
 
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
+
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_Definite);
                 lua_setfield(L, -2, "Definite");
 
@@ -3922,6 +3969,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_eq);
                 lua_setfield(L, -2, "__eq");
 
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
+
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_Length);
                 lua_setfield(L, -2, "Length");
 
@@ -3965,6 +4016,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_eq);
                 lua_setfield(L, -2, "__eq");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Length);
                 lua_setfield(L, -2, "Length");
@@ -4018,6 +4073,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Dimension_eq);
                 lua_setfield(L, -2, "__eq");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_Dimension_Length);
                 lua_setfield(L, -2, "Length");
@@ -4090,6 +4149,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_GridPlacement_eq);
                 lua_setfield(L, -2, "__eq");
 
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
+
                 lua_pushcfunction(L, lua_taffy_GridPlacement_new);
                 lua_setfield(L, -2, "new");
 
@@ -4143,6 +4206,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_GridTrackRepetition_delete);
                 lua_setfield(L, -2, "__gc");
 
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
+
                 lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFill);
                 lua_setfield(L, -2, "AutoFill");
 
@@ -4171,6 +4238,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_delete);
                 lua_setfield(L, -2, "__gc");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Fixed);
                 lua_setfield(L, -2, "Fixed");
@@ -4231,6 +4302,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_delete);
                 lua_setfield(L, -2, "__gc");
 
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
+
                 lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_Fixed);
                 lua_setfield(L, -2, "Fixed");
 
@@ -4280,6 +4355,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_delete);
                 lua_setfield(L, -2, "__gc");
 
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
+
                 lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_new);
                 lua_setfield(L, -2, "new");
 
@@ -4311,6 +4390,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_TrackSizingFunction_delete);
                 lua_setfield(L, -2, "__gc");
+
+                /* metatable.__metatable = "message" <-- metatable protection */
+                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+                lua_setfield(L, -2, "__metatable");
 
                 lua_pushcfunction(L, lua_taffy_TrackSizingFunction_Single);
                 lua_setfield(L, -2, "Single");
