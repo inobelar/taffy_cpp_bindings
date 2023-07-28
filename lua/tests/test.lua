@@ -1419,109 +1419,186 @@ describe('taffy_cpp lua binding', function()
     describe('NonRepeatedTrackSizingFunction', function()
         describe('Constructors', function()
             it('common', function()
-                -- local point = t.Point_of_float.new(10, 20)
+                local nrtsf = t.NonRepeatedTrackSizingFunction.new( t.MinTrackSizingFunction.Auto(), t.MaxTrackSizingFunction.Auto() )
 
-                -- expect( point ).to.exist()
-                -- expect( point:get_x() ).to.be( 10 )
-                -- expect( point:get_y() ).to.be( 20 )
+                expect( nrtsf ).to.exist()
+                expect( nrtsf:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
             end)
 
             it('table (array)', function()
-                -- local point = t.Point_of_float.new({10, 20})
+                local nrtsf = t.NonRepeatedTrackSizingFunction.new({t.MinTrackSizingFunction.Auto(), t.MaxTrackSizingFunction.Auto()})
 
-                -- expect( point ).to.exist()
-                -- expect( point:get_x() ).to.be( 10 )
-                -- expect( point:get_y() ).to.be( 20 )
+                expect( nrtsf ).to.exist()
+                expect( nrtsf:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
             end)
 
             it('table (array) explicit indexes', function()
-                -- local point1 = t.Point_of_float.new({[1] = 10, [2] = 20})
+                local nrtsf1 = t.NonRepeatedTrackSizingFunction.new({[1] = t.MinTrackSizingFunction.Auto(), [2] = t.MaxTrackSizingFunction.Auto()})
 
-                -- expect( point1 ).to.exist()
-                -- expect( point1:get_x() ).to.be( 10 )
-                -- expect( point1:get_y() ).to.be( 20 )
+                expect( nrtsf1 ).to.exist()
+                expect( nrtsf1:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf1:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
 
-                -- local point2 = t.Point_of_float.new({[2] = 20, [1] = 10})
+                local nrtsf2 = t.NonRepeatedTrackSizingFunction.new({[2] = t.MaxTrackSizingFunction.Auto(), [1] = t.MinTrackSizingFunction.Auto()})
 
-                -- expect( point2 ).to.exist()
-                -- expect( point2:get_x() ).to.be( 10 )
-                -- expect( point2:get_y() ).to.be( 20 )
+                expect( nrtsf2 ).to.exist()
+                expect( nrtsf2:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf2:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
             end)
 
             it('table (dictionary)', function()
-                -- local point1 = t.Point_of_float.new({x = 10, y = 20})
+                local nrtsf1 = t.NonRepeatedTrackSizingFunction.new({min = t.MinTrackSizingFunction.Auto(), max = t.MaxTrackSizingFunction.Auto()})
 
-                -- expect( point1 ).to.exist()
-                -- expect( point1:get_x() ).to.be( 10 )
-                -- expect( point1:get_y() ).to.be( 20 )
+                expect( nrtsf1 ).to.exist()
+                expect( nrtsf1:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf1:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
 
-                -- local point2 = t.Point_of_float.new({y = 20, x = 10})
+                local nrtsf2 = t.NonRepeatedTrackSizingFunction.new({max = t.MaxTrackSizingFunction.Auto(), min = t.MinTrackSizingFunction.Auto()})
 
-                -- expect( point2 ).to.exist()
-                -- expect( point2:get_x() ).to.be( 10 )
-                -- expect( point2:get_y() ).to.be( 20 )
+                expect( nrtsf2 ).to.exist()
+                expect( nrtsf2:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf2:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
             end)
 
             it('table (without parentheses)', function()
-                -- local point1 = t.Point_of_float.new {10, 20}
+                local nrtsf1 = t.NonRepeatedTrackSizingFunction.new { t.MinTrackSizingFunction.Auto(), t.MaxTrackSizingFunction.Auto() }
 
-                -- expect( point1 ).to.exist()
-                -- expect( point1:get_x() ).to.be( 10 )
-                -- expect( point1:get_y() ).to.be( 20 )
+                expect( nrtsf1 ).to.exist()
+                expect( nrtsf1:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf1:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
 
-                -- local point2 = t.Point_of_float.new {x = 10, y = 20}
+                local nrtsf2 = t.NonRepeatedTrackSizingFunction.new { min = t.MinTrackSizingFunction.Auto(), max = t.MaxTrackSizingFunction.Auto() }
 
-                -- expect( point2 ).to.exist()
-                -- expect( point2:get_x() ).to.be( 10 )
-                -- expect( point2:get_y() ).to.be( 20 )
+                expect( nrtsf2 ).to.exist()
+                expect( nrtsf2:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
+                expect( nrtsf2:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
             end)
         end)
 
         it('Copying', function()
+            local nrtsf =
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ),
+                    t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) )
+                )
 
+            local copy = nrtsf:copy()
+
+            expect( copy ).to.exist()
+            expect( copy:get_min() ).to.be( t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10)  ) )
+            expect( copy:get_max() ).to.be( t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) ) )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local nrtsf_LP1 =
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ),
+                        t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) )
+                    )
+
+                local nrtsf_LP2 =
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(20) ),
+                        t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(10) )
+                    )
+
+                local nrtsf_PL1 =
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(10) ),
+                        t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(20) )
+                    )
+
+                local nrtsf_PL2 =
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) ),
+                        t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) )
+                    )
+
+                expect( nrtsf_LP1 == nrtsf_LP1:copy() ).to.be( true )
+                expect( nrtsf_LP2 == nrtsf_LP2:copy() ).to.be( true )
+
+                expect( nrtsf_LP1 ~= nrtsf_LP2 ).to.be( true )
+                expect( nrtsf_LP1 ~= nrtsf_LP2 ).to.be( true )
+
+                expect( nrtsf_PL1 == nrtsf_PL1:copy() ).to.be( true )
+                expect( nrtsf_PL2 == nrtsf_PL2:copy() ).to.be( true )
+
+                expect( nrtsf_PL1 ~= nrtsf_PL2 ).to.be( true )
+                expect( nrtsf_PL1 ~= nrtsf_PL2 ).to.be( true )
+
+                expect( nrtsf_LP1 ~= nrtsf_PL1 ).to.be( true )
+                expect( nrtsf_LP2 ~= nrtsf_PL2 ).to.be( true )
+            end)
         end)
 
         it('Getters/Setters', function()
-            -- local point = t.Point_of_float.new(10, 20)
+            local nrtsf =
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ),
+                    t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) )
+                )
 
-            -- expect( point ).to.exist()
-            -- expect( point:get_x() ).to.be( 10 )
-            -- expect( point:get_y() ).to.be( 20 )
+            expect( nrtsf ).to.exist()
+            expect( nrtsf:get_min() ).to.be( t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10)  ) )
+            expect( nrtsf:get_max() ).to.be( t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) ) )
 
-            -- point:set_x(35)
-            -- point:set_y(42)
+            nrtsf:set_min( t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(35) ) )
+            nrtsf:set_max( t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(42)  ) )
 
-            -- expect( point:get_x() ).to.be( 35 )
-            -- expect( point:get_y() ).to.be( 42 )
+            expect( nrtsf:get_min() ).to.be( t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(35) ) )
+            expect( nrtsf:get_max() ).to.be( t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(42)  ) )
         end)
 
         it('Properties', function()
-            -- local point = t.Point_of_float.new(10, 20)
+            local nrtsf =
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ),
+                    t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) )
+                )
 
-            -- expect( point ).to.exist()
-            -- expect( point.x ).to.be( 10 )
-            -- expect( point.y ).to.be( 20 )
+            expect( nrtsf ).to.exist()
+            expect( nrtsf.min ).to.be( t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10)  ) )
+            expect( nrtsf.max ).to.be( t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) ) )
 
-            -- point.x = 35
-            -- point.y = 42
+            nrtsf.min = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(35) )
+            nrtsf.max = t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(42)  )
 
-            -- expect( point.x ).to.be( 35 )
-            -- expect( point.y ).to.be( 42 )
+            expect( nrtsf.min ).to.be( t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(35) ) )
+            expect( nrtsf.max ).to.be( t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(42)  ) )
         end)
     end) -- NonRepeatedTrackSizingFunction
 
+    describe('TrackSizingFunction', function()
+        describe('Constructors', function()
+            it('Single', function()
+
+            end)
+
+            it('Repeat', function()
+
+            end)
+
+            it('Named constructors', function()
+
+            end)
+        end)
+
+        describe('Copying', function()
+
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+
+            end)
+        end)
+
+        it('Type checking', function()
+
+        end)
+    end) -- TrackSizingFunction
+
 end)
-
-
--- -----------------------------------------------------------------------------
--- TODO: TEMPORARLY UNCOVERED BY TESTS
-
-local nrtsf = t.NonRepeatedTrackSizingFunction.new( t.MinTrackSizingFunction.Auto(), t.MaxTrackSizingFunction.Auto() )
-nrtsf = t.NonRepeatedTrackSizingFunction.new({ t.MinTrackSizingFunction.Auto(), t.MaxTrackSizingFunction.Auto() })
-nrtsf = t.NonRepeatedTrackSizingFunction.new({[1] = t.MinTrackSizingFunction.Auto(), [2] = t.MaxTrackSizingFunction.Auto() })
-nrtsf = t.NonRepeatedTrackSizingFunction.new({[2] = t.MaxTrackSizingFunction.Auto(), [1] = t.MinTrackSizingFunction.Auto() })
-nrtsf = t.NonRepeatedTrackSizingFunction.new { t.MinTrackSizingFunction.Auto(), t.MaxTrackSizingFunction.Auto() }
--- TODO: add other tests here
-
--- TODO: add taffy_TrackSizingFunction
-

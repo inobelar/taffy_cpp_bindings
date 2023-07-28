@@ -560,6 +560,19 @@ extern "C" {
         /* bool */ int taffy_TrackSizingFunction_eq (const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
         /* bool */ int taffy_TrackSizingFunction_neq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
 
+        /* ---------------------------------------------- */
+        /* type checking */
+        /* bool */ int taffy_TrackSizingFunction_is_Single(const taffy_TrackSizingFunction* self);
+        /* bool */ int taffy_TrackSizingFunction_is_Repeat(const taffy_TrackSizingFunction* self);
+
+        /* getters */
+        /* call only if 'is_Single()' is 'true' */
+        taffy_NonRepeatedTrackSizingFunction* taffy_TrackSizingFunction_get_new_single_func(const taffy_TrackSizingFunction* self);
+        /* call only if 'is_Repeat()' is 'true' */
+        taffy_GridTrackRepetition* taffy_TrackSizingFunction_get_new_repetition(const taffy_TrackSizingFunction* self);
+        // TODO: repeat_funcs() here
+        /* ---------------------------------------------- */
+
         /* extras */
         taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_AUTO(void);
         taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_MIN_CONTENT(void);
