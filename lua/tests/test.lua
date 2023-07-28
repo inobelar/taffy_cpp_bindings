@@ -1097,79 +1097,184 @@ describe('taffy_cpp lua binding', function()
                 local max_tsf = t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
 
                 expect( max_tsf ).to.exist()
+                expect( max_tsf:get_length_percentage() ).to.be( t.LengthPercentage.ZERO() )
+                expect( max_tsf:get_fraction() ).to.be( nil )
             end)
 
             it('MinContent', function()
                 local max_tsf = t.MaxTrackSizingFunction.MinContent()
 
                 expect( max_tsf ).to.exist()
+                expect( max_tsf:get_length_percentage() ).to.be( nil )
+                expect( max_tsf:get_fraction() ).to.be( nil )
             end)
 
             it('MaxContent', function()
                 local max_tsf = t.MaxTrackSizingFunction.MaxContent()
 
                 expect( max_tsf ).to.exist()
+                expect( max_tsf:get_length_percentage() ).to.be( nil )
+                expect( max_tsf:get_fraction() ).to.be( nil )
             end)
 
             it('FitContent', function()
                 local max_tsf = t.MaxTrackSizingFunction.FitContent( t.LengthPercentage.ZERO() )
 
                 expect( max_tsf ).to.exist()
+                expect( max_tsf:get_length_percentage() ).to.be( t.LengthPercentage.ZERO() )
+                expect( max_tsf:get_fraction() ).to.be( nil )
             end)
 
             it('Auto', function()
                 local max_tsf = t.MaxTrackSizingFunction.Auto()
 
                 expect( max_tsf ).to.exist()
+                expect( max_tsf:get_length_percentage() ).to.be( nil )
+                expect( max_tsf:get_fraction() ).to.be( nil )
             end)
 
             it('Fraction', function()
                 local max_tsf = t.MaxTrackSizingFunction.Fraction(42)
 
                 expect( max_tsf ).to.exist()
+                expect( max_tsf:get_length_percentage() ).to.be( nil )
+                expect( max_tsf:get_fraction() ).to.be( 42 )
             end)
 
             it('Named constructors', function()
                 local max_tsf1 = t.MaxTrackSizingFunction.AUTO()
 
                 expect( max_tsf1 ).to.exist()
+                expect( max_tsf1:is_Auto() ).to.be( true )
 
                 local max_tsf2 = t.MaxTrackSizingFunction.MIN_CONTENT()
 
                 expect( max_tsf2 ).to.exist()
+                expect( max_tsf2:is_MinContent() ).to.be( true )
 
                 local max_tsf3 = t.MaxTrackSizingFunction.MAX_CONTENT()
 
                 expect( max_tsf3 ).to.exist()
+                expect( max_tsf3:is_MaxContent() ).to.be( true )
 
                 local max_tsf4 = t.MaxTrackSizingFunction.ZERO()
 
                 expect( max_tsf4 ).to.exist()
+                expect( max_tsf4:is_Fixed() ).to.be( true )
 
                 local max_tsf5 = t.MaxTrackSizingFunction.fit_content( t.LengthPercentage.ZERO() )
 
                 expect( max_tsf5 ).to.exist()
+                expect( max_tsf5:is_FitContent() ).to.be( true )
 
                 local max_tsf6 = t.MaxTrackSizingFunction.from_length(42)
 
                 expect( max_tsf6 ).to.exist()
+                expect( max_tsf6:is_Fixed() ).to.be( true )
 
                 local max_tsf7 = t.MaxTrackSizingFunction.from_percent(42)
 
                 expect( max_tsf7 ).to.exist()
+                expect( max_tsf7:is_Fixed() ).to.be( true )
 
                 local max_tsf8 = t.MaxTrackSizingFunction.from_flex(42)
 
                 expect( max_tsf8 ).to.exist()
+                expect( max_tsf8:is_Fraction() ).to.be( true )
             end)
         end)
 
         it('Copying', function()
-            local max_tsf = t.MaxTrackSizingFunction.Auto()
+            local max_tsf = t.MaxTrackSizingFunction.Fraction(42)
 
             local copy = max_tsf:copy()
 
             expect( copy ).to.exist()
+            expect( copy:is_Fraction() ).to.be( true )
+            expect( copy:get_fraction() ).to.be( 42 )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local equal1 = t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() ) == t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+                local equal2 = t.MaxTrackSizingFunction.MinContent() == t.MaxTrackSizingFunction.MinContent()
+                local equal3 = t.MaxTrackSizingFunction.MaxContent() == t.MaxTrackSizingFunction.MaxContent()
+                local equal4 = t.MaxTrackSizingFunction.FitContent( t.LengthPercentage.ZERO() ) == t.MaxTrackSizingFunction.FitContent( t.LengthPercentage.ZERO() )
+                local equal5 = t.MaxTrackSizingFunction.Auto() == t.MaxTrackSizingFunction.Auto()
+                local equal6 = t.MaxTrackSizingFunction.Fraction(42) == t.MaxTrackSizingFunction.Fraction(42)
+
+                local not_equal1 = t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ) ~= t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(20) )
+                local not_equal2 = t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ) ~= t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.Percent(10) )
+                local not_equal3 = t.MaxTrackSizingFunction.Fraction(10) ~= t.MaxTrackSizingFunction.Fraction(20)
+                -- ... TODO: add all posible non-equal checks here (its too boring for now) ...
+
+                expect( equal1 ).to.be( true )
+                expect( equal2 ).to.be( true )
+                expect( equal3 ).to.be( true )
+                expect( equal4 ).to.be( true )
+                expect( equal5 ).to.be( true )
+                expect( equal6 ).to.be( true )
+
+                expect( not_equal1 ).to.be( true )
+                expect( not_equal2 ).to.be( true )
+                expect( not_equal3 ).to.be( true )
+            end)
+        end)
+
+        describe('Type checking', function()
+            local max_tsf1 = t.MaxTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+
+            expect( max_tsf1:is_Fixed()      ).to.be( true )
+            expect( max_tsf1:is_MinContent() ).to.be( false )
+            expect( max_tsf1:is_MaxContent() ).to.be( false )
+            expect( max_tsf1:is_FitContent() ).to.be( false )
+            expect( max_tsf1:is_Auto()       ).to.be( false )
+            expect( max_tsf1:is_Fraction()   ).to.be( false )
+
+            local max_tsf2 = t.MaxTrackSizingFunction.MinContent()
+
+            expect( max_tsf2:is_Fixed()      ).to.be( false )
+            expect( max_tsf2:is_MinContent() ).to.be( true )
+            expect( max_tsf2:is_MaxContent() ).to.be( false )
+            expect( max_tsf2:is_FitContent() ).to.be( false )
+            expect( max_tsf2:is_Auto()       ).to.be( false )
+            expect( max_tsf2:is_Fraction()   ).to.be( false )
+
+            local max_tsf3 = t.MaxTrackSizingFunction.MaxContent()
+
+            expect( max_tsf3:is_Fixed()      ).to.be( false )
+            expect( max_tsf3:is_MinContent() ).to.be( false )
+            expect( max_tsf3:is_MaxContent() ).to.be( true )
+            expect( max_tsf3:is_FitContent() ).to.be( false )
+            expect( max_tsf3:is_Auto()       ).to.be( false )
+            expect( max_tsf3:is_Fraction()   ).to.be( false )
+
+            local max_tsf4 = t.MaxTrackSizingFunction.FitContent( t.LengthPercentage.ZERO() )
+
+            expect( max_tsf4:is_Fixed()      ).to.be( false )
+            expect( max_tsf4:is_MinContent() ).to.be( false )
+            expect( max_tsf4:is_MaxContent() ).to.be( false )
+            expect( max_tsf4:is_FitContent() ).to.be( true )
+            expect( max_tsf4:is_Auto()       ).to.be( false )
+            expect( max_tsf4:is_Fraction()   ).to.be( false )
+
+            local max_tsf5 = t.MaxTrackSizingFunction.Auto()
+
+            expect( max_tsf5:is_Fixed()      ).to.be( false )
+            expect( max_tsf5:is_MinContent() ).to.be( false )
+            expect( max_tsf5:is_MaxContent() ).to.be( false )
+            expect( max_tsf5:is_FitContent() ).to.be( false )
+            expect( max_tsf5:is_Auto()       ).to.be( true )
+            expect( max_tsf5:is_Fraction()   ).to.be( false )
+
+            local max_tsf6 = t.MaxTrackSizingFunction.Fraction(42)
+
+            expect( max_tsf6:is_Fixed()      ).to.be( false )
+            expect( max_tsf6:is_MinContent() ).to.be( false )
+            expect( max_tsf6:is_MaxContent() ).to.be( false )
+            expect( max_tsf6:is_FitContent() ).to.be( false )
+            expect( max_tsf6:is_Auto()       ).to.be( false )
+            expect( max_tsf6:is_Fraction()   ).to.be( true )
         end)
     end) -- MaxTrackSizingFunction
 

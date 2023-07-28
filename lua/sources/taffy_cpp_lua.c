@@ -2731,6 +2731,135 @@ static int lua_taffy_MaxTrackSizingFunction_delete(lua_State* L)
     return 0; /* number of results */
 }
 
+static int lua_taffy_MaxTrackSizingFunction_eq(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object_lhs = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    taffy_MaxTrackSizingFunction** object_rhs = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_equal = taffy_MaxTrackSizingFunction_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_is_Fixed(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_Fixed = taffy_MaxTrackSizingFunction_is_Fixed(*object);
+
+    lua_pushboolean(L, is_Fixed);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_is_MinContent(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_MinContent = taffy_MaxTrackSizingFunction_is_MinContent(*object);
+
+    lua_pushboolean(L, is_MinContent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_is_MaxContent(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_MaxContent = taffy_MaxTrackSizingFunction_is_MaxContent(*object);
+
+    lua_pushboolean(L, is_MaxContent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_is_FitContent(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_FitContent = taffy_MaxTrackSizingFunction_is_FitContent(*object);
+
+    lua_pushboolean(L, is_FitContent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_is_Auto(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_Auto = taffy_MaxTrackSizingFunction_is_Auto(*object);
+
+    lua_pushboolean(L, is_Auto);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_is_Fraction(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    const int is_Fraction = taffy_MaxTrackSizingFunction_is_Fraction(*object);
+
+    lua_pushboolean(L, is_Fraction);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_MaxTrackSizingFunction_get_length_percentage(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    if( taffy_MaxTrackSizingFunction_is_Fixed     (*object) ||
+        taffy_MaxTrackSizingFunction_is_FitContent(*object) )
+    {
+        taffy_LengthPercentage* object_ptr = taffy_MaxTrackSizingFunction_get_new_length_percentage(*object);
+        if(object_ptr != NULL)
+        {
+            taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_LengthPercentage : taffy_MaxTrackSizingFunction_get_new_length_percentage() failed");
+        }
+    }
+    else /* !Fixed && !FitContent */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_MaxTrackSizingFunction_get_fraction(lua_State* L)
+{
+    taffy_MaxTrackSizingFunction** object = (taffy_MaxTrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+
+    if( taffy_MaxTrackSizingFunction_is_Fraction(*object) )
+    {
+        const float fraction = taffy_MaxTrackSizingFunction_get_fraction(*object);
+
+        lua_pushnumber(L, fraction);
+
+        return 1; /* number of results */
+    }
+    else /* !Fraction */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
 static int lua_taffy_MaxTrackSizingFunction_AUTO(lua_State* L)
 {
     taffy_MaxTrackSizingFunction* object_ptr = taffy_MaxTrackSizingFunction_new_AUTO();
@@ -4320,6 +4449,9 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_delete);
                 lua_setfield(L, -2, "__gc");
 
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_eq);
+                lua_setfield(L, -2, "__eq");
+
                 /* metatable.__metatable = "message" <-- metatable protection */
                 lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
                 lua_setfield(L, -2, "__metatable");
@@ -4344,6 +4476,30 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_copy);
                 lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Fixed);
+                lua_setfield(L, -2, "is_Fixed");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_MinContent);
+                lua_setfield(L, -2, "is_MinContent");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_MaxContent);
+                lua_setfield(L, -2, "is_MaxContent");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_FitContent);
+                lua_setfield(L, -2, "is_FitContent");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Auto);
+                lua_setfield(L, -2, "is_Auto");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Fraction);
+                lua_setfield(L, -2, "is_Fraction");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_get_length_percentage);
+                lua_setfield(L, -2, "get_length_percentage");
+
+                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_get_fraction);
+                lua_setfield(L, -2, "get_fraction");
 
                 lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_AUTO);
                 lua_setfield(L, -2, "AUTO");
