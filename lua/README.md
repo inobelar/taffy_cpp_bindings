@@ -49,3 +49,4 @@ $ sudo apt-get install lua5.3 liblua5.3-dev
 - [StackOverflow :: implementing __index metafunction in C/c++](https://stackoverflow.com/questions/50880830/implementing-index-metafunction-in-c-c)
 - [StackOverflow :: C/C++: lua_rawget() vs. __index](https://stackoverflow.com/questions/25466890/c-c-lua-rawget-vs-index)
 - [Creating Solid APIs with Lua by Tyler Neylon :: Chapter 4. Making Your API Classy](https://www.oreilly.com/library/view/creating-solid-apis/9781491986301/ch04.html)
+- [StackOverflow :: How to properly register a C++ class in lua for multiple calls](https://stackoverflow.com/questions/74821676/how-to-properly-register-a-c-class-in-lua-for-multiple-calls)
