@@ -1444,6 +1444,68 @@ void taffy_MinTrackSizingFunction_delete(taffy_MinTrackSizingFunction* self)
     self = nullptr;
 }
 
+int taffy_MinTrackSizingFunction_eq(const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::MinTrackSizingFunction* _lhs = reinterpret_cast<const taffy::MinTrackSizingFunction*>(lhs);
+    const taffy::MinTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MinTrackSizingFunction*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_MinTrackSizingFunction_neq(const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::MinTrackSizingFunction* _lhs = reinterpret_cast<const taffy::MinTrackSizingFunction*>(lhs);
+    const taffy::MinTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MinTrackSizingFunction*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_MinTrackSizingFunction_is_Fixed(const taffy_MinTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MinTrackSizingFunction* _self = reinterpret_cast<const taffy::MinTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MinTrackSizingFunction::Type::Fixed) ? 1 : 0;
+}
+
+int taffy_MinTrackSizingFunction_is_MinContent(const taffy_MinTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MinTrackSizingFunction* _self = reinterpret_cast<const taffy::MinTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MinTrackSizingFunction::Type::MinContent) ? 1 : 0;
+}
+
+int taffy_MinTrackSizingFunction_is_MaxContent(const taffy_MinTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MinTrackSizingFunction* _self = reinterpret_cast<const taffy::MinTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MinTrackSizingFunction::Type::MaxContent) ? 1 : 0;
+}
+
+int taffy_MinTrackSizingFunction_is_Auto(const taffy_MinTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MinTrackSizingFunction* _self = reinterpret_cast<const taffy::MinTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MinTrackSizingFunction::Type::Auto) ? 1 : 0;
+}
+
+taffy_LengthPercentage* taffy_MinTrackSizingFunction_get_new_value(const taffy_MinTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MinTrackSizingFunction* _self = reinterpret_cast<const taffy::MinTrackSizingFunction*>(self);
+    return reinterpret_cast<taffy_LengthPercentage*>( new taffy::LengthPercentage{ _self->value() } );
+}
+
 taffy_MinTrackSizingFunction* taffy_MinTrackSizingFunction_new_AUTO(void)
 {
     return reinterpret_cast<taffy_MinTrackSizingFunction*>( new taffy::MinTrackSizingFunction{ taffy::MinTrackSizingFunction::AUTO() } );

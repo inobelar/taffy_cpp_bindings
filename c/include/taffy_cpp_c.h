@@ -487,6 +487,20 @@ extern "C" {
         /* destructors */
         void taffy_MinTrackSizingFunction_delete(taffy_MinTrackSizingFunction* self);
 
+        /* comparison operators */
+        /* bool */ int taffy_MinTrackSizingFunction_eq (const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs);
+        /* bool */ int taffy_MinTrackSizingFunction_neq(const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs);
+
+        /* type checking */
+        /* bool */ int taffy_MinTrackSizingFunction_is_Fixed     (const taffy_MinTrackSizingFunction* self);
+        /* bool */ int taffy_MinTrackSizingFunction_is_MinContent(const taffy_MinTrackSizingFunction* self);
+        /* bool */ int taffy_MinTrackSizingFunction_is_MaxContent(const taffy_MinTrackSizingFunction* self);
+        /* bool */ int taffy_MinTrackSizingFunction_is_Auto      (const taffy_MinTrackSizingFunction* self);
+
+        /* getters */
+        /* call only if 'is_Fixed()' is 'true' */
+        taffy_LengthPercentage* taffy_MinTrackSizingFunction_get_new_value(const taffy_MinTrackSizingFunction* self);
+
         /* extras */
         taffy_MinTrackSizingFunction* taffy_MinTrackSizingFunction_new_AUTO(void);
         taffy_MinTrackSizingFunction* taffy_MinTrackSizingFunction_new_MIN_CONTENT(void);
