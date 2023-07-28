@@ -1276,6 +1276,91 @@ void taffy_MaxTrackSizingFunction_delete(taffy_MaxTrackSizingFunction* self)
     self = nullptr;
 }
 
+int taffy_MaxTrackSizingFunction_eq(const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::MaxTrackSizingFunction* _lhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(lhs);
+    const taffy::MaxTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_neq(const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::MaxTrackSizingFunction* _lhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(lhs);
+    const taffy::MaxTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_is_Fixed(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MaxTrackSizingFunction::Type::Fixed) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_is_MinContent(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MaxTrackSizingFunction::Type::MinContent) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_is_MaxContent(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MaxTrackSizingFunction::Type::MaxContent) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_is_FitContent(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MaxTrackSizingFunction::Type::FitContent) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_is_Auto(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MaxTrackSizingFunction::Type::Auto) ? 1 : 0;
+}
+
+int taffy_MaxTrackSizingFunction_is_Fraction(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return (_self->type() == taffy::MaxTrackSizingFunction::Type::Fraction) ? 1 : 0;
+}
+
+taffy_LengthPercentage* taffy_MaxTrackSizingFunction_get_new_length_percentage(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::MaxTrackSizingFunction* _self = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self);
+    return reinterpret_cast<taffy_LengthPercentage*>( new taffy::LengthPercentage{ _self->length_percentage() } );
+}
+
+float taffy_MaxTrackSizingFunction_get_fraction(const taffy_MaxTrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::MaxTrackSizingFunction*>(self)->fraction();
+}
+
 taffy_MaxTrackSizingFunction* taffy_MaxTrackSizingFunction_new_AUTO(void)
 {
     return reinterpret_cast<taffy_MaxTrackSizingFunction*>( new taffy::MaxTrackSizingFunction{ taffy::MaxTrackSizingFunction::AUTO() } );

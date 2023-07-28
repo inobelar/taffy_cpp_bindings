@@ -442,6 +442,24 @@ extern "C" {
         /* destructor */
         void taffy_MaxTrackSizingFunction_delete(taffy_MaxTrackSizingFunction* self);
 
+        /* comparison operators */
+        /* bool */ int taffy_MaxTrackSizingFunction_eq (const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs);
+        /* bool */ int taffy_MaxTrackSizingFunction_neq(const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs);
+
+        /* type checking */
+        /* bool */ int taffy_MaxTrackSizingFunction_is_Fixed     (const taffy_MaxTrackSizingFunction* self);
+        /* bool */ int taffy_MaxTrackSizingFunction_is_MinContent(const taffy_MaxTrackSizingFunction* self);
+        /* bool */ int taffy_MaxTrackSizingFunction_is_MaxContent(const taffy_MaxTrackSizingFunction* self);
+        /* bool */ int taffy_MaxTrackSizingFunction_is_FitContent(const taffy_MaxTrackSizingFunction* self);
+        /* bool */ int taffy_MaxTrackSizingFunction_is_Auto      (const taffy_MaxTrackSizingFunction* self);
+        /* bool */ int taffy_MaxTrackSizingFunction_is_Fraction  (const taffy_MaxTrackSizingFunction* self);
+
+        /* getters */
+        /* call only if 'is_Fixed()' or 'is_FitContent()' is 'true' */
+        taffy_LengthPercentage* taffy_MaxTrackSizingFunction_get_new_length_percentage(const taffy_MaxTrackSizingFunction* self);
+        /* call only if 'is_Fraction()' is 'true' */
+        float taffy_MaxTrackSizingFunction_get_fraction(const taffy_MaxTrackSizingFunction* self);
+
         /* extras */
         taffy_MaxTrackSizingFunction* taffy_MaxTrackSizingFunction_new_AUTO(void);
         taffy_MaxTrackSizingFunction* taffy_MaxTrackSizingFunction_new_MIN_CONTENT(void);
