@@ -523,6 +523,10 @@ extern "C" {
         /* destructor */
         void taffy_NonRepeatedTrackSizingFunction_delete(taffy_NonRepeatedTrackSizingFunction* self);
 
+        /* comparison operators */
+        /* bool */ int taffy_NonRepeatedTrackSizingFunction_eq (const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs);
+        /* bool */ int taffy_NonRepeatedTrackSizingFunction_neq(const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs);
+
         /* getters */
         const taffy_MinTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_min(const taffy_NonRepeatedTrackSizingFunction* self);
         const taffy_MaxTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_max(const taffy_NonRepeatedTrackSizingFunction* self);
@@ -551,6 +555,10 @@ extern "C" {
 
         /* destructor */
         void taffy_TrackSizingFunction_delete(taffy_TrackSizingFunction* self);
+
+        /* comparison operators */
+        /* bool */ int taffy_TrackSizingFunction_eq (const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
+        /* bool */ int taffy_TrackSizingFunction_neq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
 
         /* extras */
         taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_AUTO(void);

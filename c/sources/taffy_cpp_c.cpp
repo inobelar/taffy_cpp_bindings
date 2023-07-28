@@ -1565,6 +1565,28 @@ void taffy_NonRepeatedTrackSizingFunction_delete(taffy_NonRepeatedTrackSizingFun
     self = nullptr;
 }
 
+int taffy_NonRepeatedTrackSizingFunction_eq(const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::NonRepeatedTrackSizingFunction* _lhs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(lhs);
+    const taffy::NonRepeatedTrackSizingFunction* _rhs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_NonRepeatedTrackSizingFunction_neq(const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::NonRepeatedTrackSizingFunction* _lhs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(lhs);
+    const taffy::NonRepeatedTrackSizingFunction* _rhs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
 const taffy_MinTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_min(const taffy_NonRepeatedTrackSizingFunction* self)
 {
     ASSERT_NOT_NULL(self);
@@ -1664,6 +1686,28 @@ void taffy_TrackSizingFunction_delete(taffy_TrackSizingFunction* self)
 
     delete reinterpret_cast<taffy::TrackSizingFunction*>(self);
     self = nullptr;
+}
+
+int taffy_TrackSizingFunction_eq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::TrackSizingFunction* _lhs = reinterpret_cast<const taffy::TrackSizingFunction*>(lhs);
+    const taffy::TrackSizingFunction* _rhs = reinterpret_cast<const taffy::TrackSizingFunction*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_TrackSizingFunction_neq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::TrackSizingFunction* _lhs = reinterpret_cast<const taffy::TrackSizingFunction*>(lhs);
+    const taffy::TrackSizingFunction* _rhs = reinterpret_cast<const taffy::TrackSizingFunction*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_AUTO(void)
