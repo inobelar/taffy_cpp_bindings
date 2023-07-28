@@ -8,6 +8,7 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
+#include <stdlib.h> /* for: malloc(), free() */
 #include <string.h> /* for: strcmp() */
 
 /* -------------------------------------------------------------------------- */
@@ -35,7 +36,7 @@ static int lua_taffy_Option_float_new(lua_State* L)
             return luaL_error(L, "Failed to create taffy_Option_float : taffy_Option_float_new_default() failed");
         }
     } break;
-    
+
     case LUA_TNIL:
     {
         taffy_Option_float* object_ptr = NULL;
@@ -106,9 +107,9 @@ static int lua_taffy_Option_float_copy(lua_State* L)
 static int lua_taffy_Option_float_delete(lua_State* L)
 {
     taffy_Option_float** object = (taffy_Option_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_float);
-    
+
     taffy_Option_float_delete(*object);
-    
+
     return 0; /* number of results */
 }
 
@@ -148,7 +149,7 @@ static int lua_taffy_Option_float_set_value(lua_State* L)
     taffy_Option_float** object = (taffy_Option_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_float);
 
     switch( lua_type(L, 2) ) {
-    
+
     case LUA_TNIL:
     {
         lua_pop(L, 1);
@@ -229,8 +230,8 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
 
                 For example - for simple case like '{35, 42}' first 'lua_next()'
                 returns '1' index and second call returns '2' index, BUT for
-                uncommon case like '{[1] = 35, [2] = 42}' order is undefined, 
-                and first item returned by 'lua_next()' may be 
+                uncommon case like '{[1] = 35, [2] = 42}' order is undefined,
+                and first item returned by 'lua_next()' may be
                 {key: 2, value: 42}.
             */
             const size_t table_size = lua_rawlen(L, 1);
@@ -293,12 +294,12 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
                 }
             }
 
-            /* 
-                Second attempt - try to interpret table like 'dictionary': 
+            /*
+                Second attempt - try to interpret table like 'dictionary':
 
                     {x = 35, y = 42}
-                
-                if table size != 2 OR 'x' and 'y' not in indexes '1' and '2' 
+
+                if table size != 2 OR 'x' and 'y' not in indexes '1' and '2'
             */
             {
                 /* bool */ int x_found = 0; /* false */
@@ -416,16 +417,51 @@ static int lua_taffy_Point_of_float_copy(lua_State* L)
 static int lua_taffy_Point_of_float_delete(lua_State* L)
 {
     taffy_Point_of_float** object = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
-    
+
     taffy_Point_of_float_delete(*object);
-    
+
     return 0; /* number of results */
+}
+
+static int lua_taffy_Point_of_float_eq(lua_State* L)
+{
+    taffy_Point_of_float** object_lhs = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
+
+    taffy_Point_of_float** object_rhs = (taffy_Point_of_float**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Point_of_float);
+
+    const int is_equal = taffy_Point_of_float_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Point_of_float_add(lua_State* L)
+{
+    taffy_Point_of_float** object_lhs = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
+
+    taffy_Point_of_float** object_rhs = (taffy_Point_of_float**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Point_of_float);
+
+    taffy_Point_of_float* object_ptr = taffy_Point_of_float_new_add(*object_lhs, *object_rhs);
+    if(object_ptr != NULL)
+    {
+        taffy_Point_of_float** user_data = (taffy_Point_of_float**)lua_newuserdata(L, sizeof(taffy_Point_of_float*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Point_of_float : taffy_Point_of_float_new_add() failed");
+    }
 }
 
 static int lua_taffy_Point_of_float_get_x(lua_State* L)
 {
     taffy_Point_of_float** object = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
-    
+
     const float x = taffy_Point_of_float_get_x(*object);
 
     lua_pushnumber(L, x);
@@ -436,7 +472,7 @@ static int lua_taffy_Point_of_float_get_x(lua_State* L)
 static int lua_taffy_Point_of_float_get_y(lua_State* L)
 {
     taffy_Point_of_float** object = (taffy_Point_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Point_of_float);
-    
+
     const float y = taffy_Point_of_float_get_y(*object);
 
     lua_pushnumber(L, y);
@@ -488,14 +524,14 @@ static int lua_taffy_Point_of_float_ZERO(lua_State* L)
 
 static int lua_taffy_Point_of_float_index(lua_State* L)
 {
-    /* 
+    /*
         function mt.__index(table, key) <-- here is 'table' may be 'userdata'
             return table[key]
         end
     */
 
-    /* 
-        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we 
+    /*
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we
         use use this function for indexing our known 'userdata', that have only
         function names as keys, we dont care about other types for simplicity.
     */
@@ -530,7 +566,7 @@ static int lua_taffy_Point_of_float_index(lua_State* L)
 
 static int lua_taffy_Point_of_float_newindex(lua_State* L)
 {
-    /* 
+    /*
         function mt.__newindex(self, key, value)
             foo[key] = value
         end
@@ -552,7 +588,7 @@ static int lua_taffy_Point_of_float_newindex(lua_State* L)
 
         return 0; /* number of results */
     }
-    
+
     return luaL_error(L, "taffy_Point_of_float 'newindex' failed"); /* TODO: better message*/
 }
 
@@ -785,6 +821,63 @@ static int lua_taffy_Size_of_float_delete(lua_State* L)
     return 0; /* number of results */
 }
 
+static int lua_taffy_Size_of_float_eq(lua_State* L)
+{
+    taffy_Size_of_float** object_lhs = (taffy_Size_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_float);
+
+    taffy_Size_of_float** object_rhs = (taffy_Size_of_float**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Size_of_float);
+
+    const int is_equal = taffy_Size_of_float_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Size_of_float_add(lua_State* L)
+{
+    taffy_Size_of_float** object_lhs = (taffy_Size_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_float);
+
+    taffy_Size_of_float** object_rhs = (taffy_Size_of_float**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Size_of_float);
+
+    taffy_Size_of_float* object_ptr = taffy_Size_of_float_new_add(*object_lhs, *object_rhs);
+    if(object_ptr != NULL)
+    {
+        taffy_Size_of_float** user_data = (taffy_Size_of_float**)lua_newuserdata(L, sizeof(taffy_Size_of_float*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Size_of_float : taffy_Size_of_float_new_add() failed");
+    }
+}
+
+static int lua_taffy_Size_of_float_sub(lua_State* L)
+{
+    taffy_Size_of_float** object_lhs = (taffy_Size_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_float);
+
+    taffy_Size_of_float** object_rhs = (taffy_Size_of_float**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Size_of_float);
+
+    taffy_Size_of_float* object_ptr = taffy_Size_of_float_new_sub(*object_lhs, *object_rhs);
+    if(object_ptr != NULL)
+    {
+        taffy_Size_of_float** user_data = (taffy_Size_of_float**)lua_newuserdata(L, sizeof(taffy_Size_of_float*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Size_of_float : taffy_Size_of_float_new_sub() failed");
+    }
+}
+
 static int lua_taffy_Size_of_float_get_width(lua_State* L)
 {
     taffy_Size_of_float** object = (taffy_Size_of_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_float);
@@ -851,14 +944,14 @@ static int lua_taffy_Size_of_float_ZERO(lua_State* L)
 
 static int lua_taffy_Size_of_float_index(lua_State* L)
 {
-    /* 
+    /*
         function mt.__index(table, key) <-- here is 'table' may be 'userdata'
             return table[key]
         end
     */
 
-    /* 
-        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we 
+    /*
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we
         use use this function for indexing our known 'userdata', that have only
         function names as keys, we dont care about other types for simplicity.
     */
@@ -893,7 +986,7 @@ static int lua_taffy_Size_of_float_index(lua_State* L)
 
 static int lua_taffy_Size_of_float_newindex(lua_State* L)
 {
-    /* 
+    /*
         function mt.__newindex(self, key, value)
             foo[key] = value
         end
@@ -1090,6 +1183,72 @@ static int lua_taffy_AvailableSpace_delete(lua_State* L)
     return 0; /* number of results */
 }
 
+static int lua_taffy_AvailableSpace_eq(lua_State* L)
+{
+    taffy_AvailableSpace** object_lhs = (taffy_AvailableSpace**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AvailableSpace);
+
+    taffy_AvailableSpace** object_rhs = (taffy_AvailableSpace**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_AvailableSpace);
+
+    const int is_equal = taffy_AvailableSpace_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_AvailableSpace_is_Definite(lua_State* L)
+{
+    taffy_AvailableSpace** object = (taffy_AvailableSpace**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AvailableSpace);
+
+    const int is_Definite = taffy_AvailableSpace_is_Definite(*object);
+
+    lua_pushboolean(L, is_Definite);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_AvailableSpace_is_MinContent(lua_State* L)
+{
+    taffy_AvailableSpace** object = (taffy_AvailableSpace**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AvailableSpace);
+
+    const int is_MinContent = taffy_AvailableSpace_is_MinContent(*object);
+
+    lua_pushboolean(L, is_MinContent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_AvailableSpace_is_MaxContent(lua_State* L)
+{
+    taffy_AvailableSpace** object = (taffy_AvailableSpace**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AvailableSpace);
+
+    const int is_MaxContent = taffy_AvailableSpace_is_MaxContent(*object);
+
+    lua_pushboolean(L, is_MaxContent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_AvailableSpace_get_value(lua_State* L)
+{
+    taffy_AvailableSpace** object = (taffy_AvailableSpace**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AvailableSpace);
+
+    if( taffy_AvailableSpace_is_Definite(*object) )
+    {
+        const float value = taffy_AvailableSpace_get_value(*object);
+
+        lua_pushnumber(L, value);
+
+        return 1; /* number of results */
+    }
+    else /* not Definite --> nil */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
 static int lua_taffy_AvailableSpace_ZERO(lua_State* L)
 {
     taffy_AvailableSpace* object_ptr = taffy_AvailableSpace_new_ZERO();
@@ -1105,6 +1264,42 @@ static int lua_taffy_AvailableSpace_ZERO(lua_State* L)
     else
     {
         return luaL_error(L, "Failed to create taffy_AvailableSpace : taffy_AvailableSpace_new_ZERO() failed");
+    }
+}
+
+static int lua_taffy_AvailableSpace_MIN_CONTENT(lua_State* L)
+{
+    taffy_AvailableSpace* object_ptr = taffy_AvailableSpace_new_MIN_CONTENT();
+    if(object_ptr != NULL)
+    {
+        taffy_AvailableSpace** user_data = (taffy_AvailableSpace**)lua_newuserdata(L, sizeof(taffy_AvailableSpace*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_AvailableSpace : taffy_AvailableSpace_new_MIN_CONTENT() failed");
+    }
+}
+
+static int lua_taffy_AvailableSpace_MAX_CONTENT(lua_State* L)
+{
+    taffy_AvailableSpace* object_ptr = taffy_AvailableSpace_new_MAX_CONTENT();
+    if(object_ptr != NULL)
+    {
+        taffy_AvailableSpace** user_data = (taffy_AvailableSpace**)lua_newuserdata(L, sizeof(taffy_AvailableSpace*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_AvailableSpace : taffy_AvailableSpace_new_MAX_CONTENT() failed");
     }
 }
 
@@ -1250,6 +1445,52 @@ static int lua_taffy_LengthPercentage_delete(lua_State* L)
     taffy_LengthPercentage_delete(*object);
 
     return 0; /* number of results */
+}
+
+static int lua_taffy_LengthPercentage_eq(lua_State* L)
+{
+    taffy_LengthPercentage** object_lhs = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_LengthPercentage** object_rhs = (taffy_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    const int is_equal = taffy_LengthPercentage_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentage_is_Length(lua_State* L)
+{
+    taffy_LengthPercentage** self = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    const int is_Length = taffy_LengthPercentage_is_Length(*self);
+
+    lua_pushboolean(L, is_Length);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentage_is_Percent(lua_State* L)
+{
+    taffy_LengthPercentage** self = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    const int is_Percent = taffy_LengthPercentage_is_Percent(*self);
+
+    lua_pushboolean(L, is_Percent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentage_get_value(lua_State* L)
+{
+    taffy_LengthPercentage** self = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    const float value = taffy_LengthPercentage_get_value(*self);
+
+    lua_pushnumber(L, value);
+
+    return 1; /* number of results */
 }
 
 static int lua_taffy_LengthPercentage_ZERO(lua_State* L)
@@ -1401,6 +1642,74 @@ static int lua_taffy_LengthPercentageAuto_delete(lua_State* L)
     taffy_LengthPercentageAuto_delete(*object);
 
     return 0; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_eq(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object_lhs = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    taffy_LengthPercentageAuto** object_rhs = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    const int is_equal = taffy_LengthPercentageAuto_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+
+}
+
+static int lua_taffy_LengthPercentageAuto_is_Length(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    const int is_Length = taffy_LengthPercentageAuto_is_Length(*object);
+
+    lua_pushboolean(L, is_Length);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_is_Percent(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    const int is_Percent = taffy_LengthPercentageAuto_is_Percent(*object);
+
+    lua_pushboolean(L, is_Percent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_is_Auto(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    const int is_Auto = taffy_LengthPercentageAuto_is_Auto(*object);
+
+    lua_pushboolean(L, is_Auto);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_LengthPercentageAuto_get_value(lua_State* L)
+{
+    taffy_LengthPercentageAuto** object = (taffy_LengthPercentageAuto**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+
+    if( taffy_LengthPercentageAuto_is_Length (*object) ||
+        taffy_LengthPercentageAuto_is_Percent(*object) )
+    {
+        const int value = taffy_LengthPercentageAuto_get_value(*object);
+
+        lua_pushnumber(L, value);
+
+        return 1; /* number of results */
+    }
+    else /* !Length && !Percent */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
 }
 
 static int lua_taffy_LengthPercentageAuto_ZERO(lua_State* L)
@@ -1572,6 +1881,74 @@ static int lua_taffy_Dimension_delete(lua_State* L)
     taffy_Dimension_delete(*object);
 
     return 0; /* number of results */
+}
+
+static int lua_taffy_Dimension_eq(lua_State* L)
+{
+    taffy_Dimension** object_lhs = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    taffy_Dimension** object_rhs = (taffy_Dimension**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Dimension);
+
+    const int is_equal = taffy_Dimension_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+
+}
+
+static int lua_taffy_Dimension_is_Length(lua_State* L)
+{
+    taffy_Dimension** object = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    const int is_Length = taffy_Dimension_is_Length(*object);
+
+    lua_pushboolean(L, is_Length);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_is_Percent(lua_State* L)
+{
+    taffy_Dimension** object = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    const int is_Percent = taffy_Dimension_is_Percent(*object);
+
+    lua_pushboolean(L, is_Percent);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_is_Auto(lua_State* L)
+{
+    taffy_Dimension** object = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    const int is_Auto = taffy_Dimension_is_Auto(*object);
+
+    lua_pushboolean(L, is_Auto);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Dimension_get_value(lua_State* L)
+{
+    taffy_Dimension** object = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+
+    if( taffy_Dimension_is_Length (*object) ||
+        taffy_Dimension_is_Percent(*object) )
+    {
+        const int value = taffy_Dimension_get_value(*object);
+
+        lua_pushnumber(L, value);
+
+        return 1; /* number of results */
+    }
+    else /* !Length && !Percent */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
 }
 
 static int lua_taffy_Dimension_ZERO(lua_State* L)
@@ -1841,6 +2218,92 @@ static int lua_taffy_GridPlacement_delete(lua_State* L)
     taffy_GridPlacement_delete(*object);
 
     return 0; /* number of results */
+}
+
+static int lua_taffy_GridPlacement_eq(lua_State* L)
+{
+    taffy_GridPlacement** object_lhs = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+
+    taffy_GridPlacement** object_rhs = (taffy_GridPlacement**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_GridPlacement);
+
+    const int is_equal = taffy_GridPlacement_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_GridPlacement_is_Auto(lua_State* L)
+{
+    taffy_GridPlacement** object = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+
+    const int is_Auto = taffy_GridPlacement_is_Auto(*object);
+
+    lua_pushboolean(L, is_Auto);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_GridPlacement_is_Line(lua_State* L)
+{
+    taffy_GridPlacement** object = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+
+    const int is_Line = taffy_GridPlacement_is_Line(*object);
+
+    lua_pushboolean(L, is_Line);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_GridPlacement_is_Span(lua_State* L)
+{
+    taffy_GridPlacement** object = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+
+    const int is_Span = taffy_GridPlacement_is_Span(*object);
+
+    lua_pushboolean(L, is_Span);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_GridPlacement_get_line(lua_State* L)
+{
+    taffy_GridPlacement** object = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+
+    if( taffy_GridPlacement_is_Line(*object) )
+    {
+        const int16_t line = taffy_GridPlacement_get_line(*object);
+
+        lua_pushnumber(L, line);
+
+        return 1;
+    }
+    else /* !Line */
+    {
+        lua_pushnil(L);
+
+        return 1;
+    }
+}
+
+static int lua_taffy_GridPlacement_get_span(lua_State* L)
+{
+    taffy_GridPlacement** object = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+
+    if( taffy_GridPlacement_is_Span(*object) )
+    {
+        const uint16_t span = taffy_GridPlacement_get_span(*object);
+
+        lua_pushnumber(L, span);
+
+        return 1;
+    }
+    else /* !Span */
+    {
+        lua_pushnil(L);
+
+        return 1;
+    }
 }
 
 static int lua_taffy_GridPlacement_AUTO(lua_State* L)
@@ -2769,7 +3232,7 @@ static int lua_taffy_NonRepeatedTrackSizingFunction_new(lua_State* L)
     } break;
     }
 
-    return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : wrong arguments count"); 
+    return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : wrong arguments count");
 }
 
 static int lua_taffy_NonRepeatedTrackSizingFunction_copy(lua_State* L)
@@ -2881,7 +3344,7 @@ static int lua_taffy_NonRepeatedTrackSizingFunction_index(lua_State* L)
     */
 
     /*
-        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we 
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we
         use use this function for indexing our known 'userdata', that have only
         function names as keys, we dont care about other types for simplicity.
     */
@@ -3003,9 +3466,9 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
                     /* const int key_type   = lua_type(L, -2);*/
 
                     /*
-                        NOTE: here (for simplicity) we dont care about 'key' 
+                        NOTE: here (for simplicity) we dont care about 'key'
                         type and order - table may be array, sparced array,
-                        dictionary, anything, BUT its values must be only
+                        dictionary, anything, BUT its 'values' must be only
                         'taffy_NonRepeatedTrackSizingFunction' type.
                     */
                     /* pop 'value' from tha stack*/
@@ -3263,7 +3726,7 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Option_float_copy);
                 lua_setfield(L, -2, "copy");
-                
+
                 lua_pushcfunction(L, lua_taffy_Option_float_is_some);
                 lua_setfield(L, -2, "is_some");
 
@@ -3288,6 +3751,12 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Point_of_float_delete);
                 lua_setfield(L, -2, "__gc");
+
+                lua_pushcfunction(L, lua_taffy_Point_of_float_eq);
+                lua_setfield(L, -2, "__eq");
+
+                lua_pushcfunction(L, lua_taffy_Point_of_float_add);
+                lua_setfield(L, -2, "__add");
 
                 lua_pushcfunction(L, lua_taffy_Point_of_float_new);
                 lua_setfield(L, -2, "new");
@@ -3325,6 +3794,15 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Size_of_float_delete);
                 lua_setfield(L, -2, "__gc");
+
+                lua_pushcfunction(L, lua_taffy_Size_of_float_eq);
+                lua_setfield(L, -2, "__eq");
+
+                lua_pushcfunction(L, lua_taffy_Size_of_float_add);
+                lua_setfield(L, -2, "__add");
+
+                lua_pushcfunction(L, lua_taffy_Size_of_float_sub);
+                lua_setfield(L, -2, "__sub");
 
                 lua_pushcfunction(L, lua_taffy_Size_of_float_new);
                 lua_setfield(L, -2, "new");
@@ -3385,6 +3863,9 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_delete);
                 lua_setfield(L, -2, "__gc");
 
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_eq);
+                lua_setfield(L, -2, "__eq");
+
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_Definite);
                 lua_setfield(L, -2, "Definite");
 
@@ -3397,8 +3878,26 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_copy);
                 lua_setfield(L, -2, "copy");
 
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_is_Definite);
+                lua_setfield(L, -2, "is_Definite");
+
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_is_MinContent);
+                lua_setfield(L, -2, "is_MinContent");
+
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_is_MaxContent);
+                lua_setfield(L, -2, "is_MaxContent");
+
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_get_value);
+                lua_setfield(L, -2, "get_value");
+
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_ZERO);
                 lua_setfield(L, -2, "ZERO");
+
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_MIN_CONTENT);
+                lua_setfield(L, -2, "MIN_CONTENT");
+
+                lua_pushcfunction(L, lua_taffy_AvailableSpace_MAX_CONTENT);
+                lua_setfield(L, -2, "MAX_CONTENT");
 
                 lua_pushcfunction(L, lua_taffy_AvailableSpace_from_length);
                 lua_setfield(L, -2, "from_length");
@@ -3419,7 +3918,10 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_delete);
                 lua_setfield(L, -2, "__gc");
-            
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentage_eq);
+                lua_setfield(L, -2, "__eq");
+
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_Length);
                 lua_setfield(L, -2, "Length");
 
@@ -3428,6 +3930,15 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_copy);
                 lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentage_is_Length);
+                lua_setfield(L, -2, "is_Length");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentage_is_Percent);
+                lua_setfield(L, -2, "is_Percent");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentage_get_value);
+                lua_setfield(L, -2, "get_value");
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentage_ZERO);
                 lua_setfield(L, -2, "ZERO");
@@ -3452,6 +3963,9 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_delete);
                 lua_setfield(L, -2, "__gc");
 
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_eq);
+                lua_setfield(L, -2, "__eq");
+
                 lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Length);
                 lua_setfield(L, -2, "Length");
 
@@ -3463,6 +3977,18 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_copy);
                 lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Length);
+                lua_setfield(L, -2, "is_Length");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Percent);
+                lua_setfield(L, -2, "is_Percent");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Auto);
+                lua_setfield(L, -2, "is_Auto");
+
+                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_get_value);
+                lua_setfield(L, -2, "get_value");
 
                 lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_ZERO);
                 lua_setfield(L, -2, "ZERO");
@@ -3490,6 +4016,9 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_Dimension_delete);
                 lua_setfield(L, -2, "__gc");
 
+                lua_pushcfunction(L, lua_taffy_Dimension_eq);
+                lua_setfield(L, -2, "__eq");
+
                 lua_pushcfunction(L, lua_taffy_Dimension_Length);
                 lua_setfield(L, -2, "Length");
 
@@ -3501,6 +4030,18 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Dimension_copy);
                 lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_is_Length);
+                lua_setfield(L, -2, "is_Length");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_is_Percent);
+                lua_setfield(L, -2, "is_Percent");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_is_Auto);
+                lua_setfield(L, -2, "is_Auto");
+
+                lua_pushcfunction(L, lua_taffy_Dimension_get_value);
+                lua_setfield(L, -2, "get_value");
 
                 lua_pushcfunction(L, lua_taffy_Dimension_ZERO);
                 lua_setfield(L, -2, "ZERO");
@@ -3546,6 +4087,9 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_pushcfunction(L, lua_taffy_GridPlacement_delete);
                 lua_setfield(L, -2, "__gc");
 
+                lua_pushcfunction(L, lua_taffy_GridPlacement_eq);
+                lua_setfield(L, -2, "__eq");
+
                 lua_pushcfunction(L, lua_taffy_GridPlacement_new);
                 lua_setfield(L, -2, "new");
 
@@ -3560,6 +4104,21 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_GridPlacement_copy);
                 lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_GridPlacement_is_Auto);
+                lua_setfield(L, -2, "is_Auto");
+
+                lua_pushcfunction(L, lua_taffy_GridPlacement_is_Line);
+                lua_setfield(L, -2, "is_Line");
+
+                lua_pushcfunction(L, lua_taffy_GridPlacement_is_Span);
+                lua_setfield(L, -2, "is_Span");
+
+                lua_pushcfunction(L, lua_taffy_GridPlacement_get_line);
+                lua_setfield(L, -2, "get_line");
+
+                lua_pushcfunction(L, lua_taffy_GridPlacement_get_span);
+                lua_setfield(L, -2, "get_span");
 
                 lua_pushcfunction(L, lua_taffy_GridPlacement_AUTO);
                 lua_setfield(L, -2, "AUTO");
