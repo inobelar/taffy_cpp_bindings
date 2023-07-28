@@ -996,32 +996,41 @@ describe('taffy_cpp lua binding', function()
                 local gtr = t.GridTrackRepetition.AutoFill()
 
                 expect( gtr ).to.exist()
+                expect( gtr:get_value() ).to.be( nil )
             end)
 
             it('AutoFit', function()
                 local gtr = t.GridTrackRepetition.AutoFit()
 
                 expect( gtr ).to.exist()
+                expect( gtr:get_value() ).to.be( nil )
             end)
 
             it('Count', function()
                 local gtr = t.GridTrackRepetition.Count(42)
 
                 expect( gtr ).to.exist()
+                expect( gtr: get_value() ).to.be( 42 )
             end)
 
             it('Named constructors', function()
                 local gtr1 = t.GridTrackRepetition.try_from(42)
 
                 expect( gtr1 ).to.exist()
+                expect( gtr1:is_Count() ).to.be( true )
+                expect( gtr1:get_value() ).to.be( 42 )
 
                 local gtr2 = t.GridTrackRepetition.try_from('auto-fill')
 
                 expect( gtr2 ).to.exist()
+                expect( gtr2:is_AutoFill() ).to.be( true )
+                expect( gtr2:get_value() ).to.be( nil )
 
                 local gtr3 = t.GridTrackRepetition.try_from('auto-fit')
 
                 expect( gtr3 ).to.exist()
+                expect( gtr3:is_AutoFit() ).to.be( true )
+                expect( gtr3:get_value() ).to.be( nil )
 
                 local gtr4 = t.GridTrackRepetition.try_from('sometext')
 
@@ -1030,11 +1039,55 @@ describe('taffy_cpp lua binding', function()
         end)
 
         it('Copying', function()
-            local gtr = t.GridTrackRepetition.AutoFill()
+            local gtr = t.GridTrackRepetition.Count(42)
 
             local copy = gtr:copy()
 
             expect( copy ).to.exist()
+            expect( copy:is_Count() ).to.be( true )
+            expect( copy:get_value() ).to.be( 42 )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local gtr_equal1 = t.GridTrackRepetition.AutoFill() == t.GridTrackRepetition.AutoFill()
+                local gtr_equal2 = t.GridTrackRepetition.AutoFit() == t.GridTrackRepetition.AutoFit()
+                local gtr_equal3 = t.GridTrackRepetition.Count(42) == t.GridTrackRepetition.Count(42)
+
+                local gtr_not_equal1 = t.GridTrackRepetition.AutoFill() ~= t.GridTrackRepetition.AutoFit()
+                local gtr_not_equal2 = t.GridTrackRepetition.AutoFill()  ~= t.GridTrackRepetition.Count(42)
+                local gtr_not_equal3 = t.GridTrackRepetition.AutoFit() ~= t.GridTrackRepetition.Count(42)
+                local gtr_not_equal4 = t.GridTrackRepetition.Count(10) ~= t.GridTrackRepetition.Count(20)
+
+                expect( gtr_equal1     ).to.be( true )
+                expect( gtr_equal2     ).to.be( true )
+                expect( gtr_equal3     ).to.be( true )
+
+                expect( gtr_not_equal1 ).to.be( true )
+                expect( gtr_not_equal2 ).to.be( true )
+                expect( gtr_not_equal3 ).to.be( true )
+                expect( gtr_not_equal4 ).to.be( true )
+            end)
+        end)
+
+        it('Type checking', function()
+            local gtr1 = t.GridTrackRepetition.AutoFill()
+
+            expect( gtr1:is_AutoFill() ).to.be( true )
+            expect( gtr1:is_AutoFit()  ).to.be( false )
+            expect( gtr1:is_Count()    ).to.be( false )
+
+            local gtr2 = t.GridTrackRepetition.AutoFit()
+
+            expect( gtr2:is_AutoFill() ).to.be( false )
+            expect( gtr2:is_AutoFit()  ).to.be( true )
+            expect( gtr2:is_Count()    ).to.be( false )
+
+            local gtr3 = t.GridTrackRepetition.Count(42)
+
+            expect( gtr3:is_AutoFill() ).to.be( false )
+            expect( gtr3:is_AutoFit()  ).to.be( false )
+            expect( gtr3:is_Count()    ).to.be( true )
         end)
     end) -- GridTrackRepetition
 
