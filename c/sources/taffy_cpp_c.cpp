@@ -105,6 +105,41 @@ void taffy_Point_of_float_delete(taffy_Point_of_float* self)
     self = nullptr;
 }
 
+int taffy_Point_of_float_eq(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Point<float>* _lhs = reinterpret_cast<const taffy::Point<float>*>(lhs);
+    const taffy::Point<float>* _rhs = reinterpret_cast<const taffy::Point<float>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_Point_of_float_neq(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Point<float>* _lhs = reinterpret_cast<const taffy::Point<float>*>(lhs);
+    const taffy::Point<float>* _rhs = reinterpret_cast<const taffy::Point<float>*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+taffy_Point_of_float* taffy_Point_of_float_new_add(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Point<float>* _lhs = reinterpret_cast<const taffy::Point<float>*>(lhs);
+    const taffy::Point<float>* _rhs = reinterpret_cast<const taffy::Point<float>*>(rhs);
+
+    return reinterpret_cast<taffy_Point_of_float*>(
+        new taffy::Point<float>{ *_lhs + *_rhs }
+    );
+}
+
 float taffy_Point_of_float_get_x(const taffy_Point_of_float* self)
 {
     ASSERT_NOT_NULL(self);
@@ -180,6 +215,54 @@ void taffy_Size_of_float_delete(taffy_Size_of_float* self)
     self = nullptr;
 }
 
+int taffy_Size_of_float_eq(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Size<float>* _lhs = reinterpret_cast<const taffy::Size<float>*>(lhs);
+    const taffy::Size<float>* _rhs = reinterpret_cast<const taffy::Size<float>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_Size_of_float_neq(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Size<float>* _lhs = reinterpret_cast<const taffy::Size<float>*>(lhs);
+    const taffy::Size<float>* _rhs = reinterpret_cast<const taffy::Size<float>*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+taffy_Size_of_float* taffy_Size_of_float_new_add(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Size<float>* _lhs = reinterpret_cast<const taffy::Size<float>*>(lhs);
+    const taffy::Size<float>* _rhs = reinterpret_cast<const taffy::Size<float>*>(rhs);
+
+    return reinterpret_cast<taffy_Size_of_float*>(
+        new taffy::Size<float>{ *_lhs + *_rhs }
+    );
+}
+
+taffy_Size_of_float* taffy_Size_of_float_new_sub(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Size<float>* _lhs = reinterpret_cast<const taffy::Size<float>*>(lhs);
+    const taffy::Size<float>* _rhs = reinterpret_cast<const taffy::Size<float>*>(rhs);
+
+    return reinterpret_cast<taffy_Size_of_float*>(
+        new taffy::Size<float>{ *_lhs - *_rhs }
+    );
+}
+
 float taffy_Size_of_float_get_width(const taffy_Size_of_float* self)
 {
     ASSERT_NOT_NULL(self);
@@ -191,7 +274,7 @@ float taffy_Size_of_float_get_height(const taffy_Size_of_float* self)
 {
     ASSERT_NOT_NULL(self);
 
-    return reinterpret_cast<const taffy::Size<float>*>(self)->height;   
+    return reinterpret_cast<const taffy::Size<float>*>(self)->height;
 }
 
 void taffy_Size_of_float_set_width(taffy_Size_of_float* self, float width )
@@ -409,9 +492,72 @@ void taffy_AvailableSpace_delete(taffy_AvailableSpace* self)
     self = nullptr;
 }
 
+int taffy_AvailableSpace_eq(const taffy_AvailableSpace* lhs, const taffy_AvailableSpace* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::AvailableSpace* _lhs = reinterpret_cast<const taffy::AvailableSpace*>(lhs);
+    const taffy::AvailableSpace* _rhs = reinterpret_cast<const taffy::AvailableSpace*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_AvailableSpace_neq(const taffy_AvailableSpace* lhs, const taffy_AvailableSpace* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::AvailableSpace* _lhs = reinterpret_cast<const taffy::AvailableSpace*>(lhs);
+    const taffy::AvailableSpace* _rhs = reinterpret_cast<const taffy::AvailableSpace*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_AvailableSpace_is_Definite(const taffy_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::AvailableSpace* _self = reinterpret_cast<const taffy::AvailableSpace*>(self);
+    return (_self->type() == taffy::AvailableSpace::Type::Definite) ? 1 : 0;
+}
+
+int taffy_AvailableSpace_is_MinContent(const taffy_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::AvailableSpace* _self = reinterpret_cast<const taffy::AvailableSpace*>(self);
+    return (_self->type() == taffy::AvailableSpace::Type::MinContent) ? 1 : 0;
+}
+
+int taffy_AvailableSpace_is_MaxContent(const taffy_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::AvailableSpace* _self = reinterpret_cast<const taffy::AvailableSpace*>(self);
+    return (_self->type() == taffy::AvailableSpace::Type::MaxContent) ? 1 : 0;
+}
+
+float taffy_AvailableSpace_get_value(const taffy_AvailableSpace* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::AvailableSpace*>(self)->value();
+}
+
 taffy_AvailableSpace* taffy_AvailableSpace_new_ZERO(void)
 {
     return reinterpret_cast<taffy_AvailableSpace*>( new taffy::AvailableSpace{ taffy::AvailableSpace::ZERO() } );
+}
+
+taffy_AvailableSpace* taffy_AvailableSpace_new_MIN_CONTENT(void)
+{
+    return reinterpret_cast<taffy_AvailableSpace*>( new taffy::AvailableSpace{ taffy::AvailableSpace::MIN_CONTENT() } );
+}
+
+taffy_AvailableSpace* taffy_AvailableSpace_new_MAX_CONTENT(void)
+{
+    return reinterpret_cast<taffy_AvailableSpace*>( new taffy::AvailableSpace{ taffy::AvailableSpace::MAX_CONTENT() } );
 }
 
 taffy_AvailableSpace* taffy_AvailableSpace_new_from_length(float value)
@@ -461,6 +607,51 @@ void taffy_LengthPercentage_delete(taffy_LengthPercentage* self)
     self = nullptr;
 }
 
+int taffy_LengthPercentage_eq(const taffy_LengthPercentage* lhs, const taffy_LengthPercentage* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::LengthPercentage* _lhs = reinterpret_cast<const taffy::LengthPercentage*>(lhs);
+    const taffy::LengthPercentage* _rhs = reinterpret_cast<const taffy::LengthPercentage*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_LengthPercentage_neq(const taffy_LengthPercentage* lhs, const taffy_LengthPercentage* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::LengthPercentage* _lhs = reinterpret_cast<const taffy::LengthPercentage*>(lhs);
+    const taffy::LengthPercentage* _rhs = reinterpret_cast<const taffy::LengthPercentage*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_LengthPercentage_is_Length(const taffy_LengthPercentage* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::LengthPercentage* _self = reinterpret_cast<const taffy::LengthPercentage*>(self);
+    return (_self->type() == taffy::LengthPercentage::Type::Length) ? 1 : 0;
+}
+
+int taffy_LengthPercentage_is_Percent(const taffy_LengthPercentage* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::LengthPercentage* _self = reinterpret_cast<const taffy::LengthPercentage*>(self);
+    return (_self->type() == taffy::LengthPercentage::Type::Percent) ? 1 : 0;
+}
+
+float taffy_LengthPercentage_get_value(const taffy_LengthPercentage* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::LengthPercentage*>(self)->value();
+}
+
 taffy_LengthPercentage* taffy_LengthPercentage_new_ZERO(void)
 {
     return reinterpret_cast<taffy_LengthPercentage*>( new taffy::LengthPercentage{ taffy::LengthPercentage::ZERO() } );
@@ -508,6 +699,59 @@ void taffy_LengthPercentageAuto_delete(taffy_LengthPercentageAuto* self)
 
     delete reinterpret_cast<taffy::LengthPercentageAuto*>(self);
     self = nullptr;
+}
+
+int taffy_LengthPercentageAuto_eq(const taffy_LengthPercentageAuto* lhs, const taffy_LengthPercentageAuto* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::LengthPercentageAuto* _lhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(lhs);
+    const taffy::LengthPercentageAuto* _rhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_LengthPercentageAuto_neq(const taffy_LengthPercentageAuto* lhs, const taffy_LengthPercentageAuto* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::LengthPercentageAuto* _lhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(lhs);
+    const taffy::LengthPercentageAuto* _rhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_LengthPercentageAuto_is_Length(const taffy_LengthPercentageAuto* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::LengthPercentageAuto* _self = reinterpret_cast<const taffy::LengthPercentageAuto*>(self);
+    return (_self->type() == taffy::LengthPercentageAuto::Type::Length) ? 1 : 0;
+}
+
+int taffy_LengthPercentageAuto_is_Percent(const taffy_LengthPercentageAuto* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::LengthPercentageAuto* _self = reinterpret_cast<const taffy::LengthPercentageAuto*>(self);
+    return (_self->type() == taffy::LengthPercentageAuto::Type::Percent) ? 1 : 0;
+}
+
+int taffy_LengthPercentageAuto_is_Auto(const taffy_LengthPercentageAuto* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::LengthPercentageAuto* _self = reinterpret_cast<const taffy::LengthPercentageAuto*>(self);
+    return (_self->type() == taffy::LengthPercentageAuto::Type::Auto) ? 1 : 0;
+}
+
+float taffy_LengthPercentageAuto_get_value(const taffy_LengthPercentageAuto* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::LengthPercentageAuto*>(self)->value();
 }
 
 taffy_LengthPercentageAuto* taffy_LengthPercentageAuto_new_ZERO(void)
@@ -570,6 +814,59 @@ void taffy_Dimension_delete(taffy_Dimension* self)
 
     delete reinterpret_cast<taffy::Dimension*>(self);
     self = nullptr;
+}
+
+int taffy_Dimension_eq(const taffy_Dimension* lhs, const taffy_Dimension* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Dimension* _lhs = reinterpret_cast<const taffy::Dimension*>(lhs);
+    const taffy::Dimension* _rhs = reinterpret_cast<const taffy::Dimension*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_Dimension_neq(const taffy_Dimension* lhs, const taffy_Dimension* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Dimension* _lhs = reinterpret_cast<const taffy::Dimension*>(lhs);
+    const taffy::Dimension* _rhs = reinterpret_cast<const taffy::Dimension*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_Dimension_is_Length(const taffy_Dimension* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::Dimension* _self = reinterpret_cast<const taffy::Dimension*>(self);
+    return (_self->type() == taffy::Dimension::Type::Length) ? 1 : 0;
+}
+
+int taffy_Dimension_is_Percent(const taffy_Dimension* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::Dimension* _self = reinterpret_cast<const taffy::Dimension*>(self);
+    return (_self->type() == taffy::Dimension::Type::Percent) ? 1 : 0;
+}
+
+int taffy_Dimension_is_Auto(const taffy_Dimension* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::Dimension* _self = reinterpret_cast<const taffy::Dimension*>(self);
+    return (_self->type() == taffy::Dimension::Type::Auto) ? 1 : 0;
+}
+
+float taffy_Dimension_get_value(const taffy_Dimension* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::Dimension*>(self)->value();
 }
 
 taffy_Dimension* taffy_Dimension_new_ZERO(void)
@@ -645,7 +942,7 @@ static taffy::FlexWrap taffy_FlexWrap_to_cpp(const taffy_FlexWrap v)
     switch(v) {
     case taffy_FlexWrap_NoWrap      : return taffy::FlexWrap::NoWrap();
     case taffy_FlexWrap_Wrap        : return taffy::FlexWrap::Wrap();
-    case taffy_FlexWrap_WrapReverse : return taffy::FlexWrap::WrapReverse();    
+    case taffy_FlexWrap_WrapReverse : return taffy::FlexWrap::WrapReverse();
     }
 
     ASSERT_UNREACHABLE();
@@ -740,6 +1037,66 @@ void taffy_GridPlacement_delete(taffy_GridPlacement* self)
 
     delete reinterpret_cast<taffy::GridPlacement*>(self);
     self = nullptr;
+}
+
+int taffy_GridPlacement_eq(const taffy_GridPlacement* lhs, const taffy_GridPlacement* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::GridPlacement* _lhs = reinterpret_cast<const taffy::GridPlacement*>(lhs);
+    const taffy::GridPlacement* _rhs = reinterpret_cast<const taffy::GridPlacement*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
+int taffy_GridPlacement_neq(const taffy_GridPlacement* lhs, const taffy_GridPlacement* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::GridPlacement* _lhs = reinterpret_cast<const taffy::GridPlacement*>(lhs);
+    const taffy::GridPlacement* _rhs = reinterpret_cast<const taffy::GridPlacement*>(rhs);
+
+    return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_GridPlacement_is_Auto(const taffy_GridPlacement* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::GridPlacement* _self = reinterpret_cast<const taffy::GridPlacement*>(self);
+    return (_self->type() == taffy::GridPlacement::Type::Auto) ? 1 : 0;
+}
+
+int taffy_GridPlacement_is_Line(const taffy_GridPlacement* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::GridPlacement* _self = reinterpret_cast<const taffy::GridPlacement*>(self);
+    return (_self->type() == taffy::GridPlacement::Type::Line) ? 1 : 0;
+}
+
+int taffy_GridPlacement_is_Span(const taffy_GridPlacement* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::GridPlacement* _self = reinterpret_cast<const taffy::GridPlacement*>(self);
+    return (_self->type() == taffy::GridPlacement::Type::Span) ? 1 : 0;
+}
+
+int16_t taffy_GridPlacement_get_line(const taffy_GridPlacement* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::GridPlacement*>(self)->line_type().as_i16();
+}
+
+uint16_t taffy_GridPlacement_get_span(const taffy_GridPlacement* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy::GridPlacement*>(self)->span();
 }
 
 taffy_GridPlacement* taffy_GridPlacement_new_AUTO(void)
@@ -1067,27 +1424,29 @@ taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Single(const taffy_NonR
 
 taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Repeat(
     const taffy_GridTrackRepetition* repetition,
-    const taffy_NonRepeatedTrackSizingFunction* funcs, size_t funcs_count
+    taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count
 )
 {
     ASSERT_NOT_NULL(repetition);
-
     if(funcs_count > 0)
     {
         ASSERT_NOT_NULL(funcs);
     }
 
-    
     const taffy::GridTrackRepetition* _repetition = reinterpret_cast<const taffy::GridTrackRepetition*>(repetition);
-    const taffy::NonRepeatedTrackSizingFunction* _funcs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(funcs);
+    taffy::NonRepeatedTrackSizingFunction** _funcs = reinterpret_cast<taffy::NonRepeatedTrackSizingFunction**>(funcs);
 
-    return reinterpret_cast<taffy_TrackSizingFunction*>( 
-        new taffy::TrackSizingFunction { 
-            taffy::TrackSizingFunction::Repeat(
-                *_repetition, 
-                taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction>{_funcs, _funcs + funcs_count} // NOTE: Entire vector copy here :/
-            )
-        } 
+    // [taffy::NRTSF*, taffy::NRTSF*, taffy::NRTSF*, ...] -> vec<>[taffy::NRTSF, taffy::NRTSF, taffy::NRTSF, ...]
+    taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction> vec; // NOTE: Entire vector copy here :/
+    for(size_t i = 0; i < funcs_count; ++i)
+    {
+        vec.push_back( *(_funcs[i]) );
+    }
+
+    return reinterpret_cast<taffy_TrackSizingFunction*>(
+        new taffy::TrackSizingFunction {
+            taffy::TrackSizingFunction::Repeat(*_repetition, std::move(vec))
+        }
     );
 }
 
@@ -1256,9 +1615,9 @@ taffy_Point_of_Overflow* taffy_Point_of_Overflow_new_default(void)
 
 taffy_Point_of_Overflow* taffy_Point_of_Overflow_new(taffy_Overflow x, taffy_Overflow y)
 {
-    return reinterpret_cast<taffy_Point_of_Overflow*>( 
+    return reinterpret_cast<taffy_Point_of_Overflow*>(
         new taffy::Point<taffy::Overflow>{
-            taffy_Overflow_to_cpp(x), 
+            taffy_Overflow_to_cpp(x),
             taffy_Overflow_to_cpp(y)
         }
     );
@@ -1312,7 +1671,7 @@ void taffy_Point_of_Overflow_set_y(taffy_Point_of_Overflow* self, taffy_Overflow
 // Rect<LengthPercentage>
 
 taffy_Rect_of_LengthPercentage* taffy_Rect_of_LengthPercentage_new(
-    const taffy_LengthPercentage* left, 
+    const taffy_LengthPercentage* left,
     const taffy_LengthPercentage* top,
     const taffy_LengthPercentage* right,
     const taffy_LengthPercentage* bottom
@@ -1445,7 +1804,7 @@ taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_bottom(taffy_Rect
 // Rect<LengthPercentageAuto>
 
 taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new(
-    const taffy_LengthPercentageAuto* left, 
+    const taffy_LengthPercentageAuto* left,
     const taffy_LengthPercentageAuto* top,
     const taffy_LengthPercentageAuto* right,
     const taffy_LengthPercentageAuto* bottom
@@ -2337,14 +2696,14 @@ taffy_GridAutoFlow taffy_Style_get_grid_auto_flow(const taffy_Style* self)
 const taffy_Line_of_GridPlacement* taffy_Style_get_grid_row(const taffy_Style* self)
 {
     ASSERT_NOT_NULL(self);
-    
+
     return reinterpret_cast<const taffy_Line_of_GridPlacement*>( &( reinterpret_cast<const taffy::Style*>(self)->grid_row ) );
 }
 
 const taffy_Line_of_GridPlacement* taffy_Style_get_grid_column(const taffy_Style* self)
 {
     ASSERT_NOT_NULL(self);
-    
+
     return reinterpret_cast<const taffy_Line_of_GridPlacement*>( &( reinterpret_cast<const taffy::Style*>(self)->grid_column ) );
 }
 
@@ -2371,7 +2730,7 @@ void taffy_Style_set_scrollbar_width(taffy_Style* self, float value)
 {
     ASSERT_NOT_NULL(self);
 
-    reinterpret_cast<taffy::Style*>(self)->scrollbar_width = value; 
+    reinterpret_cast<taffy::Style*>(self)->scrollbar_width = value;
 }
 
 void taffy_Style_set_position(taffy_Style* self, taffy_Position value)
@@ -2876,7 +3235,7 @@ taffy_TaffyResult_of_bool taffy_TaffyResult_of_bool_from_cpp(const taffy::TaffyR
         ret.error.node.id     = static_cast<uint64_t>( result.error().node() );
         ret.error.child_index = result.error().child_index();
         ret.error.child_count = result.error().child_count();
-        
+
         ret.value = 0;
     }
 
@@ -2894,7 +3253,7 @@ taffy_TaffyResult_of_size_t taffy_TaffyResult_of_size_t_from_cpp(const taffy::Ta
         ret.error.node.id     = 0;
         ret.error.child_index = 0;
         ret.error.child_count = 0;
-        
+
         ret.value = result.value();
     }
     else
@@ -2904,7 +3263,7 @@ taffy_TaffyResult_of_size_t taffy_TaffyResult_of_size_t_from_cpp(const taffy::Ta
         ret.error.node.id     = static_cast<uint64_t>( result.error().node() );
         ret.error.child_index = result.error().child_index();
         ret.error.child_count = result.error().child_count();
-        
+
         ret.value = 0;
     }
 
@@ -2922,7 +3281,7 @@ taffy_TaffyResult_of_NodeId taffy_TaffyResult_of_NodeId_from_cpp(const taffy::Ta
         ret.error.node.id     = 0;
         ret.error.child_index = 0;
         ret.error.child_count = 0;
-        
+
         ret.value.id = static_cast<uint64_t>( result.value() );
     }
     else
@@ -2932,7 +3291,7 @@ taffy_TaffyResult_of_NodeId taffy_TaffyResult_of_NodeId_from_cpp(const taffy::Ta
         ret.error.node.id     = static_cast<uint64_t>( result.error().node() );
         ret.error.child_index = result.error().child_index();
         ret.error.child_count = result.error().child_count();
-        
+
         ret.value.id = 0;
     }
 
@@ -2950,7 +3309,7 @@ taffy_TaffyResult_of_Vec_of_NodeId taffy_TaffyResult_of_Vec_of_NodeId_from_cpp(c
         ret.error.node.id     = 0;
         ret.error.child_index = 0;
         ret.error.child_count = 0;
-        
+
         const size_t items_count = result.value().size();
         if(items_count > 0)
         {
@@ -2971,7 +3330,7 @@ taffy_TaffyResult_of_Vec_of_NodeId taffy_TaffyResult_of_Vec_of_NodeId_from_cpp(c
         ret.error.node.id     = static_cast<uint64_t>( result.error().node() );
         ret.error.child_index = result.error().child_index();
         ret.error.child_count = result.error().child_count();
-        
+
         ret.items       = nullptr;
         ret.items_count = 0;
     }
@@ -3001,7 +3360,7 @@ taffy_TaffyResult_of_Style_const_ref taffy_TaffyResult_of_Style_const_ref_from_c
         ret.error.node.id     = 0;
         ret.error.child_index = 0;
         ret.error.child_count = 0;
-        
+
         ret.value = reinterpret_cast<const taffy_Style*>( &( result.value().get() ) );
     }
     else
@@ -3011,7 +3370,7 @@ taffy_TaffyResult_of_Style_const_ref taffy_TaffyResult_of_Style_const_ref_from_c
         ret.error.node.id     = static_cast<uint64_t>( result.error().node() );
         ret.error.child_index = result.error().child_index();
         ret.error.child_count = result.error().child_count();
-        
+
         ret.value = nullptr;
     }
 
@@ -3029,7 +3388,7 @@ taffy_TaffyResult_of_Layout_const_ref taffy_TaffyResult_of_Layout_const_ref_from
         ret.error.node.id     = 0;
         ret.error.child_index = 0;
         ret.error.child_count = 0;
-        
+
         ret.value = reinterpret_cast<const taffy_Layout*>( &( result.value().get() ) );
     }
     else
@@ -3039,7 +3398,7 @@ taffy_TaffyResult_of_Layout_const_ref taffy_TaffyResult_of_Layout_const_ref_from
         ret.error.node.id     = static_cast<uint64_t>( result.error().node() );
         ret.error.child_index = result.error().child_index();
         ret.error.child_count = result.error().child_count();
-        
+
         ret.value = nullptr;
     }
 
@@ -3085,8 +3444,8 @@ void taffy_Taffy_disable_rounding(taffy_Taffy* self)
 }
 
 taffy_TaffyResult_of_NodeId taffy_Taffy_new_leaf(
-    taffy_Taffy* self, 
-    
+    taffy_Taffy* self,
+
     const taffy_Style* layout
 )
 {
@@ -3119,7 +3478,7 @@ taffy_TaffyResult_of_NodeId taffy_Taffy_new_with_children(
     const taffy::NodeId* _childs = reinterpret_cast<const taffy::NodeId*>(childs);
 
     const auto result = reinterpret_cast<taffy::Taffy*>(self)->new_with_children(
-        *_layout, 
+        *_layout,
         taffy::Vec<taffy::NodeId>{_childs, _childs + childs_count} // NOTE: Entire vector copy here :/
     );
 
@@ -3183,7 +3542,7 @@ taffy_TaffyResult_of_void taffy_Taffy_insert_child_at_index(
 taffy_TaffyResult_of_void taffy_Taffy_set_children(
     taffy_Taffy* self,
 
-    taffy_NodeId parent, const taffy_NodeId* childs, size_t childs_count 
+    taffy_NodeId parent, const taffy_NodeId* childs, size_t childs_count
 )
 {
     ASSERT_NOT_NULL(self);
@@ -3316,7 +3675,7 @@ taffy_TaffyResult_of_Style_const_ref taffy_Taffy_style(
 )
 {
     ASSERT_NOT_NULL(self);
-    
+
     const auto result = reinterpret_cast<const taffy::Taffy*>(self)->style(
         taffy::NodeId{node.id}
     );
@@ -3331,7 +3690,7 @@ taffy_TaffyResult_of_Layout_const_ref taffy_Taffy_layout(
 )
 {
     ASSERT_NOT_NULL(self);
-    
+
     const auto result = reinterpret_cast<const taffy::Taffy*>(self)->layout(
         taffy::NodeId{node.id}
     );
@@ -3346,7 +3705,7 @@ taffy_TaffyResult_of_void taffy_Taffy_mark_dirty(
 )
 {
     ASSERT_NOT_NULL(self);
-    
+
     const auto result = reinterpret_cast<taffy::Taffy*>(self)->mark_dirty(
         taffy::NodeId{node.id}
     );
@@ -3361,7 +3720,7 @@ taffy_TaffyResult_of_bool taffy_Taffy_dirty(
 )
 {
     ASSERT_NOT_NULL(self);
-    
+
     const auto result = reinterpret_cast<const taffy::Taffy*>(self)->dirty(
         taffy::NodeId{node.id}
     );
