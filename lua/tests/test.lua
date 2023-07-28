@@ -1284,59 +1284,135 @@ describe('taffy_cpp lua binding', function()
                 local min_tsf = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
 
                 expect( min_tsf ).to.exist()
+                expect( min_tsf:get_value() ).to.be( t.LengthPercentage.ZERO() )
             end)
 
             it('MinContent', function()
                 local min_tsf = t.MinTrackSizingFunction.MinContent()
 
                 expect( min_tsf ).to.exist()
+                expect( min_tsf:get_value() ).to.be( nil )
             end)
 
             it('MaxContent', function()
                 local min_tsf = t.MinTrackSizingFunction.MaxContent()
 
                 expect( min_tsf ).to.exist()
+                expect( min_tsf:get_value() ).to.be( nil )
             end)
 
             it('Auto', function()
                 local min_tsf = t.MinTrackSizingFunction.Auto()
 
                 expect( min_tsf ).to.exist()
+                expect( min_tsf:get_value() ).to.be( nil )
             end)
 
             it('Named constructors', function()
                 local min_tsf1 = t.MinTrackSizingFunction.AUTO()
 
                 expect( min_tsf1 ).to.exist()
+                expect( min_tsf1:is_Auto() ).to.be( true )
 
                 local min_tsf2 = t.MinTrackSizingFunction.MIN_CONTENT()
 
                 expect( min_tsf2 ).to.exist()
+                expect( min_tsf2:is_MinContent() ).to.be( true )
 
                 local min_tsf3 = t.MinTrackSizingFunction.MAX_CONTENT()
 
                 expect( min_tsf3 ).to.exist()
+                expect( min_tsf3:is_MaxContent() ).to.be( true )
 
                 local min_tsf4 = t.MinTrackSizingFunction.ZERO()
 
                 expect( min_tsf4 ).to.exist()
+                expect( min_tsf4:is_Fixed() ).to.be( true )
 
                 local min_tsf5 = t.MinTrackSizingFunction.from_length(42)
 
                 expect( min_tsf5 ).to.exist()
+                expect( min_tsf5:is_Fixed() ).to.be( true )
 
                 local min_tsf6 = t.MinTrackSizingFunction.from_percent(42)
 
                 expect( min_tsf6 ).to.exist()
+                expect( min_tsf6:is_Fixed() ).to.be( true )
             end)
         end)
 
         it('Copying', function()
-            local min_tsf = t.MinTrackSizingFunction.Auto()
+            local min_tsf = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(42) )
 
             local copy = min_tsf:copy()
 
             expect( copy ).to.exist()
+            expect( copy:is_Fixed() ).to.be( true )
+            expect( copy:get_value() ).to.be( t.LengthPercentage.Length(42) )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local equal1 = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() ) == t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+                local equal2 = t.MinTrackSizingFunction.MinContent() == t.MinTrackSizingFunction.MinContent()
+                local equal3 = t.MinTrackSizingFunction.MaxContent() == t.MinTrackSizingFunction.MaxContent()
+                local equal4 = t.MinTrackSizingFunction.Auto() == t.MinTrackSizingFunction.Auto()
+
+                local not_equal1 = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ) ~= t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(20) )
+                local not_equal2 = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(10) ) ~= t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(20) )
+                local not_equal3 = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Length(10) ) ~= t.MinTrackSizingFunction.Fixed( t.LengthPercentage.Percent(10) )
+                local not_equal4 = t.MinTrackSizingFunction.MinContent() ~= t.MinTrackSizingFunction.MaxContent()
+                local not_equal5 = t.MinTrackSizingFunction.MinContent() ~= t.MinTrackSizingFunction.Auto()
+                local not_equal6 = t.MinTrackSizingFunction.MaxContent() ~= t.MinTrackSizingFunction.Auto()
+                local not_equal7 = t.MinTrackSizingFunction.MinContent() ~= t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+                local not_equal8 = t.MinTrackSizingFunction.MaxContent() ~= t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+                local not_equal9 = t.MinTrackSizingFunction.Auto() ~= t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+
+                expect( equal1 ).to.be( true )
+                expect( equal2 ).to.be( true )
+                expect( equal3 ).to.be( true )
+                expect( equal4 ).to.be( true )
+
+                expect( not_equal1 ).to.be( true )
+                expect( not_equal2 ).to.be( true )
+                expect( not_equal3 ).to.be( true )
+                expect( not_equal4 ).to.be( true )
+                expect( not_equal5 ).to.be( true )
+                expect( not_equal6 ).to.be( true )
+                expect( not_equal7 ).to.be( true )
+                expect( not_equal8 ).to.be( true )
+                expect( not_equal9 ).to.be( true )
+            end)
+        end)
+
+        it('Type checking', function()
+            local min_tsf1 = t.MinTrackSizingFunction.Fixed( t.LengthPercentage.ZERO() )
+
+            expect( min_tsf1:is_Fixed()      ).to.be( true )
+            expect( min_tsf1:is_MinContent() ).to.be( false )
+            expect( min_tsf1:is_MaxContent() ).to.be( false )
+            expect( min_tsf1:is_Auto()       ).to.be( false )
+
+            local min_tsf2 = t.MinTrackSizingFunction.MinContent()
+
+            expect( min_tsf2:is_Fixed()      ).to.be( false )
+            expect( min_tsf2:is_MinContent() ).to.be( true )
+            expect( min_tsf2:is_MaxContent() ).to.be( false )
+            expect( min_tsf2:is_Auto()       ).to.be( false )
+
+            local min_tsf3 = t.MinTrackSizingFunction.MaxContent()
+
+            expect( min_tsf3:is_Fixed()      ).to.be( false )
+            expect( min_tsf3:is_MinContent() ).to.be( false )
+            expect( min_tsf3:is_MaxContent() ).to.be( true )
+            expect( min_tsf3:is_Auto()       ).to.be( false )
+
+            local min_tsf4 = t.MinTrackSizingFunction.Auto()
+
+            expect( min_tsf4:is_Fixed()      ).to.be( false )
+            expect( min_tsf4:is_MinContent() ).to.be( false )
+            expect( min_tsf4:is_MaxContent() ).to.be( false )
+            expect( min_tsf4:is_Auto()       ).to.be( true )
         end)
     end) -- MinTrackSizingFunction
 
