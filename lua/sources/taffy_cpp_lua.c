@@ -3757,6 +3757,7 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
 
     taffy_NonRepeatedTrackSizingFunction** funcs = NULL;
     size_t funcs_count = 0;
+
     {
         if( lua_type(L, 2) == LUA_TTABLE )
         {
@@ -3771,11 +3772,11 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
 
                 /* Iterate table */
                 lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
-                while( lua_next(L, 1) != 0 )
+                while( lua_next(L, 2) != 0 )
                 {
                     /* uses 'key' (at index -2) and 'value' (at index -1) */
                     /* const int value_type = lua_type(L, -1); */
-                    /* const int key_type   = lua_type(L, -2);*/
+                    /* const int key_type   = lua_type(L, -2); */
 
                     /*
                         NOTE: here (for simplicity) we dont care about 'key'
@@ -3783,11 +3784,14 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
                         dictionary, anything, BUT its 'values' must be only
                         'taffy_NonRepeatedTrackSizingFunction' type.
                     */
-                    /* pop 'value' from tha stack*/
                     taffy_NonRepeatedTrackSizingFunction** value_value = (taffy_NonRepeatedTrackSizingFunction**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
 
                     funcs[index] = *value_value;
+
                     index += 1;
+
+                    /* pop 'value' from the stack*/
+                    lua_pop(L, 1);
                 }
                 lua_pop(L, 1); /* pop 'key' from the stack */
             }
@@ -3864,6 +3868,144 @@ static int lua_taffy_TrackSizingFunction_eq(lua_State* L)
     lua_pushboolean(L, is_equal);
 
     return 1; /* number of results */
+}
+
+static int lua_taffy_TrackSizingFunction_is_Single(lua_State* L)
+{
+    taffy_TrackSizingFunction** object = (taffy_TrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+    const int is_Single = taffy_TrackSizingFunction_is_Single(*object);
+
+    lua_pushboolean(L, is_Single);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_TrackSizingFunction_is_Repeat(lua_State* L)
+{
+    taffy_TrackSizingFunction** object = (taffy_TrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+    const int is_Repeat = taffy_TrackSizingFunction_is_Repeat(*object);
+
+    lua_pushboolean(L, is_Repeat);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_TrackSizingFunction_get_single_func(lua_State* L)
+{
+    taffy_TrackSizingFunction** object = (taffy_TrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+    if( taffy_TrackSizingFunction_is_Single(*object) )
+    {
+        const taffy_NonRepeatedTrackSizingFunction* single_func = taffy_TrackSizingFunction_get_single_func(*object);
+        if(single_func != NULL)
+        {
+            taffy_NonRepeatedTrackSizingFunction* copy = taffy_NonRepeatedTrackSizingFunction_new_copy(single_func);
+            if(copy != NULL)
+            {
+                taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+                *user_data = copy;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+                return 1; /* number of results */
+            }
+            else
+            {
+                return luaL_error(L, "Failed to copy taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_copy() failed");
+            }
+        }
+        else
+        {
+            return luaL_error(L, "Failed to get taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_get_single_func() failed");
+        }
+    }
+    else /* !Single */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_TrackSizingFunction_get_repetition(lua_State* L)
+{
+    taffy_TrackSizingFunction** object = (taffy_TrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+    if( taffy_TrackSizingFunction_is_Repeat(*object) )
+    {
+        const taffy_GridTrackRepetition* repetition = taffy_TrackSizingFunction_get_repetition(*object);
+        if(repetition != NULL)
+        {
+            taffy_GridTrackRepetition* copy = taffy_GridTrackRepetition_new_copy(repetition);
+            if(copy != NULL)
+            {
+                taffy_GridTrackRepetition** user_data = (taffy_GridTrackRepetition**)lua_newuserdata(L, sizeof(taffy_GridTrackRepetition*));
+                *user_data = copy;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+
+                return 1; /* number of results */
+            }
+            else
+            {
+                return luaL_error(L, "Failed to copy taffy_GridTrackRepetition : taffy_GridTrackRepetition_new_copy() failed");
+            }
+        }
+        else
+        {
+            return luaL_error(L, "Failed to get taffy_GridTrackRepetition : taffy_NonRepeatedTrackSizingFunction_get_repetition() failed");
+        }
+    }
+    else /* !Repeat */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_TrackSizingFunction_get_repeat_funcs(lua_State* L)
+{
+    taffy_TrackSizingFunction** object = (taffy_TrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+    if( taffy_TrackSizingFunction_is_Repeat(*object) )
+    {
+        taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction repeat_funcs = taffy_TrackSizingFunction_get_repeat_funcs(*object);
+
+        lua_newtable(L);
+        {
+            size_t i = 0;
+            for(i = 0; i < repeat_funcs.items_count; ++i)
+            {
+                const taffy_NonRepeatedTrackSizingFunction* func = repeat_funcs.items[i];
+
+                taffy_NonRepeatedTrackSizingFunction* copy = taffy_NonRepeatedTrackSizingFunction_new_copy(func);
+                if(copy != NULL)
+                {
+                    taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+                    *user_data = copy;
+
+                     luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+                    /* set: table['key'] = 'value' */
+                    lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
+                }
+            }
+        }
+
+        taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete(&repeat_funcs);
+
+        return 1; /* number of results */
+
+    }
+    else /* !Repeat */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
 }
 
 static int lua_taffy_TrackSizingFunction_AUTO(lua_State *L)
@@ -4794,6 +4936,21 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_TrackSizingFunction_copy);
                 lua_setfield(L, -2, "copy");
+
+                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_is_Single);
+                lua_setfield(L, -2, "is_Single");
+
+                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_is_Repeat);
+                lua_setfield(L, -2, "is_Repeat");
+
+                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_single_func);
+                lua_setfield(L, -2, "get_single_func");
+
+                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_repetition);
+                lua_setfield(L, -2, "get_repetition");
+
+                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_repeat_funcs);
+                lua_setfield(L, -2, "get_repeat_funcs");
 
                 lua_pushcfunction(L, lua_taffy_TrackSizingFunction_AUTO);
                 lua_setfield(L, -2, "AUTO");

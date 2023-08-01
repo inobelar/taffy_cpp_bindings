@@ -1574,11 +1574,64 @@ describe('taffy_cpp lua binding', function()
     describe('TrackSizingFunction', function()
         describe('Constructors', function()
             it('Single', function()
+                local tsf = t.TrackSizingFunction.Single(
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    )
+                )
 
+                expect( tsf ).to.exist()
+                expect( tsf:get_single_func() ).to.be(
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    )
+                )
             end)
 
             it('Repeat', function()
+                local tsf = t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.ZERO(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.from_length(42),
+                            t.MaxTrackSizingFunction.from_percent(42)
+                        )
+                    }
+                )
 
+                expect( tsf ).to.exist()
+                expect( tsf:get_repetition() ).to.be(
+                    t.GridTrackRepetition.AutoFill()
+                )
+
+                -- NOTE: `.to.equal()` instead of `.to.be()` to not compare
+                -- table pointers, but only compare tables content
+                expect( tsf:get_repeat_funcs() ).to.equal(
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.ZERO(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.from_length(42),
+                            t.MaxTrackSizingFunction.from_percent(42)
+                        )
+                    }
+                )
             end)
 
             it('Named constructors', function()
