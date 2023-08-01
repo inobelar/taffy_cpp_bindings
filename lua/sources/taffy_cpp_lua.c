@@ -3989,7 +3989,7 @@ static int lua_taffy_TrackSizingFunction_get_repeat_funcs(lua_State* L)
 
                      luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
 
-                    /* set: table['key'] = 'value' */
+                    /* set: table[index] = 'value' */
                     lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
                 }
             }
