@@ -402,7 +402,7 @@ extern "C" {
         taffy_GridTrackRepetition* taffy_GridTrackRepetition_new_Count(uint16_t value);
 
         /* copy constructor */
-        taffy_GridTrackRepetition* taffy_GridTrackRepetition_new_copy(taffy_GridTrackRepetition* other);
+        taffy_GridTrackRepetition* taffy_GridTrackRepetition_new_copy(const taffy_GridTrackRepetition* other);
 
         /* destructor */
         void taffy_GridTrackRepetition_delete(taffy_GridTrackRepetition* self);
@@ -541,6 +541,15 @@ extern "C" {
 
         /* TrackSizingFunction ---------------------------------------------- */
 
+            /* GridTrackVec<NonRepeatedTrackSizingFunction> ----------------- */
+
+            typedef struct {
+                const taffy_NonRepeatedTrackSizingFunction** items;
+                size_t items_count;
+            } taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction;
+
+            void taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete(taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction* self);
+
         typedef struct taffy_TrackSizingFunction taffy_TrackSizingFunction;
 
         /* constructors */
@@ -567,10 +576,12 @@ extern "C" {
 
         /* getters */
         /* call only if 'is_Single()' is 'true' */
-        taffy_NonRepeatedTrackSizingFunction* taffy_TrackSizingFunction_get_new_single_func(const taffy_TrackSizingFunction* self);
+        const taffy_NonRepeatedTrackSizingFunction* taffy_TrackSizingFunction_get_single_func(const taffy_TrackSizingFunction* self);
         /* call only if 'is_Repeat()' is 'true' */
-        taffy_GridTrackRepetition* taffy_TrackSizingFunction_get_new_repetition(const taffy_TrackSizingFunction* self);
-        // TODO: repeat_funcs() here
+        const taffy_GridTrackRepetition* taffy_TrackSizingFunction_get_repetition(const taffy_TrackSizingFunction* self);
+        /* call only if 'is_Repeat()' is 'true' */
+        /* Dont forget to call 'taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete()' after use */
+        taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_TrackSizingFunction_get_repeat_funcs(const taffy_TrackSizingFunction* self);
         /* ---------------------------------------------- */
 
         /* extras */
@@ -883,13 +894,6 @@ extern "C" {
                 size_t items_count;
             } taffy_GridTrackVec_of_TrackSizingFunction;
 
-            /* GridTrackVec<NonRepeatedTrackSizingFunction> ----------------- */
-
-            typedef struct {
-                const taffy_NonRepeatedTrackSizingFunction* items;
-                size_t items_count;
-            } taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction;
-
     typedef struct taffy_Style taffy_Style;
 
     /* constructors */
@@ -972,8 +976,10 @@ extern "C" {
 
         taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_columns(const taffy_Style* self);
 
+        /* Dont forget to call 'taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete()' after use */
         taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_rows(const taffy_Style* self);
 
+        /* Dont forget to call 'taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete()' after use */
         taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_columns(const taffy_Style* self);
 
         taffy_GridAutoFlow taffy_Style_get_grid_auto_flow(const taffy_Style* self);

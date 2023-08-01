@@ -1132,7 +1132,7 @@ taffy_GridTrackRepetition* taffy_GridTrackRepetition_new_Count(uint16_t value)
     return reinterpret_cast<taffy_GridTrackRepetition*>( new taffy::GridTrackRepetition{ taffy::GridTrackRepetition::Count(value) } );
 }
 
-taffy_GridTrackRepetition* taffy_GridTrackRepetition_new_copy(taffy_GridTrackRepetition* other)
+taffy_GridTrackRepetition* taffy_GridTrackRepetition_new_copy(const taffy_GridTrackRepetition* other)
 {
     ASSERT_NOT_NULL(other);
 
@@ -1634,6 +1634,20 @@ taffy_MaxTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_mut_max(t
 }
 
 // -----------------------------------------------------------------------------
+// GridTrackVec<NonRepeatedTrackSizingFunction>
+
+void taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete(taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction* self)
+{
+    if(self->items != nullptr)
+    {
+        delete [] self->items;
+        self->items = nullptr;
+    }
+
+    self->items_count = 0;
+}
+
+// -----------------------------------------------------------------------------
 // TrackSizingFunction
 
 taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Single(const taffy_NonRepeatedTrackSizingFunction* value)
@@ -1708,6 +1722,64 @@ int taffy_TrackSizingFunction_neq(const taffy_TrackSizingFunction* lhs, const ta
     const taffy::TrackSizingFunction* _rhs = reinterpret_cast<const taffy::TrackSizingFunction*>(rhs);
 
     return (*_lhs != *_rhs) ? 1 : 0;
+}
+
+int taffy_TrackSizingFunction_is_Single(const taffy_TrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::TrackSizingFunction* _self = reinterpret_cast<const taffy::TrackSizingFunction*>(self);
+    return (_self->type() == taffy::TrackSizingFunction::Type::Single) ? 1 : 0;
+}
+
+int taffy_TrackSizingFunction_is_Repeat(const taffy_TrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::TrackSizingFunction* _self = reinterpret_cast<const taffy::TrackSizingFunction*>(self);
+    return (_self->type() == taffy::TrackSizingFunction::Type::Repeat) ? 1 : 0;
+}
+
+const taffy_NonRepeatedTrackSizingFunction* taffy_TrackSizingFunction_get_single_func(const taffy_TrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::TrackSizingFunction* _self = reinterpret_cast<const taffy::TrackSizingFunction*>(self);
+
+    return reinterpret_cast<const taffy_NonRepeatedTrackSizingFunction*>( &( _self->single_func() ) );
+}
+
+const taffy_GridTrackRepetition* taffy_TrackSizingFunction_get_repetition(const taffy_TrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::TrackSizingFunction* _self = reinterpret_cast<const taffy::TrackSizingFunction*>(self);
+
+    return reinterpret_cast<const taffy_GridTrackRepetition*>( &( _self->repeat_repetition() ) );
+}
+
+taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_TrackSizingFunction_get_repeat_funcs(const taffy_TrackSizingFunction* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    const taffy::TrackSizingFunction* _self = reinterpret_cast<const taffy::TrackSizingFunction*>(self);
+
+    // -----------------------------------------------------
+
+    const size_t items_count = _self->repeat_funcs().size();
+
+    const taffy_NonRepeatedTrackSizingFunction** items = new const taffy_NonRepeatedTrackSizingFunction* [items_count];
+    for(size_t i = 0; i < items_count; ++i)
+    {
+        items[i] = reinterpret_cast<const taffy_NonRepeatedTrackSizingFunction*>( &( _self->repeat_funcs()[i] ) );
+    }
+
+    // -----------------------------------------------------
+
+    taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction result;
+    result.items       = items;
+    result.items_count = items_count;
+    return result;
 }
 
 taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_AUTO(void)
@@ -2910,11 +2982,23 @@ taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_r
 {
     ASSERT_NOT_NULL(self);
 
-    const taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction>& vec = reinterpret_cast<const taffy::Style*>(self)->grid_auto_rows;
+    const taffy::Style* _self = reinterpret_cast<const taffy::Style*>(self);
+
+    // -----------------------------------------------------
+
+    const size_t items_count = _self->grid_auto_rows.size();
+
+    const taffy_NonRepeatedTrackSizingFunction** items = new const taffy_NonRepeatedTrackSizingFunction* [items_count];
+    for(size_t i = 0; i < items_count; ++i)
+    {
+        items[i] = reinterpret_cast<const taffy_NonRepeatedTrackSizingFunction*>( &( _self->grid_auto_rows[i] ) );
+    }
+
+    // -----------------------------------------------------
 
     taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction result;
-    result.items       = reinterpret_cast<const taffy_NonRepeatedTrackSizingFunction*>( vec.data() );
-    result.items_count = vec.size();
+    result.items       = items;
+    result.items_count = items_count;
     return result;
 }
 
@@ -2922,11 +3006,23 @@ taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction taffy_Style_get_grid_auto_c
 {
     ASSERT_NOT_NULL(self);
 
-    const taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction>& vec = reinterpret_cast<const taffy::Style*>(self)->grid_auto_columns;
+    const taffy::Style* _self = reinterpret_cast<const taffy::Style*>(self);
+
+    // -----------------------------------------------------
+
+    const size_t items_count = _self->grid_auto_columns.size();
+
+    const taffy_NonRepeatedTrackSizingFunction** items = new const taffy_NonRepeatedTrackSizingFunction* [items_count];
+    for(size_t i = 0; i < items_count; ++i)
+    {
+        items[i] = reinterpret_cast<const taffy_NonRepeatedTrackSizingFunction*>( &( _self->grid_auto_columns[i] ) );
+    }
+
+    // -----------------------------------------------------
 
     taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction result;
-    result.items       = reinterpret_cast<const taffy_NonRepeatedTrackSizingFunction*>( vec.data() );
-    result.items_count = vec.size();
+    result.items       = items;
+    result.items_count = items_count;
     return result;
 }
 
