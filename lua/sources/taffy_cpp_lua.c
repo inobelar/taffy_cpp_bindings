@@ -11,6 +11,37 @@
 #include <stdlib.h> /* for: malloc(), free() */
 #include <string.h> /* for: strcmp() */
 
+/*
+    NOTES
+
+    - lua_rawseti / lua_rawgeti usage with size_t index:
+
+      Functions for setting/getting table value by index have the next
+      signature:
+
+        LUA_API void (lua_rawgeti) (lua_State *L, int idx, int n);
+        LUA_API void (lua_rawseti) (lua_State *L, int idx, int n);
+
+      As you can see, `n` argument have `int` type, so when we use it like:
+
+        size_t index = 0;
+        for(index = 0; index < items_count; ++index) {
+            ...
+            lua_rawseti(L, -2, (int)(index+1));
+        }
+
+      for very large 'index' here may be `int` truncation.
+
+      Here is answer of 'Roberto Ierusalimschy' about this behavior:
+
+        https://lua-l.lua.narkive.com/YMA6HK9B/lua-rawgeti-and-lua-rawseti-signatures
+
+        > The size of tables is already limited to 2147483647 elements. Lua
+        > internally uses 'int' to index all its arrays (except for strings/byte
+        > arrays). It is a pain to work with unsigned values (such as size_t)
+        > everywhere; ptrdiff_t has no garanties at all.
+*/
+
 /* -------------------------------------------------------------------------- */
 /* Option<float> */
 
@@ -111,6 +142,18 @@ static int lua_taffy_Option_float_delete(lua_State* L)
     taffy_Option_float_delete(*object);
 
     return 0; /* number of results */
+}
+
+static int lua_taffy_Option_float_eq(lua_State* L)
+{
+    taffy_Option_float** object_lhs = (taffy_Option_float**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_float);
+    taffy_Option_float** object_rhs = (taffy_Option_float**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Option_float);
+
+    const int is_equal = taffy_Option_float_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
 }
 
 static int lua_taffy_Option_float_is_some(lua_State* L)
@@ -252,11 +295,14 @@ static int lua_taffy_Point_of_float_new(lua_State* L)
 
                     if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
                     {
+                        lua_Number value_value = 0.0f;
+                        lua_Number key_value   = 0.0f;
+
                         lua_pushvalue(L, -2); /* copy 'key'   */
                         lua_pushvalue(L, -2); /* copy 'value' */
 
-                        const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
-                        const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
+                        value_value = lua_tonumber(L, -1); /* pop 'value' */
+                        key_value   = lua_tonumber(L, -2); /* pop 'key'   */
 
                         if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'x' */
                         {
@@ -650,11 +696,14 @@ static int lua_taffy_Size_of_float_new(lua_State* L)
 
                     if((key_type == LUA_TNUMBER) && (value_type == LUA_TNUMBER))
                     {
+                        lua_Number value_value = 0.0f;
+                        lua_Number key_value   = 0.0f;
+
                         lua_pushvalue(L, -2); /* copy 'key'   */
                         lua_pushvalue(L, -2); /* copy 'value' */
 
-                        const lua_Number value_value = lua_tonumber(L, -1); /* pop 'value' */
-                        const lua_Number key_value   = lua_tonumber(L, -2); /* pop 'key'   */
+                        value_value = lua_tonumber(L, -1); /* pop 'value' */
+                        key_value   = lua_tonumber(L, -2); /* pop 'key'   */
 
                         if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'width' */
                         {
@@ -3627,6 +3676,158 @@ static int lua_taffy_NonRepeatedTrackSizingFunction_set_max(lua_State* L)
     return 0; /* number of results */
 }
 
+static int lua_taffy_NonRepeatedTrackSizingFunction_AUTO(lua_State* L)
+{
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_AUTO();
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_AUTO() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_MIN_CONTENT(lua_State* L)
+{
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_MIN_CONTENT();
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_MIN_CONTENT() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_MAX_CONTENT(lua_State* L)
+{
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_MAX_CONTENT();
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_MAX_CONTENT() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_fit_content(lua_State* L)
+{
+    taffy_LengthPercentage** length_percentage = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_fit_content(*length_percentage);
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_fit_content() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_ZERO(lua_State* L)
+{
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_ZERO();
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_ZERO() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_from_length(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_from_length(value);
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_from_length() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_from_percent(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_from_percent(value);
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_from_percent() failed");
+    }
+}
+
+static int lua_taffy_NonRepeatedTrackSizingFunction_from_flex(lua_State* L)
+{
+    const lua_Number value = luaL_checknumber(L, 1);
+
+    taffy_NonRepeatedTrackSizingFunction* object_ptr = taffy_NonRepeatedTrackSizingFunction_new_from_flex(value);
+    if(object_ptr != NULL)
+    {
+        taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_NonRepeatedTrackSizingFunction : taffy_NonRepeatedTrackSizingFunction_new_from_flex() failed");
+    }
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 static int lua_taffy_NonRepeatedTrackSizingFunction_index(lua_State* L)
@@ -3755,20 +3956,24 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
 {
     taffy_GridTrackRepetition** repetition = (taffy_GridTrackRepetition**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridTrackRepetition);
 
-    taffy_NonRepeatedTrackSizingFunction** funcs = NULL;
-    size_t funcs_count = 0;
+    const taffy_NonRepeatedTrackSizingFunction** items = NULL;
+    size_t items_count = 0;
 
+    taffy_TrackSizingFunction* object_ptr = NULL;
+
+    /* Interpret table - extract pointers to items */
     {
         if( lua_type(L, 2) == LUA_TTABLE )
         {
             const size_t table_size = lua_rawlen(L, 2);
             if(table_size > 0)
             {
-                /* Allocate array with pointers into 'NonRepeatedTrackSizingFunction's */
-                funcs = (taffy_NonRepeatedTrackSizingFunction**)malloc(table_size * sizeof(taffy_NonRepeatedTrackSizingFunction*));
-                funcs_count = table_size;
-
                 size_t index = 0;
+
+                /* Allocate array with pointers into 'NonRepeatedTrackSizingFunction's */
+                items = (const taffy_NonRepeatedTrackSizingFunction**)malloc(table_size * sizeof(taffy_NonRepeatedTrackSizingFunction*));
+                items_count = table_size;
+
 
                 /* Iterate table */
                 lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
@@ -3786,7 +3991,7 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
                     */
                     taffy_NonRepeatedTrackSizingFunction** value_value = (taffy_NonRepeatedTrackSizingFunction**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
 
-                    funcs[index] = *value_value;
+                    items[index] = *value_value;
 
                     index += 1;
 
@@ -3802,13 +4007,13 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
         }
     }
 
-    taffy_TrackSizingFunction* object_ptr = taffy_TrackSizingFunction_new_Repeat(*repetition, funcs, funcs_count);
+    object_ptr = taffy_TrackSizingFunction_new_Repeat(*repetition, items, items_count);
 
     /* Dont forget to 'free()' memory, allocated by 'malloc()' */
-    if(funcs != NULL)
+    if(items != NULL)
     {
-        free(funcs);
-        funcs = NULL;
+        free(items);
+        items = NULL;
     }
 
 
@@ -4160,6 +4365,53 @@ static int lua_taffy_TrackSizingFunction_from_flex(lua_State *L)
     }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Display */
+
+static void lua_push_table_taffy_Display(lua_State* L)
+{
+    lua_newtable(L);
+    {
+        lua_pushnumber(L, taffy_Display_Flex      ); lua_setfield(L, -2, "Flex");
+        lua_pushnumber(L, taffy_Display_Grid      ); lua_setfield(L, -2, "Grid");
+        lua_pushnumber(L, taffy_Display_Block     ); lua_setfield(L, -2, "Block");
+        lua_pushnumber(L, taffy_Display_None      ); lua_setfield(L, -2, "None");
+
+        lua_pushnumber(L, taffy_Display_default() ); lua_setfield(L, -2, "Default");
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Overflow */
+
+static void lua_push_table_taffy_Overflow(lua_State* L)
+{
+    lua_newtable(L);
+    {
+        lua_pushnumber(L, taffy_Overflow_Visible   ); lua_setfield(L, -2, "Visible");
+        lua_pushnumber(L, taffy_Overflow_Hidden    ); lua_setfield(L, -2, "Hidden");
+        lua_pushnumber(L, taffy_Overflow_Scroll    ); lua_setfield(L, -2, "Scroll");
+
+        lua_pushnumber(L, taffy_Overflow_default() ); lua_setfield(L, -2, "Default");
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Position */
+
+static void lua_push_table_taffy_Position(lua_State* L)
+{
+    lua_newtable(L);
+    {
+        lua_pushnumber(L, taffy_Position_Relative  ); lua_setfield(L, -2, "Relative");
+        lua_pushnumber(L, taffy_Position_Absolute  ); lua_setfield(L, -2, "Absolute");
+
+        lua_pushnumber(L, taffy_Position_default() ); lua_setfield(L, -2, "Default");
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+
 /*
     Special message string, used for metatable protection (to disallow change it
     via 'setmeatable()' call). Reference: https://www.lua.org/pil/13.3.html
@@ -4218,6 +4470,9 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_Option_float_delete);
                 lua_setfield(L, -2, "__gc");
+
+                lua_pushcfunction(L, lua_taffy_Option_float_eq);
+                lua_setfield(L, -2, "__eq");
 
                 /* metatable.__metatable = "message" <-- metatable protection */
                 lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
@@ -4906,6 +5161,30 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
                 lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_set_max);
                 lua_setfield(L, -2, "set_max");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_AUTO);
+                lua_setfield(L, -2, "AUTO");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_MIN_CONTENT);
+                lua_setfield(L, -2, "MIN_CONTENT");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_MAX_CONTENT);
+                lua_setfield(L, -2, "MAX_CONTENT");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_fit_content);
+                lua_setfield(L, -2, "fit_content");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_ZERO);
+                lua_setfield(L, -2, "ZERO");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_length);
+                lua_setfield(L, -2, "from_length");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_percent);
+                lua_setfield(L, -2, "from_percent");
+
+                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_flex);
+                lua_setfield(L, -2, "from_flex");
             }
             lua_setfield(L, -2, "NonRepeatedTrackSizingFunction");
         }
@@ -4977,6 +5256,24 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
                 lua_setfield(L, -2, "from_flex");
             }
             lua_setfield(L, -2, "TrackSizingFunction");
+        }
+
+        /* Register Display (enum) */
+        {
+            lua_push_table_taffy_Display(L);
+            lua_setfield(L, -2, "Display");
+        }
+
+        /* Register Overflow (enum) */
+        {
+            lua_push_table_taffy_Overflow(L);
+            lua_setfield(L, -2, "Overflow");
+        }
+
+        /* Register Position (enum) */
+        {
+            lua_push_table_taffy_Position(L);
+            lua_setfield(L, -2, "Position");
         }
     }
 

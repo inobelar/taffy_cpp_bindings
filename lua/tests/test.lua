@@ -78,6 +78,24 @@ describe('taffy_cpp lua binding', function()
             end)
         end)
 
+        describe('Operators', function()
+            it('Comparison', function()
+                local opts_equal1 = t.Option_float.new(42) == t.Option_float.new(42)
+                local opts_equal2 = t.Option_float.new(nil) == t.Option_float.new(nil)
+                local opts_equal3 = t.Option_float.new() == t.Option_float.new(nil)
+
+                local opts_not_equal1 = t.Option_float.new(42) ~= t.Option_float.new(10)
+                local opts_not_equal2 = t.Option_float.new(42) ~= t.Option_float.new(nil)
+
+                expect( opts_equal1 ).to.be( true )
+                expect( opts_equal2 ).to.be( true )
+                expect( opts_equal3 ).to.be( true )
+
+                expect( opts_not_equal1 ).to.be( true )
+                expect( opts_not_equal2 ).to.be( true )
+            end)
+        end)
+
         it('Get/Set value', function()
            local opt = t.Option_float.new(10)
 
@@ -1475,6 +1493,48 @@ describe('taffy_cpp lua binding', function()
                 expect( nrtsf2:get_min() ).to.be( t.MinTrackSizingFunction.Auto() )
                 expect( nrtsf2:get_max() ).to.be( t.MaxTrackSizingFunction.Auto() )
             end)
+
+            it('Named constructors', function()
+                local tsf1 = t.NonRepeatedTrackSizingFunction.AUTO()
+
+                expect( tsf1:get_min() ).to.be( t.MinTrackSizingFunction.AUTO() )
+                expect( tsf1:get_max() ).to.be( t.MaxTrackSizingFunction.AUTO() )
+
+                local tsf2 = t.NonRepeatedTrackSizingFunction.MIN_CONTENT()
+
+                expect( tsf2:get_min() ).to.be( t.MinTrackSizingFunction.MIN_CONTENT() )
+                expect( tsf2:get_max() ).to.be( t.MaxTrackSizingFunction.MIN_CONTENT() )
+
+                local tsf3 = t.NonRepeatedTrackSizingFunction.MAX_CONTENT()
+
+                expect( tsf3:get_min() ).to.be( t.MinTrackSizingFunction.MAX_CONTENT() )
+                expect( tsf3:get_max() ).to.be( t.MaxTrackSizingFunction.MAX_CONTENT() )
+
+                local tsf4 = t.NonRepeatedTrackSizingFunction.fit_content( t.LengthPercentage.Length(42) )
+
+                expect( tsf4:get_min() ).to.be( t.MinTrackSizingFunction.AUTO() )
+                expect( tsf4:get_max() ).to.be( t.MaxTrackSizingFunction.FitContent(t.LengthPercentage.Length(42)) )
+
+                local tsf5 = t.NonRepeatedTrackSizingFunction.ZERO()
+
+                expect( tsf5:get_min() ).to.be( t.MinTrackSizingFunction.ZERO() )
+                expect( tsf5:get_max() ).to.be( t.MaxTrackSizingFunction.ZERO() )
+
+                local tsf6 = t.NonRepeatedTrackSizingFunction.from_length(42)
+
+                expect( tsf6:get_min() ).to.be( t.MinTrackSizingFunction.from_length(42) )
+                expect( tsf6:get_max() ).to.be( t.MaxTrackSizingFunction.from_length(42) )
+
+                local tsf7 = t.NonRepeatedTrackSizingFunction.from_percent(42)
+
+                expect( tsf7:get_min() ).to.be( t.MinTrackSizingFunction.from_percent(42) )
+                expect( tsf7:get_max() ).to.be( t.MaxTrackSizingFunction.from_percent(42) )
+
+                local tsf8 = t.NonRepeatedTrackSizingFunction.from_flex(42)
+
+                expect( tsf8:get_min() ).to.be( t.MinTrackSizingFunction.AUTO() )
+                expect( tsf8:get_max() ).to.be( t.MaxTrackSizingFunction.from_flex(42) )
+            end)
         end)
 
         it('Copying', function()
@@ -1635,23 +1695,220 @@ describe('taffy_cpp lua binding', function()
             end)
 
             it('Named constructors', function()
+                local tsf1 = t.TrackSizingFunction.AUTO()
 
+                expect( tsf1:is_Single() ).to.be( true )
+                expect( tsf1:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.AUTO() )
+
+                local tsf2 = t.TrackSizingFunction.MIN_CONTENT()
+
+                expect( tsf2:is_Single() ).to.be( true )
+                expect( tsf2:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() )
+
+                local tsf3 = t.TrackSizingFunction.MAX_CONTENT()
+
+                expect( tsf3:is_Single() ).to.be( true )
+                expect( tsf3:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() )
+
+                local tsf4 = t.TrackSizingFunction.ZERO()
+
+                expect( tsf4:is_Single() ).to.be( true )
+                expect( tsf4:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.ZERO() )
+
+                local tsf5 = t.TrackSizingFunction.fit_content( t.LengthPercentage.Length(42) )
+
+                expect( tsf5:is_Single() ).to.be( true )
+                expect( tsf5:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.fit_content(t.LengthPercentage.Length(42)) )
+
+                local tsf6 = t.TrackSizingFunction.from_length(42)
+
+                expect( tsf6:is_Single() ).to.be( true )
+                expect( tsf6:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.from_length(42) )
+
+                local tsf7 = t.TrackSizingFunction.from_percent(42)
+
+                expect( tsf7:is_Single() ).to.be( true )
+                expect( tsf7:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.from_percent(42) )
+
+                local tsf8 = t.TrackSizingFunction.from_flex(42)
+
+                expect( tsf8:is_Single() ).to.be( true )
+                expect( tsf8:get_single_func() ).to.be( t.NonRepeatedTrackSizingFunction.from_flex(42) )
             end)
         end)
 
-        describe('Copying', function()
+        it('Copying', function()
+            local tsf = t.TrackSizingFunction.Repeat(
+                t.GridTrackRepetition.AutoFill(),
+                {
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    ),
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.ZERO(),
+                        t.MaxTrackSizingFunction.Fraction(42)
+                    ),
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.from_length(42),
+                        t.MaxTrackSizingFunction.from_percent(42)
+                    )
+                }
+            )
 
+            local copy = tsf:copy()
+
+            expect( copy ).to.exist()
+            expect( copy:get_repetition() ).to.be(
+                t.GridTrackRepetition.AutoFill()
+            )
+
+            -- NOTE: `.to.equal()` instead of `.to.be()` to not compare
+            -- table pointers, but only compare tables content
+            expect( copy:get_repeat_funcs() ).to.equal(
+                {
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    ),
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.ZERO(),
+                        t.MaxTrackSizingFunction.Fraction(42)
+                    ),
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.from_length(42),
+                        t.MaxTrackSizingFunction.from_percent(42)
+                    )
+                }
+            )
         end)
 
         describe('Operators', function()
             it('Comparison', function()
+                local tsf1 = t.TrackSizingFunction.Single(
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    )
+                )
 
+                local tsf2 = t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        )
+                    }
+                )
+
+                local equal1 = tsf1 == t.TrackSizingFunction.Single(
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    )
+                )
+
+                local equal2 = tsf2 == t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        )
+                    }
+                )
+
+                local not_equal1 = tsf1 ~= t.TrackSizingFunction.Single(
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MaxContent(),
+                        t.MaxTrackSizingFunction.MinContent()
+                    )
+                )
+
+                local not_equal2 = tsf2 ~= t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFit(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        )
+                    }
+                )
+
+                local not_equal3 = tsf2 ~= t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.MinContent()
+                        )
+                    }
+                )
+
+                expect( equal1 ).to.be( true )
+                expect( equal2 ).to.be( true )
+
+                expect( not_equal1 ).to.be( true )
+                expect( not_equal2 ).to.be( true )
+                expect( not_equal3 ).to.be( true )
             end)
         end)
 
         it('Type checking', function()
+            local tsf1 = t.TrackSizingFunction.Single(
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                )
+            )
 
+            expect( tsf1:is_Single() ).to.be( true )
+            expect( tsf1:is_Repeat() ).to.be( false )
+
+            local tsf2 = t.TrackSizingFunction.Repeat(
+                t.GridTrackRepetition.AutoFill(),
+                {
+                    t.NonRepeatedTrackSizingFunction.new(
+                        t.MinTrackSizingFunction.MinContent(),
+                        t.MaxTrackSizingFunction.MaxContent()
+                    )
+                }
+            )
+
+            expect( tsf2:is_Single() ).to.be( false )
+            expect( tsf2:is_Repeat() ).to.be( true )
         end)
     end) -- TrackSizingFunction
+
+    describe('Display', function()
+        it('Values', function()
+            expect( t.Display.Flex  ).to.be(0)
+            expect( t.Display.Grid  ).to.be(1)
+            expect( t.Display.Block ).to.be(2)
+            expect( t.Display.None  ).to.be(3)
+
+            expect( t.Display.Default   ).to.be(0)
+        end)
+    end) -- Display
+
+    describe('Overflow', function()
+        it('Values', function()
+            expect( t.Overflow.Visible ).to.be(0)
+            expect( t.Overflow.Hidden  ).to.be(1)
+            expect( t.Overflow.Scroll  ).to.be(2)
+
+            expect( t.Overflow.Default ).to.be(0)
+        end)
+    end) -- Overflow
+
+    describe('Position', function()
+        it('Values', function()
+            expect( t.Position.Relative ).to.be(0)
+            expect( t.Position.Absolute ).to.be(1)
+
+            expect( t.Position.Default  ).to.be(0)
+        end)
+    end) -- Position
 
 end)
