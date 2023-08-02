@@ -51,6 +51,17 @@ void taffy_Option_float_delete(taffy_Option_float* self)
     self = nullptr;
 }
 
+int taffy_Option_float_eq(const taffy_Option_float* lhs, const taffy_Option_float* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Option<float>* _lhs = reinterpret_cast<const taffy::Option<float>*>(lhs);
+    const taffy::Option<float>* _rhs = reinterpret_cast<const taffy::Option<float>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 int taffy_Option_float_is_some(const taffy_Option_float* self)
 {
     ASSERT_NOT_NULL(self);
@@ -114,17 +125,6 @@ int taffy_Point_of_float_eq(const taffy_Point_of_float* lhs, const taffy_Point_o
     const taffy::Point<float>* _rhs = reinterpret_cast<const taffy::Point<float>*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_Point_of_float_neq(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::Point<float>* _lhs = reinterpret_cast<const taffy::Point<float>*>(lhs);
-    const taffy::Point<float>* _rhs = reinterpret_cast<const taffy::Point<float>*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 taffy_Point_of_float* taffy_Point_of_float_new_add(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs)
@@ -224,17 +224,6 @@ int taffy_Size_of_float_eq(const taffy_Size_of_float* lhs, const taffy_Size_of_f
     const taffy::Size<float>* _rhs = reinterpret_cast<const taffy::Size<float>*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_Size_of_float_neq(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::Size<float>* _lhs = reinterpret_cast<const taffy::Size<float>*>(lhs);
-    const taffy::Size<float>* _rhs = reinterpret_cast<const taffy::Size<float>*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 taffy_Size_of_float* taffy_Size_of_float_new_add(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs)
@@ -503,17 +492,6 @@ int taffy_AvailableSpace_eq(const taffy_AvailableSpace* lhs, const taffy_Availab
     return (*_lhs == *_rhs) ? 1 : 0;
 }
 
-int taffy_AvailableSpace_neq(const taffy_AvailableSpace* lhs, const taffy_AvailableSpace* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::AvailableSpace* _lhs = reinterpret_cast<const taffy::AvailableSpace*>(lhs);
-    const taffy::AvailableSpace* _rhs = reinterpret_cast<const taffy::AvailableSpace*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
-}
-
 int taffy_AvailableSpace_is_Definite(const taffy_AvailableSpace* self)
 {
     ASSERT_NOT_NULL(self);
@@ -618,17 +596,6 @@ int taffy_LengthPercentage_eq(const taffy_LengthPercentage* lhs, const taffy_Len
     return (*_lhs == *_rhs) ? 1 : 0;
 }
 
-int taffy_LengthPercentage_neq(const taffy_LengthPercentage* lhs, const taffy_LengthPercentage* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::LengthPercentage* _lhs = reinterpret_cast<const taffy::LengthPercentage*>(lhs);
-    const taffy::LengthPercentage* _rhs = reinterpret_cast<const taffy::LengthPercentage*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
-}
-
 int taffy_LengthPercentage_is_Length(const taffy_LengthPercentage* self)
 {
     ASSERT_NOT_NULL(self);
@@ -710,17 +677,6 @@ int taffy_LengthPercentageAuto_eq(const taffy_LengthPercentageAuto* lhs, const t
     const taffy::LengthPercentageAuto* _rhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_LengthPercentageAuto_neq(const taffy_LengthPercentageAuto* lhs, const taffy_LengthPercentageAuto* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::LengthPercentageAuto* _lhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(lhs);
-    const taffy::LengthPercentageAuto* _rhs = reinterpret_cast<const taffy::LengthPercentageAuto*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 int taffy_LengthPercentageAuto_is_Length(const taffy_LengthPercentageAuto* self)
@@ -825,17 +781,6 @@ int taffy_Dimension_eq(const taffy_Dimension* lhs, const taffy_Dimension* rhs)
     const taffy::Dimension* _rhs = reinterpret_cast<const taffy::Dimension*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_Dimension_neq(const taffy_Dimension* lhs, const taffy_Dimension* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::Dimension* _lhs = reinterpret_cast<const taffy::Dimension*>(lhs);
-    const taffy::Dimension* _rhs = reinterpret_cast<const taffy::Dimension*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 int taffy_Dimension_is_Length(const taffy_Dimension* self)
@@ -1050,17 +995,6 @@ int taffy_GridPlacement_eq(const taffy_GridPlacement* lhs, const taffy_GridPlace
     return (*_lhs == *_rhs) ? 1 : 0;
 }
 
-int taffy_GridPlacement_neq(const taffy_GridPlacement* lhs, const taffy_GridPlacement* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::GridPlacement* _lhs = reinterpret_cast<const taffy::GridPlacement*>(lhs);
-    const taffy::GridPlacement* _rhs = reinterpret_cast<const taffy::GridPlacement*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
-}
-
 int taffy_GridPlacement_is_Auto(const taffy_GridPlacement* self)
 {
     ASSERT_NOT_NULL(self);
@@ -1157,17 +1091,6 @@ int taffy_GridTrackRepetition_eq(const taffy_GridTrackRepetition* lhs, const taf
     const taffy::GridTrackRepetition* _rhs = reinterpret_cast<const taffy::GridTrackRepetition*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_GridTrackRepetition_neq(const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::GridTrackRepetition* _lhs = reinterpret_cast<const taffy::GridTrackRepetition*>(lhs);
-    const taffy::GridTrackRepetition* _rhs = reinterpret_cast<const taffy::GridTrackRepetition*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 int taffy_GridTrackRepetition_is_AutoFill(const taffy_GridTrackRepetition* self)
@@ -1285,17 +1208,6 @@ int taffy_MaxTrackSizingFunction_eq(const taffy_MaxTrackSizingFunction* lhs, con
     const taffy::MaxTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_MaxTrackSizingFunction_neq(const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::MaxTrackSizingFunction* _lhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(lhs);
-    const taffy::MaxTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MaxTrackSizingFunction*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 int taffy_MaxTrackSizingFunction_is_Fixed(const taffy_MaxTrackSizingFunction* self)
@@ -1455,17 +1367,6 @@ int taffy_MinTrackSizingFunction_eq(const taffy_MinTrackSizingFunction* lhs, con
     return (*_lhs == *_rhs) ? 1 : 0;
 }
 
-int taffy_MinTrackSizingFunction_neq(const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::MinTrackSizingFunction* _lhs = reinterpret_cast<const taffy::MinTrackSizingFunction*>(lhs);
-    const taffy::MinTrackSizingFunction* _rhs = reinterpret_cast<const taffy::MinTrackSizingFunction*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
-}
-
 int taffy_MinTrackSizingFunction_is_Fixed(const taffy_MinTrackSizingFunction* self)
 {
     ASSERT_NOT_NULL(self);
@@ -1576,17 +1477,6 @@ int taffy_NonRepeatedTrackSizingFunction_eq(const taffy_NonRepeatedTrackSizingFu
     return (*_lhs == *_rhs) ? 1 : 0;
 }
 
-int taffy_NonRepeatedTrackSizingFunction_neq(const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::NonRepeatedTrackSizingFunction* _lhs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(lhs);
-    const taffy::NonRepeatedTrackSizingFunction* _rhs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
-}
-
 const taffy_MinTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_min(const taffy_NonRepeatedTrackSizingFunction* self)
 {
     ASSERT_NOT_NULL(self);
@@ -1633,6 +1523,66 @@ taffy_MaxTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_mut_max(t
     return reinterpret_cast<taffy_MaxTrackSizingFunction*>( &( reinterpret_cast<taffy::NonRepeatedTrackSizingFunction*>(self)->max ) );
 }
 
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_AUTO(void)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::AUTO() }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_MIN_CONTENT(void)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::MIN_CONTENT() }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_MAX_CONTENT(void)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::MAX_CONTENT() }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_fit_content(const taffy_LengthPercentage* argument)
+{
+    ASSERT_NOT_NULL(argument);
+
+    const taffy::LengthPercentage* _argument = reinterpret_cast<const taffy::LengthPercentage*>(argument);
+
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::fit_content(*_argument) }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_ZERO(void)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::ZERO() }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_from_length(float value)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::from_length(value) }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_from_percent(float percent)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::from_percent(percent) }
+    );
+}
+
+taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_from_flex(float flex)
+{
+    return reinterpret_cast<taffy_NonRepeatedTrackSizingFunction*>(
+        new taffy::NonRepeatedTrackSizingFunction{ taffy::NonRepeatedTrackSizingFunction::from_flex(flex) }
+    );
+}
+
 // -----------------------------------------------------------------------------
 // GridTrackVec<NonRepeatedTrackSizingFunction>
 
@@ -1660,7 +1610,7 @@ taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Single(const taffy_NonR
 
 taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Repeat(
     const taffy_GridTrackRepetition* repetition,
-    taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count
+    const taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count
 )
 {
     ASSERT_NOT_NULL(repetition);
@@ -1670,7 +1620,7 @@ taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Repeat(
     }
 
     const taffy::GridTrackRepetition* _repetition = reinterpret_cast<const taffy::GridTrackRepetition*>(repetition);
-    taffy::NonRepeatedTrackSizingFunction** _funcs = reinterpret_cast<taffy::NonRepeatedTrackSizingFunction**>(funcs);
+    const taffy::NonRepeatedTrackSizingFunction** _funcs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction**>(funcs);
 
     // [taffy::NRTSF*, taffy::NRTSF*, taffy::NRTSF*, ...] -> vec<>[taffy::NRTSF, taffy::NRTSF, taffy::NRTSF, ...]
     taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction> vec; // NOTE: Entire vector copy here :/
@@ -1711,17 +1661,6 @@ int taffy_TrackSizingFunction_eq(const taffy_TrackSizingFunction* lhs, const taf
     const taffy::TrackSizingFunction* _rhs = reinterpret_cast<const taffy::TrackSizingFunction*>(rhs);
 
     return (*_lhs == *_rhs) ? 1 : 0;
-}
-
-int taffy_TrackSizingFunction_neq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs)
-{
-    ASSERT_NOT_NULL(lhs);
-    ASSERT_NOT_NULL(rhs);
-
-    const taffy::TrackSizingFunction* _lhs = reinterpret_cast<const taffy::TrackSizingFunction*>(lhs);
-    const taffy::TrackSizingFunction* _rhs = reinterpret_cast<const taffy::TrackSizingFunction*>(rhs);
-
-    return (*_lhs != *_rhs) ? 1 : 0;
 }
 
 int taffy_TrackSizingFunction_is_Single(const taffy_TrackSizingFunction* self)
@@ -1955,6 +1894,17 @@ void taffy_Point_of_Overflow_delete(taffy_Point_of_Overflow* self)
     self = nullptr;
 }
 
+int taffy_Point_of_Overflow_eq(const taffy_Point_of_Overflow* lhs, const taffy_Point_of_Overflow* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Point<taffy::Overflow>* _lhs = reinterpret_cast<const taffy::Point<taffy::Overflow>*>(lhs);
+    const taffy::Point<taffy::Overflow>* _rhs = reinterpret_cast<const taffy::Point<taffy::Overflow>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 taffy_Overflow taffy_Point_of_Overflow_get_x(const taffy_Point_of_Overflow* self)
 {
     ASSERT_NOT_NULL(self);
@@ -2022,6 +1972,17 @@ void taffy_Rect_of_LengthPercentage_delete(taffy_Rect_of_LengthPercentage* self)
 
     delete reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self);
     self = nullptr;
+}
+
+int taffy_Rect_of_LengthPercentage_eq(const taffy_Rect_of_LengthPercentage* lhs, const taffy_Rect_of_LengthPercentage* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Rect<taffy::LengthPercentage>* _lhs = reinterpret_cast<const taffy::Rect<taffy::LengthPercentage>*>(lhs);
+    const taffy::Rect<taffy::LengthPercentage>* _rhs = reinterpret_cast<const taffy::Rect<taffy::LengthPercentage>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
 }
 
 const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_left(const taffy_Rect_of_LengthPercentage* self)
@@ -2157,6 +2118,17 @@ void taffy_Rect_of_LengthPercentageAuto_delete(taffy_Rect_of_LengthPercentageAut
     self = nullptr;
 }
 
+int taffy_Rect_of_LengthPercentageAuto_eq(const taffy_Rect_of_LengthPercentageAuto* lhs, const taffy_Rect_of_LengthPercentageAuto* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Rect<taffy::LengthPercentageAuto>* _lhs = reinterpret_cast<const taffy::Rect<taffy::LengthPercentageAuto>*>(lhs);
+    const taffy::Rect<taffy::LengthPercentageAuto>* _rhs = reinterpret_cast<const taffy::Rect<taffy::LengthPercentageAuto>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_left(const taffy_Rect_of_LengthPercentageAuto* self)
 {
     ASSERT_NOT_NULL(self);
@@ -2281,6 +2253,17 @@ void taffy_Size_of_LengthPercentage_delete(taffy_Size_of_LengthPercentage* self)
     self = nullptr;
 }
 
+int taffy_Size_of_LengthPercentage_eq(const taffy_Size_of_LengthPercentage* lhs, const taffy_Size_of_LengthPercentage* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Size<taffy::LengthPercentage>* _lhs = reinterpret_cast<const taffy::Size<taffy::LengthPercentage>*>(lhs);
+    const taffy::Size<taffy::LengthPercentage>* _rhs = reinterpret_cast<const taffy::Size<taffy::LengthPercentage>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 const taffy_LengthPercentage* taffy_Size_of_LengthPercentage_get_width (const taffy_Size_of_LengthPercentage* self)
 {
     ASSERT_NOT_NULL(self);
@@ -2357,6 +2340,17 @@ void taffy_Size_of_Dimension_delete(taffy_Size_of_Dimension* self)
 
     delete reinterpret_cast<taffy::Size<taffy::Dimension>*>(self);
     self = nullptr;
+}
+
+int taffy_Size_of_Dimension_eq(const taffy_Size_of_Dimension* lhs, const taffy_Size_of_Dimension* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Size<taffy::Dimension>* _lhs = reinterpret_cast<const taffy::Size<taffy::Dimension>*>(lhs);
+    const taffy::Size<taffy::Dimension>* _rhs = reinterpret_cast<const taffy::Size<taffy::Dimension>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
 }
 
 const taffy_Dimension* taffy_Size_of_Dimension_get_width (const taffy_Size_of_Dimension* self)
@@ -2442,6 +2436,17 @@ void taffy_Line_of_GridPlacement_delete(taffy_Line_of_GridPlacement* self)
 
     delete reinterpret_cast<taffy::Line<taffy::GridPlacement>*>(self);
     self = nullptr;
+}
+
+int taffy_Line_of_GridPlacement_eq(const taffy_Line_of_GridPlacement* lhs, const taffy_Line_of_GridPlacement* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Line<taffy::GridPlacement>* _lhs = reinterpret_cast<const taffy::Line<taffy::GridPlacement>*>(lhs);
+    const taffy::Line<taffy::GridPlacement>* _rhs = reinterpret_cast<const taffy::Line<taffy::GridPlacement>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
 }
 
 const taffy_GridPlacement* taffy_Line_of_GridPlacement_get_start(const taffy_Line_of_GridPlacement* self)
@@ -2531,6 +2536,17 @@ void taffy_Option_AlignContent_delete(taffy_Option_AlignContent* self)
     self = nullptr;
 }
 
+int taffy_Option_AlignContent_eq(const taffy_Option_AlignContent* lhs, const taffy_Option_AlignContent* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Option<taffy::AlignContent>* _lhs = reinterpret_cast<const taffy::Option<taffy::AlignContent>*>(lhs);
+    const taffy::Option<taffy::AlignContent>* _rhs = reinterpret_cast<const taffy::Option<taffy::AlignContent>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 int taffy_Option_AlignContent_is_some(const taffy_Option_AlignContent* self)
 {
     ASSERT_NOT_NULL(self);
@@ -2595,6 +2611,17 @@ void taffy_Option_JustifyContent_delete(taffy_Option_JustifyContent* self)
 
     delete reinterpret_cast<taffy::Option<taffy::JustifyContent>*>(self);
     self = nullptr;
+}
+
+int taffy_Option_JustifyContent_eq(const taffy_Option_JustifyContent* lhs, const taffy_Option_JustifyContent* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Option<taffy::JustifyContent>* _lhs = reinterpret_cast<const taffy::Option<taffy::JustifyContent>*>(lhs);
+    const taffy::Option<taffy::JustifyContent>* _rhs = reinterpret_cast<const taffy::Option<taffy::JustifyContent>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
 }
 
 int taffy_Option_JustifyContent_is_some(const taffy_Option_JustifyContent* self)
@@ -2663,6 +2690,17 @@ void taffy_Option_AlignItems_delete(taffy_Option_AlignItems* self)
     self = nullptr;
 }
 
+int taffy_Option_AlignItems_eq(const taffy_Option_AlignItems* lhs, const taffy_Option_AlignItems* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Option<taffy::AlignItems>* _lhs = reinterpret_cast<const taffy::Option<taffy::AlignItems>*>(lhs);
+    const taffy::Option<taffy::AlignItems>* _rhs = reinterpret_cast<const taffy::Option<taffy::AlignItems>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 int taffy_Option_AlignItems_is_some(const taffy_Option_AlignItems* self)
 {
     ASSERT_NOT_NULL(self);
@@ -2729,6 +2767,17 @@ void taffy_Option_AlignSelf_delete(taffy_Option_AlignSelf* self)
     self = nullptr;
 }
 
+int taffy_Option_AlignSelf_eq(const taffy_Option_AlignSelf* lhs, const taffy_Option_AlignSelf* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Option<taffy::AlignSelf>* _lhs = reinterpret_cast<const taffy::Option<taffy::AlignSelf>*>(lhs);
+    const taffy::Option<taffy::AlignSelf>* _rhs = reinterpret_cast<const taffy::Option<taffy::AlignSelf>*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 int taffy_Option_AlignSelf_is_some(const taffy_Option_AlignSelf* self)
 {
     ASSERT_NOT_NULL(self);
@@ -2752,6 +2801,20 @@ void taffy_Option_AlignSelf_set_value(taffy_Option_AlignSelf* self, const taffy_
         taffy::Option<taffy::AlignSelf>{} // None
     :
         taffy::Option<taffy::AlignSelf>{ taffy_AlignSelf_to_cpp(*value) }; // Some
+}
+
+// -----------------------------------------------------------------------------
+// GridTrackVec<TrackSizingFunction>
+
+void taffy_GridTrackVec_of_TrackSizingFunction_delete(taffy_GridTrackVec_of_TrackSizingFunction* self)
+{
+    if(self->items != nullptr)
+    {
+        delete [] self->items;
+        self->items = nullptr;
+    }
+
+    self->items_count = 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -2958,11 +3021,23 @@ taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_rows(con
 {
     ASSERT_NOT_NULL(self);
 
-    const taffy::GridTrackVec<taffy::TrackSizingFunction>& vec = reinterpret_cast<const taffy::Style*>(self)->grid_template_rows;
+    const taffy::Style* _self = reinterpret_cast<const taffy::Style*>(self);
+
+    // -----------------------------------------------------
+
+    const size_t items_count = _self->grid_template_rows.size();
+
+    const taffy_TrackSizingFunction** items = new const taffy_TrackSizingFunction* [items_count];
+    for(size_t i = 0; i < items_count; ++i)
+    {
+        items[i] = reinterpret_cast<const taffy_TrackSizingFunction*>( &( _self->grid_template_rows[i] ) );
+    }
+
+    // -----------------------------------------------------
 
     taffy_GridTrackVec_of_TrackSizingFunction result;
-    result.items       = reinterpret_cast<const taffy_TrackSizingFunction*>( vec.data() );
-    result.items_count = vec.size();
+    result.items       = items;
+    result.items_count = items_count;
     return result;
 }
 
@@ -2970,11 +3045,23 @@ taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_columns(
 {
     ASSERT_NOT_NULL(self);
 
-    const taffy::GridTrackVec<taffy::TrackSizingFunction>& vec = reinterpret_cast<const taffy::Style*>(self)->grid_template_columns;
+    const taffy::Style* _self = reinterpret_cast<const taffy::Style*>(self);
+
+    // -----------------------------------------------------
+
+    const size_t items_count = _self->grid_template_columns.size();
+
+    const taffy_TrackSizingFunction** items = new const taffy_TrackSizingFunction* [items_count];
+    for(size_t i = 0; i < items_count; ++i)
+    {
+        items[i] = reinterpret_cast<const taffy_TrackSizingFunction*>( &( _self->grid_template_columns[i] ) );
+    }
+
+    // -----------------------------------------------------
 
     taffy_GridTrackVec_of_TrackSizingFunction result;
-    result.items       = reinterpret_cast<const taffy_TrackSizingFunction*>( vec.data() );
-    result.items_count = vec.size();
+    result.items       = items;
+    result.items_count = items_count;
     return result;
 }
 
@@ -3252,52 +3339,80 @@ void taffy_Style_set_flex_shrink(taffy_Style* self, float value)
     reinterpret_cast<taffy::Style*>(self)->flex_shrink = value;
 }
 
-void taffy_Style_set_grid_template_rows(taffy_Style* self, const taffy_TrackSizingFunction* funcs, size_t funcs_count)
+void taffy_Style_set_grid_template_rows(taffy_Style* self, const taffy_TrackSizingFunction** funcs, size_t funcs_count)
 {
     ASSERT_NOT_NULL(self);
     if(funcs_count > 0) {
         ASSERT_NOT_NULL(funcs);
     }
 
-    const taffy::TrackSizingFunction* _funcs = reinterpret_cast<const taffy::TrackSizingFunction*>(funcs);
-    reinterpret_cast<taffy::Style*>(self)->grid_template_rows =
-        taffy::GridTrackVec<taffy::TrackSizingFunction>{_funcs, _funcs + funcs_count}; // NOTE: Entire vector copy :/
+    const taffy::TrackSizingFunction** _funcs = reinterpret_cast<const taffy::TrackSizingFunction**>(funcs);
+
+    // [taffy::TSF*, taffy::TSF*, taffy::TSF*, ...] -> vec<>[taffy::TSF, taffy::TSF, taffy::TSF, ...]
+    taffy::GridTrackVec<taffy::TrackSizingFunction> vec; // NOTE: Entire vector copy here :/
+    for(size_t i = 0; i < funcs_count; ++i)
+    {
+        vec.push_back( *(_funcs[i]) );
+    }
+
+    reinterpret_cast<taffy::Style*>(self)->grid_template_rows = vec;
 }
 
-void taffy_Style_set_grid_template_columns(taffy_Style* self, const taffy_TrackSizingFunction* funcs, size_t funcs_count)
+void taffy_Style_set_grid_template_columns(taffy_Style* self, const taffy_TrackSizingFunction** funcs, size_t funcs_count)
 {
     ASSERT_NOT_NULL(self);
     if(funcs_count > 0) {
         ASSERT_NOT_NULL(funcs);
     }
 
-    const taffy::TrackSizingFunction* _funcs = reinterpret_cast<const taffy::TrackSizingFunction*>(funcs);
-    reinterpret_cast<taffy::Style*>(self)->grid_template_columns =
-        taffy::GridTrackVec<taffy::TrackSizingFunction>{_funcs, _funcs + funcs_count}; // NOTE: Entire vector copy :/
+    const taffy::TrackSizingFunction** _funcs = reinterpret_cast<const taffy::TrackSizingFunction**>(funcs);
+
+    // [taffy::TSF*, taffy::TSF*, taffy::TSF*, ...] -> vec<>[taffy::TSF, taffy::TSF, taffy::TSF, ...]
+    taffy::GridTrackVec<taffy::TrackSizingFunction> vec; // NOTE: Entire vector copy here :/
+    for(size_t i = 0; i < funcs_count; ++i)
+    {
+        vec.push_back( *(_funcs[i]) );
+    }
+
+    reinterpret_cast<taffy::Style*>(self)->grid_template_columns = vec;
 }
 
-void taffy_Style_set_grid_auto_rows(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction* funcs, size_t funcs_count)
+void taffy_Style_set_grid_auto_rows(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count)
 {
     ASSERT_NOT_NULL(self);
     if(funcs_count > 0) {
         ASSERT_NOT_NULL(funcs);
     }
 
-    const taffy::NonRepeatedTrackSizingFunction* _funcs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(funcs);
-    reinterpret_cast<taffy::Style*>(self)->grid_auto_rows =
-        taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction>{_funcs, _funcs + funcs_count}; // NOTE: Entire vector copy :/
+    const taffy::NonRepeatedTrackSizingFunction** _funcs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction**>(funcs);
+
+    // [taffy::NRTSF*, taffy::NRTSF*, taffy::NRTSF*, ...] -> vec<>[taffy::NRTSF, taffy::NRTSF, taffy::NRTSF, ...]
+    taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction> vec; // NOTE: Entire vector copy here :/
+    for(size_t i = 0; i < funcs_count; ++i)
+    {
+        vec.push_back( *(_funcs[i]) );
+    }
+
+    reinterpret_cast<taffy::Style*>(self)->grid_auto_rows = vec;
 }
 
-void taffy_Style_set_grid_auto_columns(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction* funcs, size_t funcs_count)
+void taffy_Style_set_grid_auto_columns(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count)
 {
     ASSERT_NOT_NULL(self);
     if(funcs_count > 0) {
         ASSERT_NOT_NULL(funcs);
     }
 
-    const taffy::NonRepeatedTrackSizingFunction* _funcs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction*>(funcs);
-    reinterpret_cast<taffy::Style*>(self)->grid_auto_columns =
-        taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction>{_funcs, _funcs + funcs_count}; // NOTE: Entire vector copy :/
+    const taffy::NonRepeatedTrackSizingFunction** _funcs = reinterpret_cast<const taffy::NonRepeatedTrackSizingFunction**>(funcs);
+
+    // [taffy::NRTSF*, taffy::NRTSF*, taffy::NRTSF*, ...] -> vec<>[taffy::NRTSF, taffy::NRTSF, taffy::NRTSF, ...]
+    taffy::GridTrackVec<taffy::NonRepeatedTrackSizingFunction> vec; // NOTE: Entire vector copy here :/
+    for(size_t i = 0; i < funcs_count; ++i)
+    {
+        vec.push_back( *(_funcs[i]) );
+    }
+
+    reinterpret_cast<taffy::Style*>(self)->grid_auto_columns = vec;
 }
 
 void taffy_Style_set_grid_auto_flow(taffy_Style* self, taffy_GridAutoFlow value)

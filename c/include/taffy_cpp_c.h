@@ -40,6 +40,9 @@ extern "C" {
         /* destructor */
         void taffy_Option_float_delete(taffy_Option_float* self);
 
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_Option_float_eq(const taffy_Option_float* lhs, const taffy_Option_float* rhs);
+
         /* getters */
         /* bool */ int taffy_Option_float_is_some(const taffy_Option_float* self);
 
@@ -67,9 +70,8 @@ extern "C" {
         /* destructor */
         void taffy_Point_of_float_delete(taffy_Point_of_float* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_Point_of_float_eq (const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs);
-        /* bool */ int taffy_Point_of_float_neq(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_Point_of_float_eq(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs);
 
         /* arithmetic operators */
         taffy_Point_of_float* taffy_Point_of_float_new_add(const taffy_Point_of_float* lhs, const taffy_Point_of_float* rhs);
@@ -105,9 +107,8 @@ extern "C" {
         /* destructor */
         void taffy_Size_of_float_delete(taffy_Size_of_float* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_Size_of_float_eq (const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs);
-        /* bool */ int taffy_Size_of_float_neq(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_Size_of_float_eq(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs);
 
         /* arithmetic operators */
         taffy_Size_of_float* taffy_Size_of_float_new_add(const taffy_Size_of_float* lhs, const taffy_Size_of_float* rhs);
@@ -199,9 +200,8 @@ extern "C" {
         /* destructor */
         void taffy_AvailableSpace_delete(taffy_AvailableSpace* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_AvailableSpace_eq (const taffy_AvailableSpace* lhs, const taffy_AvailableSpace* rhs);
-        /* bool */ int taffy_AvailableSpace_neq(const taffy_AvailableSpace* lhs, const taffy_AvailableSpace* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_AvailableSpace_eq(const taffy_AvailableSpace* lhs, const taffy_AvailableSpace* rhs);
 
         /* type checking */
         /* bool */ int taffy_AvailableSpace_is_Definite  (const taffy_AvailableSpace* self);
@@ -234,9 +234,8 @@ extern "C" {
         /* destructor */
         void taffy_LengthPercentage_delete(taffy_LengthPercentage* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_LengthPercentage_eq (const taffy_LengthPercentage* lhs, const taffy_LengthPercentage* rhs);
-        /* bool */ int taffy_LengthPercentage_neq(const taffy_LengthPercentage* lhs, const taffy_LengthPercentage* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_LengthPercentage_eq(const taffy_LengthPercentage* lhs, const taffy_LengthPercentage* rhs);
 
         /* type checking */
         /* bool */ int taffy_LengthPercentage_is_Length (const taffy_LengthPercentage* self);
@@ -265,9 +264,8 @@ extern "C" {
         /* destructor */
         void taffy_LengthPercentageAuto_delete(taffy_LengthPercentageAuto* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_LengthPercentageAuto_eq (const taffy_LengthPercentageAuto* lhs, const taffy_LengthPercentageAuto* rhs);
-        /* bool */ int taffy_LengthPercentageAuto_neq(const taffy_LengthPercentageAuto* lhs, const taffy_LengthPercentageAuto* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_LengthPercentageAuto_eq(const taffy_LengthPercentageAuto* lhs, const taffy_LengthPercentageAuto* rhs);
 
         /* type checking */
         /* bool */ int taffy_LengthPercentageAuto_is_Length (const taffy_LengthPercentageAuto* self);
@@ -300,9 +298,8 @@ extern "C" {
         /* destructor */
         void taffy_Dimension_delete(taffy_Dimension* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_Dimension_eq (const taffy_Dimension* lhs, const taffy_Dimension* rhs);
-        /* bool */ int taffy_Dimension_neq(const taffy_Dimension* lhs, const taffy_Dimension* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_Dimension_eq(const taffy_Dimension* lhs, const taffy_Dimension* rhs);
 
         /* type checking */
         /* bool */ int taffy_Dimension_is_Length (const taffy_Dimension* self);
@@ -372,9 +369,8 @@ extern "C" {
         /* destructor */
         void taffy_GridPlacement_delete(taffy_GridPlacement* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_GridPlacement_eq (const taffy_GridPlacement* lhs, const taffy_GridPlacement* rhs);
-        /* bool */ int taffy_GridPlacement_neq(const taffy_GridPlacement* lhs, const taffy_GridPlacement* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_GridPlacement_eq(const taffy_GridPlacement* lhs, const taffy_GridPlacement* rhs);
 
         /* type checking */
         /* bool */ int taffy_GridPlacement_is_Auto(const taffy_GridPlacement* self);
@@ -407,9 +403,8 @@ extern "C" {
         /* destructor */
         void taffy_GridTrackRepetition_delete(taffy_GridTrackRepetition* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_GridTrackRepetition_eq (const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs);
-        /* bool */ int taffy_GridTrackRepetition_neq(const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_GridTrackRepetition_eq(const taffy_GridTrackRepetition* lhs, const taffy_GridTrackRepetition* rhs);
 
         /* type checking */
         /* bool */ int taffy_GridTrackRepetition_is_AutoFill(const taffy_GridTrackRepetition* self);
@@ -442,9 +437,8 @@ extern "C" {
         /* destructor */
         void taffy_MaxTrackSizingFunction_delete(taffy_MaxTrackSizingFunction* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_MaxTrackSizingFunction_eq (const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs);
-        /* bool */ int taffy_MaxTrackSizingFunction_neq(const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_MaxTrackSizingFunction_eq(const taffy_MaxTrackSizingFunction* lhs, const taffy_MaxTrackSizingFunction* rhs);
 
         /* type checking */
         /* bool */ int taffy_MaxTrackSizingFunction_is_Fixed     (const taffy_MaxTrackSizingFunction* self);
@@ -487,9 +481,8 @@ extern "C" {
         /* destructors */
         void taffy_MinTrackSizingFunction_delete(taffy_MinTrackSizingFunction* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_MinTrackSizingFunction_eq (const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs);
-        /* bool */ int taffy_MinTrackSizingFunction_neq(const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_MinTrackSizingFunction_eq(const taffy_MinTrackSizingFunction* lhs, const taffy_MinTrackSizingFunction* rhs);
 
         /* type checking */
         /* bool */ int taffy_MinTrackSizingFunction_is_Fixed     (const taffy_MinTrackSizingFunction* self);
@@ -523,9 +516,8 @@ extern "C" {
         /* destructor */
         void taffy_NonRepeatedTrackSizingFunction_delete(taffy_NonRepeatedTrackSizingFunction* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_NonRepeatedTrackSizingFunction_eq (const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs);
-        /* bool */ int taffy_NonRepeatedTrackSizingFunction_neq(const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_NonRepeatedTrackSizingFunction_eq(const taffy_NonRepeatedTrackSizingFunction* lhs, const taffy_NonRepeatedTrackSizingFunction* rhs);
 
         /* getters */
         const taffy_MinTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_min(const taffy_NonRepeatedTrackSizingFunction* self);
@@ -538,6 +530,16 @@ extern "C" {
         /* mutators */
         taffy_MinTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_mut_min(taffy_NonRepeatedTrackSizingFunction* self);
         taffy_MaxTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_get_mut_max(taffy_NonRepeatedTrackSizingFunction* self);
+
+        /* extras */
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_AUTO(void);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_MIN_CONTENT(void);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_MAX_CONTENT(void);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_fit_content(const taffy_LengthPercentage* argument);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_ZERO(void);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_from_length(float value);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_from_percent(float percent);
+        taffy_NonRepeatedTrackSizingFunction* taffy_NonRepeatedTrackSizingFunction_new_from_flex(float flex);
 
         /* TrackSizingFunction ---------------------------------------------- */
 
@@ -556,7 +558,7 @@ extern "C" {
         taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Single(const taffy_NonRepeatedTrackSizingFunction* value);
         taffy_TrackSizingFunction* taffy_TrackSizingFunction_new_Repeat(
             const taffy_GridTrackRepetition* repetition,
-            taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count
+            const taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count
         );
 
         /* copy constructor */
@@ -565,9 +567,8 @@ extern "C" {
         /* destructor */
         void taffy_TrackSizingFunction_delete(taffy_TrackSizingFunction* self);
 
-        /* comparison operators */
-        /* bool */ int taffy_TrackSizingFunction_eq (const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
-        /* bool */ int taffy_TrackSizingFunction_neq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
+        /* comparison operator (is equal) */
+        /* bool */ int taffy_TrackSizingFunction_eq(const taffy_TrackSizingFunction* lhs, const taffy_TrackSizingFunction* rhs);
 
         /* ---------------------------------------------- */
         /* type checking */
@@ -643,6 +644,9 @@ extern "C" {
             /* destructor */
             void taffy_Point_of_Overflow_delete(taffy_Point_of_Overflow* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Point_of_Overflow_eq(const taffy_Point_of_Overflow* lhs, const taffy_Point_of_Overflow* rhs);
+
             /* getters */
             taffy_Overflow taffy_Point_of_Overflow_get_x(const taffy_Point_of_Overflow* self);
             taffy_Overflow taffy_Point_of_Overflow_get_y(const taffy_Point_of_Overflow* self);
@@ -651,7 +655,12 @@ extern "C" {
             void taffy_Point_of_Overflow_set_x(taffy_Point_of_Overflow* self, taffy_Overflow x);
             void taffy_Point_of_Overflow_set_y(taffy_Point_of_Overflow* self, taffy_Overflow y);
 
-            /* Rect<LengthPercentage> ----------------------------------- */
+            /* NOTE:
+                Unfortunately mutators not supported here due to enum C <--> C++
+                conversion.
+            */
+
+            /* Rect<LengthPercentage> --------------------------------------- */
 
             typedef struct taffy_Rect_of_LengthPercentage taffy_Rect_of_LengthPercentage;
 
@@ -668,6 +677,9 @@ extern "C" {
 
             /* destructor */
             void taffy_Rect_of_LengthPercentage_delete(taffy_Rect_of_LengthPercentage* self);
+
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Rect_of_LengthPercentage_eq(const taffy_Rect_of_LengthPercentage* lhs, const taffy_Rect_of_LengthPercentage* rhs);
 
             /* getters */
             const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_left  (const taffy_Rect_of_LengthPercentage* self);
@@ -705,6 +717,9 @@ extern "C" {
             /* destructor */
             void taffy_Rect_of_LengthPercentageAuto_delete(taffy_Rect_of_LengthPercentageAuto* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Rect_of_LengthPercentageAuto_eq(const taffy_Rect_of_LengthPercentageAuto* lhs, const taffy_Rect_of_LengthPercentageAuto* rhs);
+
             /* getters */
             const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_left  (const taffy_Rect_of_LengthPercentageAuto* self);
             const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_top   (const taffy_Rect_of_LengthPercentageAuto* self);
@@ -736,6 +751,9 @@ extern "C" {
             /* destructor */
             void taffy_Size_of_LengthPercentage_delete(taffy_Size_of_LengthPercentage* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Size_of_LengthPercentage_eq(const taffy_Size_of_LengthPercentage* lhs, const taffy_Size_of_LengthPercentage* rhs);
+
             /* getters */
             const taffy_LengthPercentage* taffy_Size_of_LengthPercentage_get_width (const taffy_Size_of_LengthPercentage* self);
             const taffy_LengthPercentage* taffy_Size_of_LengthPercentage_get_height(const taffy_Size_of_LengthPercentage* self);
@@ -760,6 +778,9 @@ extern "C" {
 
             /* destructor */
             void taffy_Size_of_Dimension_delete(taffy_Size_of_Dimension* self);
+
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Size_of_Dimension_eq(const taffy_Size_of_Dimension* lhs, const taffy_Size_of_Dimension* rhs);
 
             /* getters */
             const taffy_Dimension* taffy_Size_of_Dimension_get_width (const taffy_Size_of_Dimension* self);
@@ -786,6 +807,9 @@ extern "C" {
 
             /* destructor */
             void taffy_Line_of_GridPlacement_delete(taffy_Line_of_GridPlacement* self);
+
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Line_of_GridPlacement_eq(const taffy_Line_of_GridPlacement* lhs, const taffy_Line_of_GridPlacement* rhs);
 
             /* getters */
             const taffy_GridPlacement* taffy_Line_of_GridPlacement_get_start(const taffy_Line_of_GridPlacement* self);
@@ -814,8 +838,13 @@ extern "C" {
             /* destructor */
             void taffy_Option_AlignContent_delete(taffy_Option_AlignContent* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Option_AlignContent_eq(const taffy_Option_AlignContent* lhs, const taffy_Option_AlignContent* rhs);
+
             /* getters */
             /* bool */ int taffy_Option_AlignContent_is_some(const taffy_Option_AlignContent* self);
+
+            /* call only if 'is_some()' is 'true' */
             taffy_AlignContent taffy_Option_AlignContent_get_value(const taffy_Option_AlignContent* self);
 
             /* setters */
@@ -836,8 +865,13 @@ extern "C" {
             /* destructor */
             void taffy_Option_JustifyContent_delete(taffy_Option_JustifyContent* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Option_JustifyContent_eq(const taffy_Option_JustifyContent* lhs, const taffy_Option_JustifyContent* rhs);
+
             /* getters */
             /* bool */ int taffy_Option_JustifyContent_is_some(const taffy_Option_JustifyContent* self);
+
+            /* call only if 'is_some()' is 'true' */
             taffy_JustifyContent taffy_Option_JustifyContent_get_value(const taffy_Option_JustifyContent* self);
 
             /* setters */
@@ -858,8 +892,13 @@ extern "C" {
             /* destructor */
             void taffy_Option_AlignItems_delete(taffy_Option_AlignItems* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Option_AlignItems_eq(const taffy_Option_AlignItems* lhs, const taffy_Option_AlignItems* rhs);
+
             /* getters */
             /* bool */ int taffy_Option_AlignItems_is_some(const taffy_Option_AlignItems* self);
+
+            /* call only if 'is_some()' is 'true' */
             taffy_AlignItems taffy_Option_AlignItems_get_value(const taffy_Option_AlignItems* self);
 
             /* setters */
@@ -880,8 +919,13 @@ extern "C" {
             /* destructor */
             void taffy_Option_AlignSelf_delete(taffy_Option_AlignSelf* self);
 
+            /* comparison operator (is equal) */
+            /* bool */ int taffy_Option_AlignSelf_eq(const taffy_Option_AlignSelf* lhs, const taffy_Option_AlignSelf* rhs);
+
             /* getters */
             /* bool */ int taffy_Option_AlignSelf_is_some(const taffy_Option_AlignSelf* self);
+
+            /* call only if 'is_some()' is 'true' */
             taffy_AlignSelf taffy_Option_AlignSelf_get_value(const taffy_Option_AlignSelf* self);
 
             /* setters */
@@ -890,9 +934,11 @@ extern "C" {
             /* GridTrackVec<TrackSizingFunction> ---------------------------- */
 
             typedef struct {
-                const taffy_TrackSizingFunction* items;
+                const taffy_TrackSizingFunction** items;
                 size_t items_count;
             } taffy_GridTrackVec_of_TrackSizingFunction;
+
+            void taffy_GridTrackVec_of_TrackSizingFunction_delete(taffy_GridTrackVec_of_TrackSizingFunction* self);
 
     typedef struct taffy_Style taffy_Style;
 
@@ -972,8 +1018,10 @@ extern "C" {
 
         /* Grid container properies ----------------------------------------- */
 
+        /* Dont forget to call 'taffy_GridTrackVec_of_TrackSizingFunction_delete()' after use */
         taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_rows(const taffy_Style* self);
 
+        /* Dont forget to call 'taffy_GridTrackVec_of_TrackSizingFunction_delete()' after use */
         taffy_GridTrackVec_of_TrackSizingFunction taffy_Style_get_grid_template_columns(const taffy_Style* self);
 
         /* Dont forget to call 'taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete()' after use */
@@ -1054,13 +1102,13 @@ extern "C" {
 
         /* Grid container properies ----------------------------------------- */
 
-        void taffy_Style_set_grid_template_rows(taffy_Style* self, const taffy_TrackSizingFunction* funcs, size_t funcs_count);
+        void taffy_Style_set_grid_template_rows(taffy_Style* self, const taffy_TrackSizingFunction** funcs, size_t funcs_count);
 
-        void taffy_Style_set_grid_template_columns(taffy_Style* self, const taffy_TrackSizingFunction* funcs, size_t funcs_count);
+        void taffy_Style_set_grid_template_columns(taffy_Style* self, const taffy_TrackSizingFunction** funcs, size_t funcs_count);
 
-        void taffy_Style_set_grid_auto_rows(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction* funcs, size_t funcs_count);
+        void taffy_Style_set_grid_auto_rows(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count);
 
-        void taffy_Style_set_grid_auto_columns(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction* funcs, size_t funcs_count);
+        void taffy_Style_set_grid_auto_columns(taffy_Style* self, const taffy_NonRepeatedTrackSizingFunction** funcs, size_t funcs_count);
 
         void taffy_Style_set_grid_auto_flow(taffy_Style* self, taffy_GridAutoFlow value);
 
