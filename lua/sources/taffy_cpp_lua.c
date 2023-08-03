@@ -43,9 +43,41 @@
 */
 
 /* -------------------------------------------------------------------------- */
+/*
+    Special message string, used for metatable protection (to disallow change it
+    via 'setmeatable()' call). Reference: https://www.lua.org/pil/13.3.html
+
+    ----------------------------------------------------------------------------
+
+    NOTE: instead of string, assigned as:
+
+        Lua:
+            metatable.__metatable = "message"
+        Lua C API:
+            lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+            lua_setfield(L, -2, "__metatable");
+
+    for optimization, we can assign 'boolean' value. For example:
+
+        Lua:
+            metatable.__metatable = false
+        Lua C API:
+            lua_pushboolean(L, 0);
+            lua_setfield(L, -2, "__metatable");
+
+    But its good to show 'explicit message' for users, that not familiar with
+    such Lua tricks, instead some silent 'false' magic :)
+
+    ----------------------------------------------------------------------------
+
+    TODO: is 'metatable protection' must be used for enums?
+*/
+static const char LUA_METATABLE_PROTECTION_MESSAGE[] = "protected metatable";
+
+/* -------------------------------------------------------------------------- */
 /* Option<float> */
 
-#define LUA_META_OBJECT_taffy_Option_float "taffy_Option_float_mt"
+static const char LUA_META_OBJECT_taffy_Option_float[] = "taffy_Option_float_mt";
 
 static int lua_taffy_Option_float_new(lua_State* L)
 {
@@ -216,10 +248,45 @@ static int lua_taffy_Option_float_set_value(lua_State* L)
     return luaL_error(L, "Failed to set_value taffy_Option_float : incorrect argument type");
 }
 
+static void lua_push_table_taffy_Option_float(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_float);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_new);
+        lua_setfield(L, -2, "new");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_is_some);
+        lua_setfield(L, -2, "is_some");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_Option_float_set_value);
+        lua_setfield(L, -2, "set_value");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* Point<float> */
 
-#define LUA_META_OBJECT_taffy_Point_of_float "taffy_Point_of_float_mt"
+static const char LUA_META_OBJECT_taffy_Point_of_float[] = "taffy_Point_of_float_mt";
 
 static int lua_taffy_Point_of_float_new(lua_State* L)
 {
@@ -638,10 +705,58 @@ static int lua_taffy_Point_of_float_newindex(lua_State* L)
     return luaL_error(L, "taffy_Point_of_float 'newindex' failed"); /* TODO: better message*/
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_Point_of_float(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
+    {
+        lua_pushcfunction(L, lua_taffy_Point_of_float_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_eq);
+        lua_setfield(L, -2, "__eq");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_add);
+        lua_setfield(L, -2, "__add");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_new);
+        lua_setfield(L, -2, "new");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_get_x);
+        lua_setfield(L, -2, "get_x");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_get_y);
+        lua_setfield(L, -2, "get_y");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_set_x);
+        lua_setfield(L, -2, "set_x");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_set_y);
+        lua_setfield(L, -2, "set_y");
+
+        lua_pushcfunction(L, lua_taffy_Point_of_float_ZERO);
+        lua_setfield(L, -2, "ZERO");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* Size<float> */
 
-#define LUA_META_OBJECT_taffy_Size_of_float "taffy_Size_of_float_mt"
+static const char LUA_META_OBJECT_taffy_Size_of_float[] = "taffy_Size_of_float_mt";
 
 static int lua_taffy_Size_of_float_new(lua_State* L)
 {
@@ -1061,8 +1176,59 @@ static int lua_taffy_Size_of_float_newindex(lua_State* L)
     return luaL_error(L, "taffy_Size_of_float 'newindex' failed"); /* TODO: better message*/
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_Size_of_float(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
+    {
+        lua_pushcfunction(L, lua_taffy_Size_of_float_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_eq);
+        lua_setfield(L, -2, "__eq");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_add);
+        lua_setfield(L, -2, "__add");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_sub);
+        lua_setfield(L, -2, "__sub");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_new);
+        lua_setfield(L, -2, "new");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_get_width);
+        lua_setfield(L, -2, "get_width");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_get_height);
+        lua_setfield(L, -2, "get_height");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_set_width);
+        lua_setfield(L, -2, "set_width");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_set_height);
+        lua_setfield(L, -2, "set_height");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_float_ZERO);
+        lua_setfield(L, -2, "ZERO");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
-/* AlignContent */
+/* AlignContent (enum) */
 
 static void lua_push_table_taffy_AlignContent(lua_State* L)
 {
@@ -1089,7 +1255,7 @@ static void lua_push_table_taffy_AlignContent(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* JustifyContent (same as AlignContent) */
+/* JustifyContent (enum) (same as AlignContent) */
 
 static void lua_push_table_taffy_JustifyContent(lua_State* L)
 {
@@ -1108,7 +1274,7 @@ static void lua_push_table_taffy_JustifyContent(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* AlignItems */
+/* AlignItems (enum) */
 
 static void lua_push_table_taffy_AlignItems(lua_State* L)
 {
@@ -1125,7 +1291,7 @@ static void lua_push_table_taffy_AlignItems(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* AlignSelf (same as AlignItems) */
+/* AlignSelf (enum) (same as AlignItems) */
 
 static void lua_push_table_taffy_AlignSelf(lua_State* L)
 {
@@ -1144,7 +1310,7 @@ static void lua_push_table_taffy_AlignSelf(lua_State* L)
 /* -------------------------------------------------------------------------- */
 /* AvailableSpace */
 
-#define LUA_META_OBJECT_taffy_AvailableSpace "taffy_AvailableSpace_mt"
+static const char LUA_META_OBJECT_taffy_AvailableSpace[] = "taffy_AvailableSpace_mt";
 
 static int lua_taffy_AvailableSpace_Definite(lua_State* L)
 {
@@ -1421,10 +1587,69 @@ static int lua_taffy_AvailableSpace_from(lua_State* L)
     return luaL_error(L, "Failed to call 'from' of taffy_AvailableSpace : incorrect argument type");
 }
 
+static void lua_push_table_taffy_AvailableSpace(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_Definite);
+        lua_setfield(L, -2, "Definite");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_MinContent);
+        lua_setfield(L, -2, "MinContent");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_MaxContent);
+        lua_setfield(L, -2, "MaxContent");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_is_Definite);
+        lua_setfield(L, -2, "is_Definite");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_is_MinContent);
+        lua_setfield(L, -2, "is_MinContent");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_is_MaxContent);
+        lua_setfield(L, -2, "is_MaxContent");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_MIN_CONTENT);
+        lua_setfield(L, -2, "MIN_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_MAX_CONTENT);
+        lua_setfield(L, -2, "MAX_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_AvailableSpace_from);
+        lua_setfield(L, -2, "from");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* LengthPercentage */
 
-#define LUA_META_OBJECT_taffy_LengthPercentage "taffy_LengthPercentage_mt"
+static const char LUA_META_OBJECT_taffy_LengthPercentage[] = "taffy_LengthPercentage_mt";
 
 static int lua_taffy_LengthPercentage_Length(lua_State* L)
 {
@@ -1600,10 +1825,57 @@ static int lua_taffy_LengthPercentage_from_percent(lua_State* L)
     }
 }
 
+static void lua_push_table_taffy_LengthPercentage(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_Length);
+        lua_setfield(L, -2, "Length");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_Percent);
+        lua_setfield(L, -2, "Percent");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_is_Length);
+        lua_setfield(L, -2, "is_Length");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_is_Percent);
+        lua_setfield(L, -2, "is_Percent");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentage_from_percent);
+        lua_setfield(L, -2, "from_percent");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* LengthPercentageAuto */
 
-#define LUA_META_OBJECT_taffy_LengthPercentageAuto "taffy_LengthPercentageAuto_mt"
+static const char LUA_META_OBJECT_taffy_LengthPercentageAuto[] = "taffy_LengthPercentageAuto_mt";
 
 static int lua_taffy_LengthPercentageAuto_Length(lua_State* L)
 {
@@ -1839,10 +2111,66 @@ static int lua_taffy_LengthPercentageAuto_from(lua_State* L)
     }
 }
 
+static void lua_push_table_taffy_LengthPercentageAuto(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Length);
+        lua_setfield(L, -2, "Length");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Percent);
+        lua_setfield(L, -2, "Percent");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Auto);
+        lua_setfield(L, -2, "Auto");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Length);
+        lua_setfield(L, -2, "is_Length");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Percent);
+        lua_setfield(L, -2, "is_Percent");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Auto);
+        lua_setfield(L, -2, "is_Auto");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from_percent);
+        lua_setfield(L, -2, "from_percent");
+
+        lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from);
+        lua_setfield(L, -2, "from");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* Dimension */
 
-#define LUA_META_OBJECT_taffy_Dimension "taffy_Dimension_mt"
+static const char LUA_META_OBJECT_taffy_Dimension[] = "taffy_Dimension_mt";
 
 static int lua_taffy_Dimension_Length(lua_State* L)
 {
@@ -2107,8 +2435,64 @@ static int lua_taffy_Dimension_from(lua_State* L)
     return luaL_error(L, "Failed to create taffy_Dimension : 'from()' failed - invalid argument");
 }
 
+static void lua_push_table_taffy_Dimension(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_Length);
+        lua_setfield(L, -2, "Length");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_Percent);
+        lua_setfield(L, -2, "Percent");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_Auto);
+        lua_setfield(L, -2, "Auto");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_is_Length);
+        lua_setfield(L, -2, "is_Length");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_is_Percent);
+        lua_setfield(L, -2, "is_Percent");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_is_Auto);
+        lua_setfield(L, -2, "is_Auto");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_from_percent);
+        lua_setfield(L, -2, "from_percent");
+
+        lua_pushcfunction(L, lua_taffy_Dimension_from);
+        lua_setfield(L, -2, "from");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
-/* FlexDirection */
+/* FlexDirection (enum) */
 
 static void lua_push_table_taffy_FlexDirection(lua_State* L)
 {
@@ -2124,7 +2508,7 @@ static void lua_push_table_taffy_FlexDirection(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* FlexWrap */
+/* FlexWrap (enum) */
 
 static void lua_push_table_taffy_FlexWrap(lua_State* L)
 {
@@ -2139,7 +2523,7 @@ static void lua_push_table_taffy_FlexWrap(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* GridAutoFlow */
+/* GridAutoFlow (enum) */
 
 static void lua_push_table_taffy_GridAutoFlow(lua_State* L)
 {
@@ -2157,7 +2541,7 @@ static void lua_push_table_taffy_GridAutoFlow(lua_State* L)
 /* -------------------------------------------------------------------------- */
 /* GridPlacement */
 
-#define LUA_META_OBJECT_taffy_GridPlacement "taffy_GridPlacement_mt"
+static const char LUA_META_OBJECT_taffy_GridPlacement[] = "taffy_GridPlacement_mt";
 
 static int lua_taffy_GridPlacement_new(lua_State* L)
 {
@@ -2417,10 +2801,69 @@ static int lua_taffy_GridPlacement_from_span(lua_State* L)
     }
 }
 
+static void lua_push_table_taffy_GridPlacement(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_GridPlacement);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_new);
+        lua_setfield(L, -2, "new");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_Auto);
+        lua_setfield(L, -2, "Auto");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_Line);
+        lua_setfield(L, -2, "Line");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_Span);
+        lua_setfield(L, -2, "Span");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_is_Auto);
+        lua_setfield(L, -2, "is_Auto");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_is_Line);
+        lua_setfield(L, -2, "is_Line");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_is_Span);
+        lua_setfield(L, -2, "is_Span");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_get_line);
+        lua_setfield(L, -2, "get_line");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_get_span);
+        lua_setfield(L, -2, "get_span");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_AUTO);
+        lua_setfield(L, -2, "AUTO");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_from_line_index);
+        lua_setfield(L, -2, "from_line_index");
+
+        lua_pushcfunction(L, lua_taffy_GridPlacement_from_span);
+        lua_setfield(L, -2, "from_span");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* GridTrackRepetition */
 
-#define LUA_META_OBJECT_taffy_GridTrackRepetition "taffy_GridTrackRepetition_mt"
+static const char LUA_META_OBJECT_taffy_GridTrackRepetition[] = "taffy_GridTrackRepetition_mt";
 
 static int lua_taffy_GridTrackRepetition_AutoFill(lua_State* L)
 {
@@ -2631,10 +3074,57 @@ static int lua_taffy_GridTrackRepetition_try_from(lua_State* L)
     return luaL_error(L, "Failed to create taffy_GridTrackRepetition : invalid argument type");
 }
 
+static void lua_push_table_taffy_GridTrackRepetition(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFill);
+        lua_setfield(L, -2, "AutoFill");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFit);
+        lua_setfield(L, -2, "AutoFit");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_Count);
+        lua_setfield(L, -2, "Count");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_is_AutoFill);
+        lua_setfield(L, -2, "is_AutoFill");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_is_AutoFit);
+        lua_setfield(L, -2, "is_AutoFit");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_is_Count);
+        lua_setfield(L, -2, "is_Count");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_GridTrackRepetition_try_from);
+        lua_setfield(L, -2, "try_from");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* MaxTrackSizingFunction */
 
-#define LUA_META_OBJECT_taffy_MaxTrackSizingFunction "taffy_MaxTrackSizingFunction_mt"
+static const char LUA_META_OBJECT_taffy_MaxTrackSizingFunction[] = "taffy_MaxTrackSizingFunction_mt";
 
 static int lua_taffy_MaxTrackSizingFunction_Fixed(lua_State* L)
 {
@@ -3061,10 +3551,99 @@ static int lua_taffy_MaxTrackSizingFunction_from_flex(lua_State* L)
     }
 }
 
+static void lua_push_table_taffy_MaxTrackSizingFunction(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Fixed);
+        lua_setfield(L, -2, "Fixed");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MinContent);
+        lua_setfield(L, -2, "MinContent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MaxContent);
+        lua_setfield(L, -2, "MaxContent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_FitContent);
+        lua_setfield(L, -2, "FitContent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Auto);
+        lua_setfield(L, -2, "Auto");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Fraction);
+        lua_setfield(L, -2, "Fraction");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Fixed);
+        lua_setfield(L, -2, "is_Fixed");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_MinContent);
+        lua_setfield(L, -2, "is_MinContent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_MaxContent);
+        lua_setfield(L, -2, "is_MaxContent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_FitContent);
+        lua_setfield(L, -2, "is_FitContent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Auto);
+        lua_setfield(L, -2, "is_Auto");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Fraction);
+        lua_setfield(L, -2, "is_Fraction");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_get_length_percentage);
+        lua_setfield(L, -2, "get_length_percentage");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_get_fraction);
+        lua_setfield(L, -2, "get_fraction");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_AUTO);
+        lua_setfield(L, -2, "AUTO");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MIN_CONTENT);
+        lua_setfield(L, -2, "MIN_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MAX_CONTENT);
+        lua_setfield(L, -2, "MAX_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_fit_content);
+        lua_setfield(L, -2, "fit_content");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_from_percent);
+        lua_setfield(L, -2, "from_percent");
+
+        lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_from_flex);
+        lua_setfield(L, -2, "from_flex");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* MinTrackSizingFunction */
 
-#define LUA_META_OBJECT_taffy_MinTrackSizingFunction "taffy_MinTrackSizingFunction_mt"
+static const char LUA_META_OBJECT_taffy_MinTrackSizingFunction[] = "taffy_MinTrackSizingFunction_mt";
 
 static int lua_taffy_MinTrackSizingFunction_Fixed(lua_State* L)
 {
@@ -3368,10 +3947,78 @@ static int lua_taffy_MinTrackSizingFunction_from_percent(lua_State* L)
     }
 }
 
+static void lua_push_table_taffy_MinTrackSizingFunction(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_MinTrackSizingFunction);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_Fixed);
+        lua_setfield(L, -2, "Fixed");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MinContent);
+        lua_setfield(L, -2, "MinContent");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MaxContent);
+        lua_setfield(L, -2, "MaxContent");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_Auto);
+        lua_setfield(L, -2, "Auto");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_Fixed);
+        lua_setfield(L, -2, "is_Fixed");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_MinContent);
+        lua_setfield(L, -2, "is_MinContent");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_MaxContent);
+        lua_setfield(L, -2, "is_MaxContent");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_Auto);
+        lua_setfield(L, -2, "is_Auto");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_AUTO);
+        lua_setfield(L, -2, "AUTO");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MIN_CONTENT);
+        lua_setfield(L, -2, "MIN_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MAX_CONTENT);
+        lua_setfield(L, -2, "MAX_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_from_percent);
+        lua_setfield(L, -2, "from_percent");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* NonRepeatedTrackSizingFunction */
 
-#define LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction "taffy_NonRepeatedTrackSizingFunction_mt"
+static const char LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction[] = "taffy_NonRepeatedTrackSizingFunction_mt";
 
 static int lua_taffy_NonRepeatedTrackSizingFunction_new(lua_State* L)
 {
@@ -3927,10 +4574,76 @@ static int lua_taffy_NonRepeatedTrackSizingFunction_newindex(lua_State* L)
     return luaL_error(L, "taffy_NonRepeatedTrackSizingFunction 'newindex' failed"); /* TODO: better message*/
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_NonRepeatedTrackSizingFunction(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+    {
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_new);
+        lua_setfield(L, -2, "new");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_get_min);
+        lua_setfield(L, -2, "get_min");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_get_max);
+        lua_setfield(L, -2, "get_max");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_set_min);
+        lua_setfield(L, -2, "set_min");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_set_max);
+        lua_setfield(L, -2, "set_max");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_AUTO);
+        lua_setfield(L, -2, "AUTO");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_MIN_CONTENT);
+        lua_setfield(L, -2, "MIN_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_MAX_CONTENT);
+        lua_setfield(L, -2, "MAX_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_fit_content);
+        lua_setfield(L, -2, "fit_content");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_percent);
+        lua_setfield(L, -2, "from_percent");
+
+        lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_flex);
+        lua_setfield(L, -2, "from_flex");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /* TrackSizingFunction */
 
-#define LUA_META_OBJECT_taffy_TrackSizingFunction "taffy_TrackSizingFunction_mt"
+static const char LUA_META_OBJECT_taffy_TrackSizingFunction[] = "taffy_TrackSizingFunction_mt";
 
 static int lua_taffy_TrackSizingFunction_Single(lua_State *L)
 {
@@ -4365,8 +5078,76 @@ static int lua_taffy_TrackSizingFunction_from_flex(lua_State *L)
     }
 }
 
+static void lua_push_table_taffy_TrackSizingFunction(lua_State* L)
+{
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_TrackSizingFunction);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_Single);
+        lua_setfield(L, -2, "Single");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_Repeat);
+        lua_setfield(L, -2, "Repeat");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_is_Single);
+        lua_setfield(L, -2, "is_Single");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_is_Repeat);
+        lua_setfield(L, -2, "is_Repeat");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_single_func);
+        lua_setfield(L, -2, "get_single_func");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_repetition);
+        lua_setfield(L, -2, "get_repetition");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_repeat_funcs);
+        lua_setfield(L, -2, "get_repeat_funcs");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_AUTO);
+        lua_setfield(L, -2, "AUTO");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_MIN_CONTENT);
+        lua_setfield(L, -2, "MIN_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_MAX_CONTENT);
+        lua_setfield(L, -2, "MAX_CONTENT");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_ZERO);
+        lua_setfield(L, -2, "ZERO");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_fit_content);
+        lua_setfield(L, -2, "fit_content");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_from_length);
+        lua_setfield(L, -2, "from_length");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_from_percent);
+        lua_setfield(L, -2, "from_percent");
+
+        lua_pushcfunction(L, lua_taffy_TrackSizingFunction_from_flex);
+        lua_setfield(L, -2, "from_flex");
+    }
+}
+
 /* -------------------------------------------------------------------------- */
-/* Display */
+/* Display (enum) */
 
 static void lua_push_table_taffy_Display(lua_State* L)
 {
@@ -4382,7 +5163,7 @@ static void lua_push_table_taffy_Display(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* Overflow */
+/* Overflow (enum) */
 
 static void lua_push_table_taffy_Overflow(lua_State* L)
 {
@@ -4397,7 +5178,7 @@ static void lua_push_table_taffy_Overflow(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
-/* Position */
+/* Position (enum) */
 
 static void lua_push_table_taffy_Position(lua_State* L)
 {
@@ -4412,36 +5193,6 @@ static void lua_push_table_taffy_Position(lua_State* L)
 
 /* -------------------------------------------------------------------------- */
 
-/*
-    Special message string, used for metatable protection (to disallow change it
-    via 'setmeatable()' call). Reference: https://www.lua.org/pil/13.3.html
-
-    ----------------------------------------------------------------------------
-
-    NOTE: instead of string, assigned as:
-
-        Lua:
-            metatable.__metatable = "message"
-        Lua C API:
-            lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-            lua_setfield(L, -2, "__metatable");
-
-    for optimization, we can assign 'boolean' value. For example:
-
-        Lua:
-            metatable.__metatable = false
-        Lua C API:
-            lua_pushboolean(L, 0);
-            lua_setfield(L, -2, "__metatable");
-
-    But its good to show 'explicit message' for users, that not familiar with
-    such Lua tricks, instead some silent 'false' magic :)
-
-    ----------------------------------------------------------------------------
-
-    TODO: is 'metatable protection' must be used for enums?
-*/
-static const char LUA_METATABLE_PROTECTION_MESSAGE[] = "protected metatable";
 
 /* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
@@ -4462,134 +5213,19 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
     {
         /* Register Option<float> */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_float);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_new);
-                lua_setfield(L, -2, "new");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_is_some);
-                lua_setfield(L, -2, "is_some");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_Option_float_set_value);
-                lua_setfield(L, -2, "set_value");
-            }
+            lua_push_table_taffy_Option_float(L);
             lua_setfield(L, -2, "Option_float");
         }
 
         /* Register Point<float> */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_Point_of_float);
-            {
-                lua_pushcfunction(L, lua_taffy_Point_of_float_index);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_newindex);
-                lua_setfield(L, -2, "__newindex");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_eq);
-                lua_setfield(L, -2, "__eq");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_add);
-                lua_setfield(L, -2, "__add");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_new);
-                lua_setfield(L, -2, "new");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_get_x);
-                lua_setfield(L, -2, "get_x");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_get_y);
-                lua_setfield(L, -2, "get_y");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_set_x);
-                lua_setfield(L, -2, "set_x");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_set_y);
-                lua_setfield(L, -2, "set_y");
-
-                lua_pushcfunction(L, lua_taffy_Point_of_float_ZERO);
-                lua_setfield(L, -2, "ZERO");
-            }
+            lua_push_table_taffy_Point_of_float(L);
             lua_setfield(L, -2, "Point_of_float");
         }
 
         /* Register Size<float> */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_Size_of_float);
-            {
-                lua_pushcfunction(L, lua_taffy_Size_of_float_index);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_newindex);
-                lua_setfield(L, -2, "__newindex");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_eq);
-                lua_setfield(L, -2, "__eq");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_add);
-                lua_setfield(L, -2, "__add");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_sub);
-                lua_setfield(L, -2, "__sub");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_new);
-                lua_setfield(L, -2, "new");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_get_width);
-                lua_setfield(L, -2, "get_width");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_get_height);
-                lua_setfield(L, -2, "get_height");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_set_width);
-                lua_setfield(L, -2, "set_width");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_set_height);
-                lua_setfield(L, -2, "set_height");
-
-                lua_pushcfunction(L, lua_taffy_Size_of_float_ZERO);
-                lua_setfield(L, -2, "ZERO");
-            }
+            lua_push_table_taffy_Size_of_float(L);
             lua_setfield(L, -2, "Size_of_float");
         }
 
@@ -4619,223 +5255,25 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
         /* Register AvailableSpace */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_Definite);
-                lua_setfield(L, -2, "Definite");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_MinContent);
-                lua_setfield(L, -2, "MinContent");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_MaxContent);
-                lua_setfield(L, -2, "MaxContent");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_is_Definite);
-                lua_setfield(L, -2, "is_Definite");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_is_MinContent);
-                lua_setfield(L, -2, "is_MinContent");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_is_MaxContent);
-                lua_setfield(L, -2, "is_MaxContent");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_MIN_CONTENT);
-                lua_setfield(L, -2, "MIN_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_MAX_CONTENT);
-                lua_setfield(L, -2, "MAX_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_AvailableSpace_from);
-                lua_setfield(L, -2, "from");
-            }
+            lua_push_table_taffy_AvailableSpace(L);
             lua_setfield(L, -2, "AvailableSpace");
         }
 
         /* Register LengthPercentage */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_Length);
-                lua_setfield(L, -2, "Length");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_Percent);
-                lua_setfield(L, -2, "Percent");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_is_Length);
-                lua_setfield(L, -2, "is_Length");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_is_Percent);
-                lua_setfield(L, -2, "is_Percent");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentage_from_percent);
-                lua_setfield(L, -2, "from_percent");
-            }
+            lua_push_table_taffy_LengthPercentage(L);
             lua_setfield(L, -2, "LengthPercentage");
         }
 
         /* Register LengthPercentageAuto */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_LengthPercentageAuto);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Length);
-                lua_setfield(L, -2, "Length");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Percent);
-                lua_setfield(L, -2, "Percent");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_Auto);
-                lua_setfield(L, -2, "Auto");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Length);
-                lua_setfield(L, -2, "is_Length");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Percent);
-                lua_setfield(L, -2, "is_Percent");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_is_Auto);
-                lua_setfield(L, -2, "is_Auto");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from_percent);
-                lua_setfield(L, -2, "from_percent");
-
-                lua_pushcfunction(L, lua_taffy_LengthPercentageAuto_from);
-                lua_setfield(L, -2, "from");
-            }
+            lua_push_table_taffy_LengthPercentageAuto(L);
             lua_setfield(L, -2, "LengthPercentageAuto");
         }
 
         /* Register Dimension */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_Dimension);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_Length);
-                lua_setfield(L, -2, "Length");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_Percent);
-                lua_setfield(L, -2, "Percent");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_Auto);
-                lua_setfield(L, -2, "Auto");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_is_Length);
-                lua_setfield(L, -2, "is_Length");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_is_Percent);
-                lua_setfield(L, -2, "is_Percent");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_is_Auto);
-                lua_setfield(L, -2, "is_Auto");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_from_percent);
-                lua_setfield(L, -2, "from_percent");
-
-                lua_pushcfunction(L, lua_taffy_Dimension_from);
-                lua_setfield(L, -2, "from");
-            }
+            lua_push_table_taffy_Dimension(L);
             lua_setfield(L, -2, "Dimension");
         }
 
@@ -4859,402 +5297,37 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
 
         /* Register GridPlacement */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_GridPlacement);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_new);
-                lua_setfield(L, -2, "new");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_Auto);
-                lua_setfield(L, -2, "Auto");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_Line);
-                lua_setfield(L, -2, "Line");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_Span);
-                lua_setfield(L, -2, "Span");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_is_Auto);
-                lua_setfield(L, -2, "is_Auto");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_is_Line);
-                lua_setfield(L, -2, "is_Line");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_is_Span);
-                lua_setfield(L, -2, "is_Span");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_get_line);
-                lua_setfield(L, -2, "get_line");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_get_span);
-                lua_setfield(L, -2, "get_span");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_AUTO);
-                lua_setfield(L, -2, "AUTO");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_from_line_index);
-                lua_setfield(L, -2, "from_line_index");
-
-                lua_pushcfunction(L, lua_taffy_GridPlacement_from_span);
-                lua_setfield(L, -2, "from_span");
-            }
+            lua_push_table_taffy_GridPlacement(L);
             lua_setfield(L, -2, "GridPlacement");
         }
 
         /* Register GridTrackRepetition */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_GridTrackRepetition);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFill);
-                lua_setfield(L, -2, "AutoFill");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_AutoFit);
-                lua_setfield(L, -2, "AutoFit");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_Count);
-                lua_setfield(L, -2, "Count");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_is_AutoFill);
-                lua_setfield(L, -2, "is_AutoFill");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_is_AutoFit);
-                lua_setfield(L, -2, "is_AutoFit");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_is_Count);
-                lua_setfield(L, -2, "is_Count");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_GridTrackRepetition_try_from);
-                lua_setfield(L, -2, "try_from");
-            }
+            lua_push_table_taffy_GridTrackRepetition(L);
             lua_setfield(L, -2, "GridTrackRepetition");
         }
 
         /* Register MaxTrackSizingFunction */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_MaxTrackSizingFunction);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Fixed);
-                lua_setfield(L, -2, "Fixed");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MinContent);
-                lua_setfield(L, -2, "MinContent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MaxContent);
-                lua_setfield(L, -2, "MaxContent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_FitContent);
-                lua_setfield(L, -2, "FitContent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Auto);
-                lua_setfield(L, -2, "Auto");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_Fraction);
-                lua_setfield(L, -2, "Fraction");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Fixed);
-                lua_setfield(L, -2, "is_Fixed");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_MinContent);
-                lua_setfield(L, -2, "is_MinContent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_MaxContent);
-                lua_setfield(L, -2, "is_MaxContent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_FitContent);
-                lua_setfield(L, -2, "is_FitContent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Auto);
-                lua_setfield(L, -2, "is_Auto");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_is_Fraction);
-                lua_setfield(L, -2, "is_Fraction");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_get_length_percentage);
-                lua_setfield(L, -2, "get_length_percentage");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_get_fraction);
-                lua_setfield(L, -2, "get_fraction");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_AUTO);
-                lua_setfield(L, -2, "AUTO");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MIN_CONTENT);
-                lua_setfield(L, -2, "MIN_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_MAX_CONTENT);
-                lua_setfield(L, -2, "MAX_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_fit_content);
-                lua_setfield(L, -2, "fit_content");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_from_percent);
-                lua_setfield(L, -2, "from_percent");
-
-                lua_pushcfunction(L, lua_taffy_MaxTrackSizingFunction_from_flex);
-                lua_setfield(L, -2, "from_flex");
-            }
+            lua_push_table_taffy_MaxTrackSizingFunction(L);
             lua_setfield(L, -2, "MaxTrackSizingFunction");
         }
 
         /* Register MinTrackSizingFunction */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_MinTrackSizingFunction);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_Fixed);
-                lua_setfield(L, -2, "Fixed");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MinContent);
-                lua_setfield(L, -2, "MinContent");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MaxContent);
-                lua_setfield(L, -2, "MaxContent");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_Auto);
-                lua_setfield(L, -2, "Auto");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_Fixed);
-                lua_setfield(L, -2, "is_Fixed");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_MinContent);
-                lua_setfield(L, -2, "is_MinContent");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_MaxContent);
-                lua_setfield(L, -2, "is_MaxContent");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_is_Auto);
-                lua_setfield(L, -2, "is_Auto");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_get_value);
-                lua_setfield(L, -2, "get_value");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_AUTO);
-                lua_setfield(L, -2, "AUTO");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MIN_CONTENT);
-                lua_setfield(L, -2, "MIN_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_MAX_CONTENT);
-                lua_setfield(L, -2, "MAX_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_MinTrackSizingFunction_from_percent);
-                lua_setfield(L, -2, "from_percent");
-            }
+            lua_push_table_taffy_MinTrackSizingFunction(L);
             lua_setfield(L, -2, "MinTrackSizingFunction");
         }
 
         /* Register NonRepeatedTrackSizingFunction */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
-            {
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_index);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_newindex);
-                lua_setfield(L, -2, "__newindex");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_new);
-                lua_setfield(L, -2, "new");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_get_min);
-                lua_setfield(L, -2, "get_min");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_get_max);
-                lua_setfield(L, -2, "get_max");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_set_min);
-                lua_setfield(L, -2, "set_min");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_set_max);
-                lua_setfield(L, -2, "set_max");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_AUTO);
-                lua_setfield(L, -2, "AUTO");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_MIN_CONTENT);
-                lua_setfield(L, -2, "MIN_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_MAX_CONTENT);
-                lua_setfield(L, -2, "MAX_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_fit_content);
-                lua_setfield(L, -2, "fit_content");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_percent);
-                lua_setfield(L, -2, "from_percent");
-
-                lua_pushcfunction(L, lua_taffy_NonRepeatedTrackSizingFunction_from_flex);
-                lua_setfield(L, -2, "from_flex");
-            }
+            lua_push_table_taffy_NonRepeatedTrackSizingFunction(L);
             lua_setfield(L, -2, "NonRepeatedTrackSizingFunction");
         }
 
         /* Register TrackSizingFunction */
         {
-            luaL_newmetatable(L, LUA_META_OBJECT_taffy_TrackSizingFunction);
-            {
-                /* metatable.__index = metatable */
-                lua_pushvalue(L, -1);
-                lua_setfield(L, -2, "__index");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_delete);
-                lua_setfield(L, -2, "__gc");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_eq);
-                lua_setfield(L, -2, "__eq");
-
-                /* metatable.__metatable = "message" <-- metatable protection */
-                lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
-                lua_setfield(L, -2, "__metatable");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_Single);
-                lua_setfield(L, -2, "Single");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_Repeat);
-                lua_setfield(L, -2, "Repeat");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_copy);
-                lua_setfield(L, -2, "copy");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_is_Single);
-                lua_setfield(L, -2, "is_Single");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_is_Repeat);
-                lua_setfield(L, -2, "is_Repeat");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_single_func);
-                lua_setfield(L, -2, "get_single_func");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_repetition);
-                lua_setfield(L, -2, "get_repetition");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_get_repeat_funcs);
-                lua_setfield(L, -2, "get_repeat_funcs");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_AUTO);
-                lua_setfield(L, -2, "AUTO");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_MIN_CONTENT);
-                lua_setfield(L, -2, "MIN_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_MAX_CONTENT);
-                lua_setfield(L, -2, "MAX_CONTENT");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_ZERO);
-                lua_setfield(L, -2, "ZERO");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_fit_content);
-                lua_setfield(L, -2, "fit_content");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_from_length);
-                lua_setfield(L, -2, "from_length");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_from_percent);
-                lua_setfield(L, -2, "from_percent");
-
-                lua_pushcfunction(L, lua_taffy_TrackSizingFunction_from_flex);
-                lua_setfield(L, -2, "from_flex");
-            }
+            lua_push_table_taffy_TrackSizingFunction(L);
             lua_setfield(L, -2, "TrackSizingFunction");
         }
 
