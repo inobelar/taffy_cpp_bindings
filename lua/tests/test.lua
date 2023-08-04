@@ -2167,4 +2167,116 @@ describe('taffy_cpp lua binding', function()
         end)
     end) -- Position
 
+    describe('Point_of_Overflow', function()
+        describe('Constructors', function()
+            it('common', function()
+                local point = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden)
+
+                expect( point ).to.exist()
+                expect( point:get_x() ).to.be( t.Overflow.Visible )
+                expect( point:get_y() ).to.be( t.Overflow.Hidden )
+            end)
+
+            it('table (array)', function()
+                local point = t.Point_of_Overflow.new({t.Overflow.Visible, t.Overflow.Hidden})
+
+                expect( point ).to.exist()
+                expect( point:get_x() ).to.be( t.Overflow.Visible )
+                expect( point:get_y() ).to.be( t.Overflow.Hidden )
+            end)
+
+            it('table (array) explicit indexes', function()
+                local point1 = t.Point_of_Overflow.new({[1] = t.Overflow.Visible, [2] = t.Overflow.Hidden})
+
+                expect( point1 ).to.exist()
+                expect( point1:get_x() ).to.be( t.Overflow.Visible )
+                expect( point1:get_y() ).to.be( t.Overflow.Hidden )
+
+                local point2 = t.Point_of_Overflow.new({[2] = t.Overflow.Hidden, [1] = t.Overflow.Visible})
+
+                expect( point2 ).to.exist()
+                expect( point2:get_x() ).to.be( t.Overflow.Visible )
+                expect( point2:get_y() ).to.be( t.Overflow.Hidden )
+            end)
+
+            it('table (dictionary)', function()
+                local point1 = t.Point_of_Overflow.new({x = t.Overflow.Visible, y = t.Overflow.Hidden})
+
+                expect( point1 ).to.exist()
+                expect( point1:get_x() ).to.be( t.Overflow.Visible )
+                expect( point1:get_y() ).to.be( t.Overflow.Hidden )
+
+                local point2 = t.Point_of_Overflow.new({y = t.Overflow.Hidden, x = t.Overflow.Visible})
+
+                expect( point2 ).to.exist()
+                expect( point2:get_x() ).to.be( t.Overflow.Visible )
+                expect( point2:get_y() ).to.be( t.Overflow.Hidden )
+            end)
+
+            it('table (without parentheses)', function()
+                local point1 = t.Point_of_Overflow.new {t.Overflow.Visible, t.Overflow.Hidden}
+
+                expect( point1 ).to.exist()
+                expect( point1:get_x() ).to.be( t.Overflow.Visible )
+                expect( point1:get_y() ).to.be( t.Overflow.Hidden )
+
+                local point2 = t.Point_of_Overflow.new {x = t.Overflow.Visible, y = t.Overflow.Hidden}
+
+                expect( point2 ).to.exist()
+                expect( point2:get_x() ).to.be( t.Overflow.Visible )
+                expect( point2:get_y() ).to.be( t.Overflow.Hidden )
+            end)
+        end)
+
+        it('Copying', function()
+            local point = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden)
+
+            local copy = point:copy()
+
+            expect( copy ).to.exist()
+            expect( copy:get_x() ).to.be( t.Overflow.Visible )
+            expect( copy:get_y() ).to.be( t.Overflow.Hidden )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local point = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden)
+
+                local points_equal     = point == t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden)
+                local points_not_equal = point ~= t.Point_of_Overflow.new(t.Overflow.Hidden, t.Overflow.Visible)
+
+                expect( points_equal     ).to.be( true )
+                expect( points_not_equal ).to.be( true )
+            end)
+        end)
+
+        it('Getters/Setters', function()
+            local point = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden)
+
+            expect( point ).to.exist()
+            expect( point:get_x() ).to.be( t.Overflow.Visible )
+            expect( point:get_y() ).to.be( t.Overflow.Hidden )
+
+            point:set_x(t.Overflow.Hidden)
+            point:set_y(t.Overflow.Scroll)
+
+            expect( point:get_x() ).to.be( t.Overflow.Hidden )
+            expect( point:get_y() ).to.be( t.Overflow.Scroll )
+        end)
+
+        it('Properties', function()
+            local point = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden)
+
+            expect( point ).to.exist()
+            expect( point.x ).to.be( t.Overflow.Visible )
+            expect( point.y ).to.be( t.Overflow.Hidden )
+
+            point.x = t.Overflow.Hidden
+            point.y = t.Overflow.Scroll
+
+            expect( point.x ).to.be( t.Overflow.Hidden )
+            expect( point.y ).to.be( t.Overflow.Scroll )
+        end)
+    end) -- Point_of_Overflow
+
 end)
