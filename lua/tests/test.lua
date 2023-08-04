@@ -422,53 +422,147 @@ describe('taffy_cpp lua binding', function()
         end)
 
         it('Strictness check', function()
-            local forbidden_index_call = function() return t.AlignContent.Wrong end
-            expect( forbidden_index_call() ).to.fail()
+            expect( t.AlignContent.Wrong ).to.be(nil)
 
-            local forbidden_newindex_call = function() t.AlignContent.Wrong = 5; return 42 end
-            expect( forbidden_newindex_call() ).to.fail()
-            -- expect( t.AlignContent.Wrong = 42; t.AlignContent.Wrong ).to.fail()
-            -- expect( t.AlignContent.Start = 42 ).to.fail()
-            -- expect( t.AlignContent.Start.x ).to.fail()
-            -- expect( t.AlignContent.Start.x = 42 ).to.fail()
+            expect( function() t.AlignContent.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.AlignContent.Start = 42; return true end ).to.fail()
+
+            expect( t.AlignContent.Start.x ).to.be(nil)
+
+            expect( function() t.AlignContent.Start.x = 42; return true end ).to.fail()
         end)
     end) -- AlignContent
 
     describe('JustifyContent', function()
         it('Values', function()
-            expect( t.JustifyContent.Start        ).to.be(0)
-            expect( t.JustifyContent.End          ).to.be(1)
-            expect( t.JustifyContent.FlexStart    ).to.be(2)
-            expect( t.JustifyContent.FlexEnd      ).to.be(3)
-            expect( t.JustifyContent.Center       ).to.be(4)
-            expect( t.JustifyContent.Stretch      ).to.be(5)
-            expect( t.JustifyContent.SpaceBetween ).to.be(6)
-            expect( t.JustifyContent.SpaceEvenly  ).to.be(7)
-            expect( t.JustifyContent.SpaceAround  ).to.be(8)
+            expect( t.JustifyContent.Start        ).to.exist()
+            expect( t.JustifyContent.End          ).to.exist()
+            expect( t.JustifyContent.FlexStart    ).to.exist()
+            expect( t.JustifyContent.FlexEnd      ).to.exist()
+            expect( t.JustifyContent.Center       ).to.exist()
+            expect( t.JustifyContent.Stretch      ).to.exist()
+            expect( t.JustifyContent.SpaceBetween ).to.exist()
+            expect( t.JustifyContent.SpaceEvenly  ).to.exist()
+            expect( t.JustifyContent.SpaceAround  ).to.exist()
+
+            expect( t.JustifyContent.Start        :to_int() ).to.be( 0 )
+            expect( t.JustifyContent.End          :to_int() ).to.be( 1 )
+            expect( t.JustifyContent.FlexStart    :to_int() ).to.be( 2 )
+            expect( t.JustifyContent.FlexEnd      :to_int() ).to.be( 3 )
+            expect( t.JustifyContent.Center       :to_int() ).to.be( 4 )
+            expect( t.JustifyContent.Stretch      :to_int() ).to.be( 5 )
+            expect( t.JustifyContent.SpaceBetween :to_int() ).to.be( 6 )
+            expect( t.JustifyContent.SpaceEvenly  :to_int() ).to.be( 7 )
+            expect( t.JustifyContent.SpaceAround  :to_int() ).to.be( 8 )
+
+            expect( t.JustifyContent.from_int(0) == t.JustifyContent.Start        ).to.be( true )
+            expect( t.JustifyContent.from_int(1) == t.JustifyContent.End          ).to.be( true )
+            expect( t.JustifyContent.from_int(2) == t.JustifyContent.FlexStart    ).to.be( true )
+            expect( t.JustifyContent.from_int(3) == t.JustifyContent.FlexEnd      ).to.be( true )
+            expect( t.JustifyContent.from_int(4) == t.JustifyContent.Center       ).to.be( true )
+            expect( t.JustifyContent.from_int(5) == t.JustifyContent.Stretch      ).to.be( true )
+            expect( t.JustifyContent.from_int(6) == t.JustifyContent.SpaceBetween ).to.be( true )
+            expect( t.JustifyContent.from_int(7) == t.JustifyContent.SpaceEvenly  ).to.be( true )
+            expect( t.JustifyContent.from_int(8) == t.JustifyContent.SpaceAround  ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.JustifyContent.Wrong ).to.be(nil)
+
+            expect( function() t.JustifyContent.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.JustifyContent.Start = 42; return true end ).to.fail()
+
+            expect( t.JustifyContent.Start.x ).to.be(nil)
+
+            expect( function() t.JustifyContent.Start.x = 42; return true end ).to.fail()
+
+            -- Additional check - JustifyContent is not the same as AlighContent (even if similar to it)
+            expect( function() return t.AlignContent.Start == t.JustifyContent.Start end ).to.fail()
         end)
     end) -- JustifyContent
 
     describe('AlignItems', function()
         it('Values', function()
-            expect( t.AlignItems.Start     ).to.be(0)
-            expect( t.AlignItems.End       ).to.be(1)
-            expect( t.AlignItems.FlexStart ).to.be(2)
-            expect( t.AlignItems.FlexEnd   ).to.be(3)
-            expect( t.AlignItems.Center    ).to.be(4)
-            expect( t.AlignItems.Baseline  ).to.be(5)
-            expect( t.AlignItems.Stretch   ).to.be(6)
+            expect( t.AlignItems.Start     ).to.exist()
+            expect( t.AlignItems.End       ).to.exist()
+            expect( t.AlignItems.FlexStart ).to.exist()
+            expect( t.AlignItems.FlexEnd   ).to.exist()
+            expect( t.AlignItems.Center    ).to.exist()
+            expect( t.AlignItems.Baseline  ).to.exist()
+            expect( t.AlignItems.Stretch   ).to.exist()
+
+            expect( t.AlignItems.Start     :to_int() ).to.be( 0 )
+            expect( t.AlignItems.End       :to_int() ).to.be( 1 )
+            expect( t.AlignItems.FlexStart :to_int() ).to.be( 2 )
+            expect( t.AlignItems.FlexEnd   :to_int() ).to.be( 3 )
+            expect( t.AlignItems.Center    :to_int() ).to.be( 4 )
+            expect( t.AlignItems.Baseline  :to_int() ).to.be( 5 )
+            expect( t.AlignItems.Stretch   :to_int() ).to.be( 6 )
+
+            expect( t.AlignItems.from_int(0) == t.AlignItems.Start     ).to.be( true )
+            expect( t.AlignItems.from_int(1) == t.AlignItems.End       ).to.be( true )
+            expect( t.AlignItems.from_int(2) == t.AlignItems.FlexStart ).to.be( true )
+            expect( t.AlignItems.from_int(3) == t.AlignItems.FlexEnd   ).to.be( true )
+            expect( t.AlignItems.from_int(4) == t.AlignItems.Center    ).to.be( true )
+            expect( t.AlignItems.from_int(5) == t.AlignItems.Baseline  ).to.be( true )
+            expect( t.AlignItems.from_int(6) == t.AlignItems.Stretch   ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.AlignItems.Wrong ).to.be(nil)
+
+            expect( function() t.AlignItems.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.AlignItems.Start = 42; return true end ).to.fail()
+
+            expect( t.AlignItems.Start.x ).to.be(nil)
+
+            expect( function() t.AlignItems.Start.x = 42; return true end ).to.fail()
         end)
     end) -- AlignItems
 
     describe('AlignSelf', function()
         it('Values', function()
-            expect( t.AlignSelf.Start     ).to.be(0)
-            expect( t.AlignSelf.End       ).to.be(1)
-            expect( t.AlignSelf.FlexStart ).to.be(2)
-            expect( t.AlignSelf.FlexEnd   ).to.be(3)
-            expect( t.AlignSelf.Center    ).to.be(4)
-            expect( t.AlignSelf.Baseline  ).to.be(5)
-            expect( t.AlignSelf.Stretch   ).to.be(6)
+            expect( t.AlignSelf.Start     ).to.exist()
+            expect( t.AlignSelf.End       ).to.exist()
+            expect( t.AlignSelf.FlexStart ).to.exist()
+            expect( t.AlignSelf.FlexEnd   ).to.exist()
+            expect( t.AlignSelf.Center    ).to.exist()
+            expect( t.AlignSelf.Baseline  ).to.exist()
+            expect( t.AlignSelf.Stretch   ).to.exist()
+
+            expect( t.AlignSelf.Start     :to_int() ).to.be( 0 )
+            expect( t.AlignSelf.End       :to_int() ).to.be( 1 )
+            expect( t.AlignSelf.FlexStart :to_int() ).to.be( 2 )
+            expect( t.AlignSelf.FlexEnd   :to_int() ).to.be( 3 )
+            expect( t.AlignSelf.Center    :to_int() ).to.be( 4 )
+            expect( t.AlignSelf.Baseline  :to_int() ).to.be( 5 )
+            expect( t.AlignSelf.Stretch   :to_int() ).to.be( 6 )
+
+            expect( t.AlignSelf.from_int(0) == t.AlignSelf.Start     ).to.be( true )
+            expect( t.AlignSelf.from_int(1) == t.AlignSelf.End       ).to.be( true )
+            expect( t.AlignSelf.from_int(2) == t.AlignSelf.FlexStart ).to.be( true )
+            expect( t.AlignSelf.from_int(3) == t.AlignSelf.FlexEnd   ).to.be( true )
+            expect( t.AlignSelf.from_int(4) == t.AlignSelf.Center    ).to.be( true )
+            expect( t.AlignSelf.from_int(5) == t.AlignSelf.Baseline  ).to.be( true )
+            expect( t.AlignSelf.from_int(6) == t.AlignSelf.Stretch   ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.AlignSelf.Wrong ).to.be(nil)
+
+            expect( function() t.AlignSelf.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.AlignSelf.Start = 42; return true end ).to.fail()
+
+            expect( t.AlignSelf.Start.x ).to.be(nil)
+
+            expect( function() t.AlignSelf.Start.x = 42; return true end ).to.fail()
+
+            -- Additional check - AlignSelf is not the same as AlignItems (even if similar to it)
+            expect( function() return t.AlignSelf.Start == t.AlignItems.Start end ).to.fail()
         end)
     end) -- AlignSelf
 
@@ -893,33 +987,100 @@ describe('taffy_cpp lua binding', function()
 
     describe('FlexDirection', function()
         it('Values', function()
-            expect( t.FlexDirection.Row           ).to.be( 0 )
-            expect( t.FlexDirection.Column        ).to.be( 1 )
-            expect( t.FlexDirection.RowReverse    ).to.be( 2 )
-            expect( t.FlexDirection.ColumnReverse ).to.be( 3 )
+            expect( t.FlexDirection.Row           ).to.exist()
+            expect( t.FlexDirection.Column        ).to.exist()
+            expect( t.FlexDirection.RowReverse    ).to.exist()
+            expect( t.FlexDirection.ColumnReverse ).to.exist()
+            expect( t.FlexDirection.Default       ).to.exist()
 
-            expect( t.FlexDirection.Default       ).to.be( 0 )
+            expect( t.FlexDirection.Row           :to_int() ).to.be( 0 )
+            expect( t.FlexDirection.Column        :to_int() ).to.be( 1 )
+            expect( t.FlexDirection.RowReverse    :to_int() ).to.be( 2 )
+            expect( t.FlexDirection.ColumnReverse :to_int() ).to.be( 3 )
+            expect( t.FlexDirection.Default       :to_int() ).to.be( 0 )
+
+            expect( t.FlexDirection.from_int(0) == t.FlexDirection.Row           ).to.be( true )
+            expect( t.FlexDirection.from_int(1) == t.FlexDirection.Column        ).to.be( true )
+            expect( t.FlexDirection.from_int(2) == t.FlexDirection.RowReverse    ).to.be( true )
+            expect( t.FlexDirection.from_int(3) == t.FlexDirection.ColumnReverse ).to.be( true )
+            expect( t.FlexDirection.from_int(0) == t.FlexDirection.Default       ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.FlexDirection.Wrong ).to.be(nil)
+
+            expect( function() t.FlexDirection.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.FlexDirection.Row = 42; return true end ).to.fail()
+
+            expect( t.FlexDirection.Row.x ).to.be(nil)
+
+            expect( function() t.FlexDirection.Row.x = 42; return true end ).to.fail()
         end)
     end) -- FlexDirection
 
     describe('FlexWrap', function()
         it('Values', function()
-            expect( t.FlexWrap.NoWrap      ).to.be( 0 )
-            expect( t.FlexWrap.Wrap        ).to.be( 1 )
-            expect( t.FlexWrap.WrapReverse ).to.be( 2 )
+            expect( t.FlexWrap.NoWrap      ).to.exist()
+            expect( t.FlexWrap.Wrap        ).to.exist()
+            expect( t.FlexWrap.WrapReverse ).to.exist()
+            expect( t.FlexWrap.Default     ).to.exist()
 
-            expect( t.FlexWrap.Default     ).to.be( 0 )
+            expect( t.FlexWrap.NoWrap      :to_int() ).to.be( 0 )
+            expect( t.FlexWrap.Wrap        :to_int() ).to.be( 1 )
+            expect( t.FlexWrap.WrapReverse :to_int() ).to.be( 2 )
+            expect( t.FlexWrap.Default     :to_int() ).to.be( 0 )
+
+            expect( t.FlexWrap.from_int(0) == t.FlexWrap.NoWrap      ).to.be( true )
+            expect( t.FlexWrap.from_int(1) == t.FlexWrap.Wrap        ).to.be( true )
+            expect( t.FlexWrap.from_int(2) == t.FlexWrap.WrapReverse ).to.be( true )
+            expect( t.FlexWrap.from_int(0) == t.FlexWrap.Default     ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.FlexWrap.Wrong ).to.be(nil)
+
+            expect( function() t.FlexWrap.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.FlexWrap.NoWrap = 42; return true end ).to.fail()
+
+            expect( t.FlexWrap.NoWrap.x ).to.be(nil)
+
+            expect( function() t.FlexWrap.NoWrap.x = 42; return true end ).to.fail()
         end)
     end) -- FlexWrap
 
     describe('GridAutoFlow', function()
         it('Values', function()
-            expect( t.GridAutoFlow.Row         ).to.be( 0 )
-            expect( t.GridAutoFlow.Column      ).to.be( 1 )
-            expect( t.GridAutoFlow.RowDense    ).to.be( 2 )
-            expect( t.GridAutoFlow.ColumnDense ).to.be( 3 )
+            expect( t.GridAutoFlow.Row         ).to.exist()
+            expect( t.GridAutoFlow.Column      ).to.exist()
+            expect( t.GridAutoFlow.RowDense    ).to.exist()
+            expect( t.GridAutoFlow.ColumnDense ).to.exist()
+            expect( t.GridAutoFlow.Default     ).to.exist()
 
-            expect( t.GridAutoFlow.Default     ).to.be( 0 )
+            expect( t.GridAutoFlow.Row         :to_int() ).to.be( 0 )
+            expect( t.GridAutoFlow.Column      :to_int() ).to.be( 1 )
+            expect( t.GridAutoFlow.RowDense    :to_int() ).to.be( 2 )
+            expect( t.GridAutoFlow.ColumnDense :to_int() ).to.be( 3 )
+            expect( t.GridAutoFlow.Default     :to_int() ).to.be( 0 )
+
+            expect( t.GridAutoFlow.from_int(0) == t.GridAutoFlow.Row         ).to.be( true )
+            expect( t.GridAutoFlow.from_int(1) == t.GridAutoFlow.Column      ).to.be( true )
+            expect( t.GridAutoFlow.from_int(2) == t.GridAutoFlow.RowDense    ).to.be( true )
+            expect( t.GridAutoFlow.from_int(3) == t.GridAutoFlow.ColumnDense ).to.be( true )
+            expect( t.GridAutoFlow.from_int(0) == t.GridAutoFlow.Default     ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.GridAutoFlow.Wrong ).to.be(nil)
+
+            expect( function() t.GridAutoFlow.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.GridAutoFlow.Row = 42; return true end ).to.fail()
+
+            expect( t.GridAutoFlow.Row.x ).to.be(nil)
+
+            expect( function() t.GridAutoFlow.Row.x = 42; return true end ).to.fail()
         end)
     end) -- GridAutoFlow
 
@@ -1915,31 +2076,94 @@ describe('taffy_cpp lua binding', function()
 
     describe('Display', function()
         it('Values', function()
-            expect( t.Display.Flex  ).to.be(0)
-            expect( t.Display.Grid  ).to.be(1)
-            expect( t.Display.Block ).to.be(2)
-            expect( t.Display.None  ).to.be(3)
+            expect( t.Display.Flex    ).to.exist()
+            expect( t.Display.Grid    ).to.exist()
+            expect( t.Display.Block   ).to.exist()
+            expect( t.Display.None    ).to.exist()
+            expect( t.Display.Default ).to.exist()
 
-            expect( t.Display.Default   ).to.be(0)
+            expect( t.Display.Flex    :to_int() ).to.be( 0 )
+            expect( t.Display.Grid    :to_int() ).to.be( 1 )
+            expect( t.Display.Block   :to_int() ).to.be( 2 )
+            expect( t.Display.None    :to_int() ).to.be( 3 )
+            expect( t.Display.Default :to_int() ).to.be( 0 )
+
+            expect( t.Display.from_int(0) == t.Display.Flex    ).to.be( true )
+            expect( t.Display.from_int(1) == t.Display.Grid    ).to.be( true )
+            expect( t.Display.from_int(2) == t.Display.Block   ).to.be( true )
+            expect( t.Display.from_int(3) == t.Display.None    ).to.be( true )
+            expect( t.Display.from_int(0) == t.Display.Default ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.Display.Wrong ).to.be(nil)
+
+            expect( function() t.Display.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.Display.Flex = 42; return true end ).to.fail()
+
+            expect( t.Display.Flex.x ).to.be(nil)
+
+            expect( function() t.Display.Flex.x = 42; return true end ).to.fail()
         end)
     end) -- Display
 
     describe('Overflow', function()
         it('Values', function()
-            expect( t.Overflow.Visible ).to.be(0)
-            expect( t.Overflow.Hidden  ).to.be(1)
-            expect( t.Overflow.Scroll  ).to.be(2)
+            expect( t.Overflow.Visible ).to.exist()
+            expect( t.Overflow.Hidden  ).to.exist()
+            expect( t.Overflow.Scroll  ).to.exist()
+            expect( t.Overflow.Default ).to.exist()
 
-            expect( t.Overflow.Default ).to.be(0)
+            expect( t.Overflow.Visible :to_int() ).to.be( 0 )
+            expect( t.Overflow.Hidden  :to_int() ).to.be( 1 )
+            expect( t.Overflow.Scroll  :to_int() ).to.be( 2 )
+            expect( t.Overflow.Default :to_int() ).to.be( 0 )
+
+            expect( t.Overflow.from_int(0) == t.Overflow.Visible ).to.be( true )
+            expect( t.Overflow.from_int(1) == t.Overflow.Hidden  ).to.be( true )
+            expect( t.Overflow.from_int(2) == t.Overflow.Scroll  ).to.be( true )
+            expect( t.Overflow.from_int(0) == t.Overflow.Default ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.Overflow.Wrong ).to.be(nil)
+
+            expect( function() t.Overflow.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.Overflow.Visible = 42; return true end ).to.fail()
+
+            expect( t.Overflow.Visible.x ).to.be(nil)
+
+            expect( function() t.Overflow.Visible.x = 42; return true end ).to.fail()
         end)
     end) -- Overflow
 
     describe('Position', function()
         it('Values', function()
-            expect( t.Position.Relative ).to.be(0)
-            expect( t.Position.Absolute ).to.be(1)
+            expect( t.Position.Relative ).to.exist()
+            expect( t.Position.Absolute ).to.exist()
+            expect( t.Position.Default  ).to.exist()
 
-            expect( t.Position.Default  ).to.be(0)
+            expect( t.Position.Relative :to_int() ).to.be( 0 )
+            expect( t.Position.Absolute :to_int() ).to.be( 1 )
+            expect( t.Position.Default  :to_int() ).to.be( 0 )
+
+            expect( t.Position.from_int(0) == t.Position.Relative ).to.be( true )
+            expect( t.Position.from_int(1) == t.Position.Absolute ).to.be( true )
+            expect( t.Position.from_int(0) == t.Position.Default  ).to.be( true )
+        end)
+
+        it('Strictness check', function()
+            expect( t.Position.Wrong ).to.be(nil)
+
+            expect( function() t.Position.Wrong = 42; return true end ).to.fail()
+
+            expect( function() t.Position.Relative = 42; return true end ).to.fail()
+
+            expect( t.Position.Relative.x ).to.be(nil)
+
+            expect( function() t.Position.Relative.x = 42; return true end ).to.fail()
         end)
     end) -- Position
 

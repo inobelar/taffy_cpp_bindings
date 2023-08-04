@@ -39,6 +39,7 @@ $ sudo apt-get install lua5.3 liblua5.3-dev
 - [How to add your C Library in Lua](https://blog.devgenius.io/how-to-add-your-c-library-in-lua-46fd246f0fa8)
 - [lua-users :: BindingCodeToLua](http://lua-users.org/wiki/BindingCodeToLua)
 - [lua-users :: Binding Enums To Lua](http://lua-users.org/wiki/BindingEnumsToLua)
+- [lua-users :: Read Only Tables](http://lua-users.org/wiki/ReadOnlyTables)
 - [StackOverflow :: Lua c API - Add number to new lib](https://stackoverflow.com/questions/46517127/lua-c-api-add-number-to-new-lib)
 - [StackOverflow :: Wrapping a C library for Lua: how do I create nested tables of functions?](https://stackoverflow.com/questions/9527417/wrapping-a-c-library-for-lua-how-do-i-create-nested-tables-of-functions)
 - [StackOverflow :: How to dump a table to console?](https://stackoverflow.com/questions/9168058/how-to-dump-a-table-to-console)
