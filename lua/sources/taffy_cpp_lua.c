@@ -1230,8 +1230,191 @@ static void lua_push_table_taffy_Size_of_float(lua_State* L)
 /* -------------------------------------------------------------------------- */
 /* AlignContent (enum) */
 
+static const char LUA_META_OBJECT_taffy_AlignContent[] = "taffy_AlignContent_mt";
+
+static int lua_taffy_disabled_newindex(lua_State* L)
+{
+    return luaL_error(L, "newindex not allowed");
+}
+
+static int lua_taffy_AlingContent_eq(lua_State* L)
+{
+    taffy_AlignContent* object = (taffy_AlignContent*)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AlignContent);
+
+    switch( lua_type(L, 2) ) {
+    case LUA_TNUMBER:
+    {
+        const lua_Number number = lua_tonumber(L, 2);
+
+        const int is_equal = *object == number;
+
+        lua_pushboolean(L, is_equal);
+
+        return 1; /* number of results */
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignContent* other = (taffy_AlignContent*)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_AlignContent);
+
+        const int is_equal = *object == *other;
+
+        lua_pushboolean(L, is_equal);
+
+        return 1; /* number of results */
+    } break;
+    }
+
+    return luaL_error(L, "Cannot compare taffy_AlignContent with other value - invalid type");
+}
+
+static int lua_taffy_AlingContent_to_int(lua_State* L)
+{
+    taffy_AlignContent* object = (taffy_AlignContent*)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AlignContent);
+
+    lua_pushnumber(L, *object);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_AlingContent_from_int(lua_State* L)
+{
+    const lua_Number number = luaL_checknumber(L, 1);
+
+    if(
+        (number == taffy_AlignContent_Start)        ||
+        (number == taffy_AlignContent_End)          ||
+        (number == taffy_AlignContent_FlexStart)    ||
+        (number == taffy_AlignContent_FlexEnd)      ||
+        (number == taffy_AlignContent_Center)       ||
+        (number == taffy_AlignContent_Stretch)      ||
+        (number == taffy_AlignContent_SpaceBetween) ||
+        (number == taffy_AlignContent_SpaceEvenly)  ||
+        (number == taffy_AlignContent_SpaceAround)
+    )
+    {
+        taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+        *object = (taffy_AlignContent) number;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
 static void lua_push_table_taffy_AlignContent(lua_State* L)
 {
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_disabled_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_AlingContent_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        lua_pushcfunction(L, lua_taffy_AlingContent_to_int);
+        lua_setfield(L, -2, "to_int");
+    }
+    lua_pop(L, 1);
+
+    static const char LUA_META_OBJECT_taffy_AvailableSpace_namespace[] = "taffy_AvailableSpace_namespace_mt";
+
+    luaL_newmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace_namespace);
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_disabled_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_AlingContent_from_int);
+        lua_setfield(L, -2, "from_int");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_Start;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "Start");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_End;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "End");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_FlexStart;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "FlexStart");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_FlexEnd;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "FlexEnd");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_Center;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "Center");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_Stretch;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "Stretch");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_SpaceBetween;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "SpaceBetween");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_SpaceEvenly;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "SpaceEvenly");
+
+        {
+            taffy_AlignContent* object = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+            *object = taffy_AlignContent_SpaceAround;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+        }
+        lua_setfield(L, -2, "SpaceAround");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_AvailableSpace_namespace);
+
+
+
     /* Register AlignContent enum. Same as in Lua:
 
         AlignContent = {
@@ -1240,18 +1423,20 @@ static void lua_push_table_taffy_AlignContent(lua_State* L)
             ...
         }
     */
-    lua_newtable(L);
-    {
-        lua_pushnumber(L, taffy_AlignContent_Start       ); lua_setfield(L, -2, "Start");
-        lua_pushnumber(L, taffy_AlignContent_End         ); lua_setfield(L, -2, "End");
-        lua_pushnumber(L, taffy_AlignContent_FlexStart   ); lua_setfield(L, -2, "FlexStart");
-        lua_pushnumber(L, taffy_AlignContent_FlexEnd     ); lua_setfield(L, -2, "FlexEnd");
-        lua_pushnumber(L, taffy_AlignContent_Center      ); lua_setfield(L, -2, "Center");
-        lua_pushnumber(L, taffy_AlignContent_Stretch     ); lua_setfield(L, -2, "Stretch");
-        lua_pushnumber(L, taffy_AlignContent_SpaceBetween); lua_setfield(L, -2, "SpaceBetween");
-        lua_pushnumber(L, taffy_AlignContent_SpaceEvenly ); lua_setfield(L, -2, "SpaceEvenly");
-        lua_pushnumber(L, taffy_AlignContent_SpaceAround ); lua_setfield(L, -2, "SpaceAround");
-    }
+    /*
+        lua_newtable(L);
+        {
+            lua_pushnumber(L, taffy_AlignContent_Start       ); lua_setfield(L, -2, "Start");
+            lua_pushnumber(L, taffy_AlignContent_End         ); lua_setfield(L, -2, "End");
+            lua_pushnumber(L, taffy_AlignContent_FlexStart   ); lua_setfield(L, -2, "FlexStart");
+            lua_pushnumber(L, taffy_AlignContent_FlexEnd     ); lua_setfield(L, -2, "FlexEnd");
+            lua_pushnumber(L, taffy_AlignContent_Center      ); lua_setfield(L, -2, "Center");
+            lua_pushnumber(L, taffy_AlignContent_Stretch     ); lua_setfield(L, -2, "Stretch");
+            lua_pushnumber(L, taffy_AlignContent_SpaceBetween); lua_setfield(L, -2, "SpaceBetween");
+            lua_pushnumber(L, taffy_AlignContent_SpaceEvenly ); lua_setfield(L, -2, "SpaceEvenly");
+            lua_pushnumber(L, taffy_AlignContent_SpaceAround ); lua_setfield(L, -2, "SpaceAround");
+        }
+    */
 }
 
 /* -------------------------------------------------------------------------- */
