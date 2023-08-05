@@ -1938,23 +1938,23 @@ void taffy_Point_of_Overflow_set_y(taffy_Point_of_Overflow* self, taffy_Overflow
 
 taffy_Rect_of_LengthPercentage* taffy_Rect_of_LengthPercentage_new(
     const taffy_LengthPercentage* left,
-    const taffy_LengthPercentage* top,
     const taffy_LengthPercentage* right,
+    const taffy_LengthPercentage* top,
     const taffy_LengthPercentage* bottom
 )
 {
     ASSERT_NOT_NULL(left);
-    ASSERT_NOT_NULL(top);
     ASSERT_NOT_NULL(right);
+    ASSERT_NOT_NULL(top);
     ASSERT_NOT_NULL(bottom);
 
     const taffy::LengthPercentage* _left   = reinterpret_cast<const taffy::LengthPercentage*>(left);
-    const taffy::LengthPercentage* _top    = reinterpret_cast<const taffy::LengthPercentage*>(top);
     const taffy::LengthPercentage* _right  = reinterpret_cast<const taffy::LengthPercentage*>(right);
+    const taffy::LengthPercentage* _top    = reinterpret_cast<const taffy::LengthPercentage*>(top);
     const taffy::LengthPercentage* _bottom = reinterpret_cast<const taffy::LengthPercentage*>(bottom);
 
     return reinterpret_cast<taffy_Rect_of_LengthPercentage*>(
-        new taffy::Rect<taffy::LengthPercentage>{ *_left, *_top, *_right, *_bottom }
+        new taffy::Rect<taffy::LengthPercentage>{ *_left, *_right, *_top,  *_bottom }
     );
 }
 
@@ -1992,18 +1992,18 @@ const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_left(const taff
     return reinterpret_cast<const taffy_LengthPercentage*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentage>*>(self)->left ) );
 }
 
-const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_top(const taffy_Rect_of_LengthPercentage* self)
-{
-    ASSERT_NOT_NULL(self);
-
-    return reinterpret_cast<const taffy_LengthPercentage*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentage>*>(self)->top ) );
-}
-
 const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_right(const taffy_Rect_of_LengthPercentage* self)
 {
     ASSERT_NOT_NULL(self);
 
     return reinterpret_cast<const taffy_LengthPercentage*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentage>*>(self)->right ) );
+}
+
+const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_top(const taffy_Rect_of_LengthPercentage* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy_LengthPercentage*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentage>*>(self)->top ) );
 }
 
 const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_bottom(const taffy_Rect_of_LengthPercentage* self)
@@ -2022,15 +2022,6 @@ void taffy_Rect_of_LengthPercentage_set_left(taffy_Rect_of_LengthPercentage* sel
     reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->left = *_left;
 }
 
-void taffy_Rect_of_LengthPercentage_set_top(taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* top)
-{
-    ASSERT_NOT_NULL(self);
-    ASSERT_NOT_NULL(top);
-
-    const taffy::LengthPercentage* _top = reinterpret_cast<const taffy::LengthPercentage*>(top);
-    reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->top = *_top;
-}
-
 void taffy_Rect_of_LengthPercentage_set_right(taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* right)
 {
     ASSERT_NOT_NULL(self);
@@ -2038,6 +2029,15 @@ void taffy_Rect_of_LengthPercentage_set_right(taffy_Rect_of_LengthPercentage* se
 
     const taffy::LengthPercentage* _right = reinterpret_cast<const taffy::LengthPercentage*>(right);
     reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->right = *_right;
+}
+
+void taffy_Rect_of_LengthPercentage_set_top(taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* top)
+{
+    ASSERT_NOT_NULL(self);
+    ASSERT_NOT_NULL(top);
+
+    const taffy::LengthPercentage* _top = reinterpret_cast<const taffy::LengthPercentage*>(top);
+    reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->top = *_top;
 }
 
 void taffy_Rect_of_LengthPercentage_set_bottom(taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* bottom)
@@ -2056,18 +2056,18 @@ taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_left(taffy_Rect_o
     return reinterpret_cast<taffy_LengthPercentage*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->left ) );
 }
 
-taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_top(taffy_Rect_of_LengthPercentage* self)
-{
-    ASSERT_NOT_NULL(self);
-
-    return reinterpret_cast<taffy_LengthPercentage*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->top ) );
-}
-
 taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_right(taffy_Rect_of_LengthPercentage* self)
 {
     ASSERT_NOT_NULL(self);
 
     return reinterpret_cast<taffy_LengthPercentage*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->right ) );
+}
+
+taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_top(taffy_Rect_of_LengthPercentage* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<taffy_LengthPercentage*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->top ) );
 }
 
 taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_bottom(taffy_Rect_of_LengthPercentage* self)
@@ -2082,23 +2082,23 @@ taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_bottom(taffy_Rect
 
 taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new(
     const taffy_LengthPercentageAuto* left,
-    const taffy_LengthPercentageAuto* top,
     const taffy_LengthPercentageAuto* right,
+    const taffy_LengthPercentageAuto* top,
     const taffy_LengthPercentageAuto* bottom
 )
 {
     ASSERT_NOT_NULL(left);
-    ASSERT_NOT_NULL(top);
     ASSERT_NOT_NULL(right);
+    ASSERT_NOT_NULL(top);
     ASSERT_NOT_NULL(bottom);
 
     const taffy::LengthPercentageAuto* _left   = reinterpret_cast<const taffy::LengthPercentageAuto*>(left);
-    const taffy::LengthPercentageAuto* _top    = reinterpret_cast<const taffy::LengthPercentageAuto*>(top);
     const taffy::LengthPercentageAuto* _right  = reinterpret_cast<const taffy::LengthPercentageAuto*>(right);
+    const taffy::LengthPercentageAuto* _top    = reinterpret_cast<const taffy::LengthPercentageAuto*>(top);
     const taffy::LengthPercentageAuto* _bottom = reinterpret_cast<const taffy::LengthPercentageAuto*>(bottom);
 
     return reinterpret_cast<taffy_Rect_of_LengthPercentageAuto*>(
-        new taffy::Rect<taffy::LengthPercentageAuto>{ *_left, *_top, *_right, *_bottom }
+        new taffy::Rect<taffy::LengthPercentageAuto>{ *_left, *_right, *_top, *_bottom }
     );
 }
 
@@ -2136,18 +2136,18 @@ const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_left(co
     return reinterpret_cast<const taffy_LengthPercentageAuto*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentageAuto>*>(self)->left ) );
 }
 
-const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_top(const taffy_Rect_of_LengthPercentageAuto* self)
-{
-    ASSERT_NOT_NULL(self);
-
-    return reinterpret_cast<const taffy_LengthPercentageAuto*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentageAuto>*>(self)->top ) );
-}
-
 const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_right(const taffy_Rect_of_LengthPercentageAuto* self)
 {
     ASSERT_NOT_NULL(self);
 
     return reinterpret_cast<const taffy_LengthPercentageAuto*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentageAuto>*>(self)->right ) );
+}
+
+const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_top(const taffy_Rect_of_LengthPercentageAuto* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<const taffy_LengthPercentageAuto*>( &( reinterpret_cast<const taffy::Rect<taffy::LengthPercentageAuto>*>(self)->top ) );
 }
 
 const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_bottom(const taffy_Rect_of_LengthPercentageAuto* self)
@@ -2166,15 +2166,6 @@ void taffy_Rect_of_LengthPercentageAuto_set_left(taffy_Rect_of_LengthPercentageA
     reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->left = *_left;
 }
 
-void taffy_Rect_of_LengthPercentageAuto_set_top(taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* top)
-{
-    ASSERT_NOT_NULL(self);
-    ASSERT_NOT_NULL(top);
-
-    const taffy::LengthPercentageAuto* _top = reinterpret_cast<const taffy::LengthPercentageAuto*>(top);
-    reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->top = *_top;
-}
-
 void taffy_Rect_of_LengthPercentageAuto_set_right(taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* right)
 {
     ASSERT_NOT_NULL(self);
@@ -2182,6 +2173,15 @@ void taffy_Rect_of_LengthPercentageAuto_set_right(taffy_Rect_of_LengthPercentage
 
     const taffy::LengthPercentageAuto* _right = reinterpret_cast<const taffy::LengthPercentageAuto*>(right);
     reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->right = *_right;
+}
+
+void taffy_Rect_of_LengthPercentageAuto_set_top(taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* top)
+{
+    ASSERT_NOT_NULL(self);
+    ASSERT_NOT_NULL(top);
+
+    const taffy::LengthPercentageAuto* _top = reinterpret_cast<const taffy::LengthPercentageAuto*>(top);
+    reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->top = *_top;
 }
 
 void taffy_Rect_of_LengthPercentageAuto_set_bottom(taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* bottom)
@@ -2200,18 +2200,18 @@ taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_left(taff
     return reinterpret_cast<taffy_LengthPercentageAuto*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->left ) );
 }
 
-taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_top(taffy_Rect_of_LengthPercentageAuto* self)
-{
-    ASSERT_NOT_NULL(self);
-
-    return reinterpret_cast<taffy_LengthPercentageAuto*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->top ) );
-}
-
 taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_right(taffy_Rect_of_LengthPercentageAuto* self)
 {
     ASSERT_NOT_NULL(self);
 
     return reinterpret_cast<taffy_LengthPercentageAuto*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->right ) );
+}
+
+taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_top(taffy_Rect_of_LengthPercentageAuto* self)
+{
+    ASSERT_NOT_NULL(self);
+
+    return reinterpret_cast<taffy_LengthPercentageAuto*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->top ) );
 }
 
 taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_bottom(taffy_Rect_of_LengthPercentageAuto* self)

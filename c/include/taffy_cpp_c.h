@@ -667,8 +667,8 @@ extern "C" {
             /* constructors */
             taffy_Rect_of_LengthPercentage* taffy_Rect_of_LengthPercentage_new(
                 const taffy_LengthPercentage* left,
-                const taffy_LengthPercentage* top,
                 const taffy_LengthPercentage* right,
+                const taffy_LengthPercentage* top,
                 const taffy_LengthPercentage* bottom
             );
 
@@ -683,20 +683,20 @@ extern "C" {
 
             /* getters */
             const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_left  (const taffy_Rect_of_LengthPercentage* self);
-            const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_top   (const taffy_Rect_of_LengthPercentage* self);
             const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_right (const taffy_Rect_of_LengthPercentage* self);
+            const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_top   (const taffy_Rect_of_LengthPercentage* self);
             const taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_bottom(const taffy_Rect_of_LengthPercentage* self);
 
             /* setters */
             void taffy_Rect_of_LengthPercentage_set_left  (taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* left);
-            void taffy_Rect_of_LengthPercentage_set_top   (taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* top);
             void taffy_Rect_of_LengthPercentage_set_right (taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* right);
+            void taffy_Rect_of_LengthPercentage_set_top   (taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* top);
             void taffy_Rect_of_LengthPercentage_set_bottom(taffy_Rect_of_LengthPercentage* self, const taffy_LengthPercentage* bottom);
 
             /* mutators */
             taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_left  (taffy_Rect_of_LengthPercentage* self);
-            taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_top   (taffy_Rect_of_LengthPercentage* self);
             taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_right (taffy_Rect_of_LengthPercentage* self);
+            taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_top   (taffy_Rect_of_LengthPercentage* self);
             taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_bottom(taffy_Rect_of_LengthPercentage* self);
 
             /* Rect<LengthPercentageAuto> ----------------------------------- */
@@ -706,8 +706,8 @@ extern "C" {
             /* constructors */
             taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new(
                 const taffy_LengthPercentageAuto* left,
-                const taffy_LengthPercentageAuto* top,
                 const taffy_LengthPercentageAuto* right,
+                const taffy_LengthPercentageAuto* top,
                 const taffy_LengthPercentageAuto* bottom
             );
 
@@ -722,20 +722,20 @@ extern "C" {
 
             /* getters */
             const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_left  (const taffy_Rect_of_LengthPercentageAuto* self);
-            const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_top   (const taffy_Rect_of_LengthPercentageAuto* self);
             const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_right (const taffy_Rect_of_LengthPercentageAuto* self);
+            const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_top   (const taffy_Rect_of_LengthPercentageAuto* self);
             const taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_bottom(const taffy_Rect_of_LengthPercentageAuto* self);
 
             /* setters */
             void taffy_Rect_of_LengthPercentageAuto_set_left  (taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* left);
-            void taffy_Rect_of_LengthPercentageAuto_set_top   (taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* top);
             void taffy_Rect_of_LengthPercentageAuto_set_right (taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* right);
+            void taffy_Rect_of_LengthPercentageAuto_set_top   (taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* top);
             void taffy_Rect_of_LengthPercentageAuto_set_bottom(taffy_Rect_of_LengthPercentageAuto* self, const taffy_LengthPercentageAuto* bottom);
 
             /* mutators */
             taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_left  (taffy_Rect_of_LengthPercentageAuto* self);
-            taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_top   (taffy_Rect_of_LengthPercentageAuto* self);
             taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_right (taffy_Rect_of_LengthPercentageAuto* self);
+            taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_top   (taffy_Rect_of_LengthPercentageAuto* self);
             taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_bottom(taffy_Rect_of_LengthPercentageAuto* self);
 
             /* Size<LengthPercentage> ---------------------------------------------- */
