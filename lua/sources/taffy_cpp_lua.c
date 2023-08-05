@@ -7030,13 +7030,19 @@ static int lua_taffy_Point_of_Overflow_new(lua_State* L)
 
                         if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'x' */
                         {
-                            x_found = 1; /* true */
-                            x = *value_value;
+                            if(value_value != NULL)
+                            {
+                                x_found = 1; /* true */
+                                x = *value_value;
+                            }
                         }
                         else if(key_value == 2.0f) /* 'second' index (in C its '1', in Lua its '2') is 'y' */
                         {
-                            y_found = 1; /* true */
-                            y = *value_value;
+                            if(value_value != NULL)
+                            {
+                                y_found = 1; /* true */
+                                y = *value_value;
+                            }
                         }
                     }
 
@@ -7067,7 +7073,7 @@ static int lua_taffy_Point_of_Overflow_new(lua_State* L)
             /*
                 Second attempt - try to interpret table like 'dictionary':
 
-                    {x = 35, y = 42}
+                    {x = Overflow.Visible, y = Overflow.Hidden}
 
                 if table size != 2 OR 'x' and 'y' not in indexes '1' and '2'
             */
@@ -7395,6 +7401,654 @@ static void lua_push_table_taffy_Point_of_Overflow(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
+/* Rect<LengthPercentage> */
+
+static const char LUA_META_OBJECT_taffy_Rect_of_LengthPercentage[]           = "taffy_Rect_of_LengthPercentage_mt";
+static const char LUA_META_OBJECT_taffy_Rect_of_LengthPercentage_namespace[] = "taffy_Rect_of_LengthPercentage_namespace_mt";
+
+static int lua_taffy_Rect_of_LengthPercentage_new(lua_State* L)
+{
+    const int n = lua_gettop(L); /* Number of arguments */
+
+    switch(n) {
+    case 1:
+    {
+        if(lua_type(L, 1) == LUA_TTABLE)
+        {
+            /*
+                First attempt - try to interpret table like 'array':
+
+                    {
+                        LengthPercentage.Length (10),
+                        LengthPercentage.Percent(20),
+                        LengthPercentage.Length (30),
+                        LengthPercentage.Percent(40)
+                    }
+            */
+            const size_t table_size = lua_rawlen(L, 1);
+            if(table_size == 4)
+            {
+                /* bool */ int left_found   = 0; /* false */
+                /* bool */ int right_found  = 0; /* false */
+                /* bool */ int top_found    = 0; /* false */
+                /* bool */ int bottom_found = 0; /* false */
+
+                taffy_LengthPercentage* left   = NULL;
+                taffy_LengthPercentage* right  = NULL;
+                taffy_LengthPercentage* top    = NULL;
+                taffy_LengthPercentage* bottom = NULL;
+
+                lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+                while( lua_next(L, 1) != 0 )
+                {
+                    /* uses 'key' (at index -2) and 'value' (at index -1) */
+                    const int value_type = lua_type(L, -1);
+                    const int key_type   = lua_type(L, -2);
+
+                    if((key_type == LUA_TNUMBER) && (value_type == LUA_TUSERDATA))
+                    {
+                        taffy_LengthPercentage** value_value = NULL;
+                        lua_Number               key_value   = 0.0f;
+
+                        lua_pushvalue(L, -2); /* copy 'key'   */
+                        lua_pushvalue(L, -2); /* copy 'value' */
+
+                        value_value = (taffy_LengthPercentage**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_LengthPercentage); /* pop 'value' */
+                        key_value   = lua_tonumber(L, -2);                                                                     /* pop 'key'   */
+
+                        if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'left' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                left_found = 1; /* true */
+                                left = *value_value;
+                            }
+                        }
+                        else if(key_value == 2.0f) /* 'second' index (in C its '1', in Lua its '2') is 'right' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                right_found = 1; /* true */
+                                right = *value_value;
+                            }
+                        }
+                        else if(key_value == 3.0f) /* 'third' index (in C its '2', in Lua its '3') is 'top' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                top_found = 1; /* true */
+                                top = *value_value;
+                            }
+                        }
+                        else if(key_value == 4.0f) /* 'fourth' index (in C its '3', in Lua its '4') is 'bottom' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                bottom_found = 1; /* true */
+                                bottom = *value_value;
+                            }
+                        }
+                    }
+
+                    /* removes 'value'; keeps 'key' for next iteration */
+                    lua_pop(L, 1);
+                }
+                lua_pop(L, 1); /* pop 'key' from the stack */
+
+                if( (left_found == /* true */ 1) && (right_found == /* true */ 1) && (top_found == /* true */ 1) && (bottom_found == /* true */ 1) )
+                {
+                    taffy_Rect_of_LengthPercentage* object_ptr = taffy_Rect_of_LengthPercentage_new(left, right, top, bottom);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Rect_of_LengthPercentage** user_data = (taffy_Rect_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentage*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : taffy_Rect_of_LengthPercentage_new() failed");
+                    }
+                }
+            }
+
+            /*
+                Second attempt - try to interpret table like 'dictionary':
+
+                    {
+                        left   = LengthPercentage.Length (10),
+                        right  = LengthPercentage.Percent(20),
+                        top    = LenghtPercentage.Length (30),
+                        bottom = LengthPercentage.Percent(40)
+                    }
+
+                if table size != 4 OR 'left','right','top','bottom' not in indexes '1','2','3','4'
+            */
+            {
+                /* bool */ int left_found   = 0; /* false */
+                /* bool */ int right_found  = 0; /* false */
+                /* bool */ int top_found    = 0; /* false */
+                /* bool */ int bottom_found = 0; /* false */
+
+                taffy_LengthPercentage* left   = NULL;
+                taffy_LengthPercentage* right  = NULL;
+                taffy_LengthPercentage* top    = NULL;
+                taffy_LengthPercentage* bottom = NULL;
+
+                /* Try to get 'left' */
+                {
+                    const int left_type = lua_getfield(L, 1, "left");
+                    if(left_type == LUA_TUSERDATA)
+                    {
+                        taffy_LengthPercentage** left_value = (taffy_LengthPercentage**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_LengthPercentage);
+                        if(left_value != NULL)
+                        {
+                            left_found = 1; /* true */
+                            left = *left_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                /* Try to get 'right' */
+                {
+                    const int right_type = lua_getfield(L, 1, "right");
+                    if(right_type == LUA_TUSERDATA)
+                    {
+                        taffy_LengthPercentage** right_value = (taffy_LengthPercentage**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_LengthPercentage);
+                        if(right_value != NULL)
+                        {
+                            right_found = 1; /* true */
+                            right = *right_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                /* Try to get 'top' */
+                {
+                    const int top_type = lua_getfield(L, 1, "top");
+                    if(top_type == LUA_TUSERDATA)
+                    {
+                        taffy_LengthPercentage** top_value = (taffy_LengthPercentage**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_LengthPercentage);
+                        if(top_value != NULL)
+                        {
+                            top_found = 1; /* true */
+                            top = *top_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                /* Try to get 'bottom' */
+                {
+                    const int bottom_type = lua_getfield(L, 1, "bottom");
+                    if(bottom_type == LUA_TUSERDATA)
+                    {
+                        taffy_LengthPercentage** bottom_value = (taffy_LengthPercentage**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_LengthPercentage);
+                        if(bottom_value != NULL)
+                        {
+                            bottom_found = 1; /* true */
+                            bottom = *bottom_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                if( (left_found == /* true */ 1) && (right_found == /* true */ 1) && (top_found == /* true */ 1)  && (bottom_found == /* true */ 1) )
+                {
+                    taffy_Rect_of_LengthPercentage* object_ptr = taffy_Rect_of_LengthPercentage_new(left, right, top, bottom);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Rect_of_LengthPercentage** user_data = (taffy_Rect_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentage*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : taffy_Rect_of_LengthPercentage_new() failed");
+                    }
+                }
+            }
+
+            /* After all, at this line all attempts to parse table are failed */
+            return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : provided table is invalid");
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : provided argument is not a table");
+        }
+    } break;
+
+    case 4:
+    {
+        taffy_LengthPercentage** left   = (taffy_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_LengthPercentage);
+        taffy_LengthPercentage** right  = (taffy_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentage);
+        taffy_LengthPercentage** top    = (taffy_LengthPercentage**)luaL_checkudata(L, 3, LUA_META_OBJECT_taffy_LengthPercentage);
+        taffy_LengthPercentage** bottom = (taffy_LengthPercentage**)luaL_checkudata(L, 4, LUA_META_OBJECT_taffy_LengthPercentage);
+
+
+        taffy_Rect_of_LengthPercentage* object_ptr = taffy_Rect_of_LengthPercentage_new(*left, *right, *top, *bottom);
+        if(object_ptr != NULL)
+        {
+            taffy_Rect_of_LengthPercentage** user_data = (taffy_Rect_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentage*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : taffy_Rect_of_LengthPercentage_new() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : wrong arguments count");
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_copy(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    taffy_Rect_of_LengthPercentage* copy = taffy_Rect_of_LengthPercentage_new_copy(*self);
+
+    if(copy != NULL)
+    {
+        taffy_Rect_of_LengthPercentage** user_data = (taffy_Rect_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentage*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Rect_of_LengthPercentage : taffy_Rect_of_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_delete(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    taffy_Rect_of_LengthPercentage_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_eq(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** object_lhs = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+    taffy_Rect_of_LengthPercentage** object_rhs = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    const int is_equal = taffy_Rect_of_LengthPercentage_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_get_left(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    const taffy_LengthPercentage* left = taffy_Rect_of_LengthPercentage_get_left(*self);
+
+    taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(left);
+    if(copy != NULL)
+    {
+        taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+        *user_data = copy;
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_get_right(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    const taffy_LengthPercentage* right = taffy_Rect_of_LengthPercentage_get_right(*self);
+
+    taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(right);
+    if(copy != NULL)
+    {
+        taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+        *user_data = copy;
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffyLengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_get_top(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    const taffy_LengthPercentage* top = taffy_Rect_of_LengthPercentage_get_top(*self);
+
+    taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(top);
+    if(copy != NULL)
+    {
+        taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+        *user_data = copy;
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_get_bottom(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    const taffy_LengthPercentage* bottom = taffy_Rect_of_LengthPercentage_get_bottom(*self);
+
+    taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(bottom);
+    if(copy != NULL)
+    {
+        taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+        *user_data = copy;
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_set_left(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    taffy_LengthPercentage** left = (taffy_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_Rect_of_LengthPercentage_set_left(*self, *left);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_set_right(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    taffy_LengthPercentage** right = (taffy_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_Rect_of_LengthPercentage_set_right(*self, *right);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_set_top(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    taffy_LengthPercentage** top = (taffy_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_Rect_of_LengthPercentage_set_top(*self, *top);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_set_bottom(lua_State* L)
+{
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+    taffy_LengthPercentage** bottom = (taffy_LengthPercentage**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    taffy_Rect_of_LengthPercentage_set_bottom(*self, *bottom);
+
+    return 0; /* number of results */
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static int lua_taffy_Rect_of_LengthPercentage_index(lua_State* L)
+{
+    /*
+        function mt.__index(table, key) <-- here is 'table' may be 'userdata'
+            return table[key]
+        end
+    */
+
+    /*
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we
+        use use this function for indexing our known 'userdata', that have only
+        function names as keys, we dont care about other types for simplicity.
+    */
+
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+    const char* key = lua_tostring(L, 2);
+
+    if(strcmp(key, "left") == 0)
+    {
+        const taffy_LengthPercentage* left = taffy_Rect_of_LengthPercentage_get_left(*self);
+
+        taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(left);
+        if(copy != NULL)
+        {
+            taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+            *user_data = copy;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+        }
+    }
+    else if(strcmp(key, "right") == 0)
+    {
+        const taffy_LengthPercentage* right = taffy_Rect_of_LengthPercentage_get_right(*self);
+
+        taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(right);
+        if(copy != NULL)
+        {
+            taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+            *user_data = copy;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+        }
+    }
+    else if(strcmp(key, "top") == 0)
+    {
+        const taffy_LengthPercentage* top = taffy_Rect_of_LengthPercentage_get_top(*self);
+
+        taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(top);
+        if(copy != NULL)
+        {
+            taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+            *user_data = copy;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+        }
+    }
+    else if(strcmp(key, "bottom") == 0)
+    {
+        const taffy_LengthPercentage* bottom = taffy_Rect_of_LengthPercentage_get_bottom(*self);
+
+        taffy_LengthPercentage* copy = taffy_LengthPercentage_new_copy(bottom);
+        if(copy != NULL)
+        {
+            taffy_LengthPercentage** user_data = (taffy_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_LengthPercentage*));
+            *user_data = copy;
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_LengthPercentage);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_LengthPercentage : taffy_LengthPercentage_new_copy() failed");
+        }
+    }
+
+    /* default behavior */
+    luaL_getmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+    lua_pushstring(L, key);
+    lua_rawget(L, -2);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Rect_of_LengthPercentage_newindex(lua_State* L)
+{
+    /*
+        function mt.__newindex(self, key, value)
+            foo[key] = value
+        end
+    */
+
+    taffy_Rect_of_LengthPercentage** self = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+    const char* key = luaL_checkstring(L, 2);
+    taffy_LengthPercentage** value = (taffy_LengthPercentage**)luaL_checkudata(L, 3, LUA_META_OBJECT_taffy_LengthPercentage);
+
+    if(strcmp(key, "left") == 0)
+    {
+        taffy_Rect_of_LengthPercentage_set_left(*self, *value);
+
+        return 0; /* number of results */
+    }
+    else if( strcmp(key, "right") == 0)
+    {
+        taffy_Rect_of_LengthPercentage_set_right(*self, *value);
+
+        return 0; /* number of results */
+    }
+    else if( strcmp(key, "top") == 0)
+    {
+        taffy_Rect_of_LengthPercentage_set_top(*self, *value);
+
+        return 0; /* number of results */
+    }
+    else if( strcmp(key, "bottom") == 0)
+    {
+        taffy_Rect_of_LengthPercentage_set_bottom(*self, *value);
+
+        return 0; /* number of results */
+    }
+
+    return luaL_error(L, "taffy_Rect_of_LengthPercentage 'newindex' failed"); /* TODO: better message*/
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_Rect_of_LengthPercentage(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage) )
+    {
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_get_left);
+        lua_setfield(L, -2, "get_left");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_get_right);
+        lua_setfield(L, -2, "get_right");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_get_top);
+        lua_setfield(L, -2, "get_top");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_get_bottom);
+        lua_setfield(L, -2, "get_bottom");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_set_left);
+        lua_setfield(L, -2, "set_left");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_set_right);
+        lua_setfield(L, -2, "set_right");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_set_top);
+        lua_setfield(L, -2, "set_top");
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_set_bottom);
+        lua_setfield(L, -2, "set_bottom");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Rect_of_LengthPercentage_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
 int luaopen_libtaffy_cpp_lua(lua_State* L);
 int luaopen_libtaffy_cpp_lua(lua_State* L)
@@ -7553,6 +8207,12 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             lua_push_table_taffy_Point_of_Overflow(L);
             lua_setfield(L, -2, "Point_of_Overflow");
+        }
+
+        /* Register Rect<LengthPercentage> */
+        {
+            lua_push_table_taffy_Rect_of_LengthPercentage(L);
+            lua_setfield(L, -2, "Rect_of_LengthPercentage");
         }
     }
 

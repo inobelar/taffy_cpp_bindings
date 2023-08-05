@@ -2279,4 +2279,217 @@ describe('taffy_cpp lua binding', function()
         end)
     end) -- Point_of_Overflow
 
+    describe('Rect_of_LengthPercentage', function()
+        describe('Constructors', function()
+            it('common', function()
+                local rect = t.Rect_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20),
+                    t.LengthPercentage.Length (30),
+                    t.LengthPercentage.Percent(40)
+                )
+
+                expect( rect ).to.exist()
+                expect( rect:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+            end)
+
+            it('table (array)', function()
+                local rect = t.Rect_of_LengthPercentage.new({
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20),
+                    t.LengthPercentage.Length (30),
+                    t.LengthPercentage.Percent(40)
+                })
+
+                expect( rect ).to.exist()
+                expect( rect:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+            end)
+
+            it('table (array) explicit indexes', function()
+                local rect1 = t.Rect_of_LengthPercentage.new({
+                    [1] = t.LengthPercentage.Length (10),
+                    [2] = t.LengthPercentage.Percent(20),
+                    [3] = t.LengthPercentage.Length (30),
+                    [4] = t.LengthPercentage.Percent(40)
+                })
+
+                expect( rect1 ).to.exist()
+                expect( rect1:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect1:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect1:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect1:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+
+                local rect2 = t.Rect_of_LengthPercentage.new({
+                    [2] = t.LengthPercentage.Percent(20),
+                    [1] = t.LengthPercentage.Length (10),
+                    [4] = t.LengthPercentage.Percent(40),
+                    [3] = t.LengthPercentage.Length (30)
+                })
+
+                expect( rect2 ).to.exist()
+                expect( rect2:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect2:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect2:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect2:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+            end)
+
+            it('table (dictionary)', function()
+                local rect1 = t.Rect_of_LengthPercentage.new({
+                    left   = t.LengthPercentage.Length (10),
+                    right  = t.LengthPercentage.Percent(20),
+                    top    = t.LengthPercentage.Length (30),
+                    bottom = t.LengthPercentage.Percent(40)
+                })
+
+                expect( rect1 ).to.exist()
+                expect( rect1:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect1:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect1:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect1:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+
+                local rect2 = t.Rect_of_LengthPercentage.new({
+                    right  = t.LengthPercentage.Percent(20),
+                    left   = t.LengthPercentage.Length (10),
+                    bottom = t.LengthPercentage.Percent(40),
+                    top    = t.LengthPercentage.Length (30)
+                })
+
+                expect( rect2 ).to.exist()
+                expect( rect2:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect2:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect2:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect2:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+            end)
+
+            it('table (without parentheses)', function()
+                local rect1 = t.Rect_of_LengthPercentage.new {
+                    left   = t.LengthPercentage.Length (10),
+                    right  = t.LengthPercentage.Percent(20),
+                    top    = t.LengthPercentage.Length (30),
+                    bottom = t.LengthPercentage.Percent(40)
+                }
+
+                expect( rect1 ).to.exist()
+                expect( rect1:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect1:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect1:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect1:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+
+                local rect2 = t.Rect_of_LengthPercentage.new {
+                    left   = t.LengthPercentage.Length (10),
+                    right  = t.LengthPercentage.Percent(20),
+                    top    = t.LengthPercentage.Length (30),
+                    bottom = t.LengthPercentage.Percent(40)
+                }
+
+                expect( rect2 ).to.exist()
+                expect( rect2:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+                expect( rect2:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+                expect( rect2:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+                expect( rect2:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+            end)
+        end)
+
+        it('Copying', function()
+            local rect = t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20),
+                t.LengthPercentage.Length (30),
+                t.LengthPercentage.Percent(40)
+            )
+
+            local copy = rect:copy()
+
+            expect( copy ).to.exist()
+            expect( copy:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+            expect( copy:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+            expect( copy:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+            expect( copy:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local rect = t.Rect_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20),
+                    t.LengthPercentage.Length (30),
+                    t.LengthPercentage.Percent(40)
+                )
+
+                local rects_equal     = rect == t.Rect_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20),
+                    t.LengthPercentage.Length (30),
+                    t.LengthPercentage.Percent(40)
+                )
+
+                local rects_not_equal = rect ~= t.Rect_of_LengthPercentage.new(
+                    t.LengthPercentage.Percent(11),
+                    t.LengthPercentage.Length (22),
+                    t.LengthPercentage.Percent(33),
+                    t.LengthPercentage.Length (44)
+                )
+
+                expect( rects_equal     ).to.be( true )
+                expect( rects_not_equal ).to.be( true )
+            end)
+        end)
+
+        it('Getters/Setters', function()
+            local rect = t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20),
+                t.LengthPercentage.Length (30),
+                t.LengthPercentage.Percent(40)
+            )
+
+            expect( rect ).to.exist()
+            expect( rect:get_left()   ).to.be( t.LengthPercentage.Length (10) )
+            expect( rect:get_right()  ).to.be( t.LengthPercentage.Percent(20) )
+            expect( rect:get_top()    ).to.be( t.LengthPercentage.Length (30) )
+            expect( rect:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
+
+            rect:set_left  ( t.LengthPercentage.Percent(11) )
+            rect:set_right ( t.LengthPercentage.Length (22) )
+            rect:set_top   ( t.LengthPercentage.Percent(33) )
+            rect:set_bottom( t.LengthPercentage.Length (44) )
+
+            expect( rect:get_left()   ).to.be( t.LengthPercentage.Percent(11) )
+            expect( rect:get_right()  ).to.be( t.LengthPercentage.Length (22) )
+            expect( rect:get_top()    ).to.be( t.LengthPercentage.Percent(33) )
+            expect( rect:get_bottom() ).to.be( t.LengthPercentage.Length (44) )
+        end)
+
+        it('Properties', function()
+            local rect = t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20),
+                t.LengthPercentage.Length (30),
+                t.LengthPercentage.Percent(40)
+            )
+
+            expect( rect ).to.exist()
+            expect( rect.left   ).to.be( t.LengthPercentage.Length (10) )
+            expect( rect.right  ).to.be( t.LengthPercentage.Percent(20) )
+            expect( rect.top    ).to.be( t.LengthPercentage.Length (30) )
+            expect( rect.bottom ).to.be( t.LengthPercentage.Percent(40) )
+
+            rect.left   = t.LengthPercentage.Percent(11)
+            rect.right  = t.LengthPercentage.Length (22)
+            rect.top    = t.LengthPercentage.Percent(33)
+            rect.bottom = t.LengthPercentage.Length (44)
+
+            expect( rect.left   ).to.be( t.LengthPercentage.Percent(11) )
+            expect( rect.right  ).to.be( t.LengthPercentage.Length (22) )
+            expect( rect.top    ).to.be( t.LengthPercentage.Percent(33) )
+            expect( rect.bottom ).to.be( t.LengthPercentage.Length (44) )
+        end)
+    end) -- Rect_of_LengthPercentage
+
 end)
