@@ -2705,4 +2705,158 @@ describe('taffy_cpp lua binding', function()
         end)
     end) -- Rect_of_LengthPercentageAuto
 
+    describe('Size_of_LengthPercentage', function()
+        describe('Constructors', function()
+            it('common', function()
+                local size = t.Size_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20)
+                )
+
+                expect( size ).to.exist()
+                expect( size:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+            end)
+
+            it('table (array)', function()
+                local size = t.Size_of_LengthPercentage.new({
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20)
+                })
+
+                expect( size ).to.exist()
+                expect( size:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+            end)
+
+            it('table (array) explicit indexes', function()
+                local size1 = t.Size_of_LengthPercentage.new({
+                    [1] = t.LengthPercentage.Length (10),
+                    [2] = t.LengthPercentage.Percent(20)
+                })
+
+                expect( size1 ).to.exist()
+                expect( size1:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size1:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+
+                local size2 = t.Size_of_LengthPercentage.new({
+                    [2] = t.LengthPercentage.Percent(20),
+                    [1] = t.LengthPercentage.Length (10)
+                })
+
+                expect( size2 ).to.exist()
+                expect( size2:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size2:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+            end)
+
+            it('table (dictionary)', function()
+                local size1 = t.Size_of_LengthPercentage.new({
+                    width  = t.LengthPercentage.Length (10),
+                    height = t.LengthPercentage.Percent(20)
+                })
+
+                expect( size1 ).to.exist()
+                expect( size1:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size1:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+
+                local size2 = t.Size_of_LengthPercentage.new({
+                    height = t.LengthPercentage.Percent(20),
+                    width  = t.LengthPercentage.Length (10)
+                })
+
+                expect( size2 ).to.exist()
+                expect( size2:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size2:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+            end)
+
+            it('table (without parentheses)', function()
+                local size1 = t.Size_of_LengthPercentage.new {
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20)
+                }
+
+                expect( size1 ).to.exist()
+                expect( size1:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size1:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+
+                local size2 = t.Size_of_LengthPercentage.new {
+                    width  = t.LengthPercentage.Length (10),
+                    height = t.LengthPercentage.Percent(20)
+                }
+
+                expect( size2 ).to.exist()
+                expect( size2:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+                expect( size2:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+            end)
+        end)
+
+        it('Copying', function()
+            local size = t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20)
+            )
+
+            local copy = size:copy()
+
+            expect( copy ).to.exist()
+            expect( copy:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+            expect( copy:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local size = t.Size_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20)
+                )
+
+                local sizes_equal     = size == t.Size_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20)
+                )
+                local sizes_not_equal = size ~= t.Size_of_LengthPercentage.new(
+                    t.LengthPercentage.Percent (11),
+                    t.LengthPercentage.Length  (22)
+                )
+
+                expect( sizes_equal     ).to.be( true )
+                expect( sizes_not_equal ).to.be( true )
+            end)
+        end)
+
+        it('Getters/Setters', function()
+            local size = t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20)
+            )
+
+            expect( size ).to.exist()
+            expect( size:get_width()  ).to.be( t.LengthPercentage.Length (10) )
+            expect( size:get_height() ).to.be( t.LengthPercentage.Percent(20) )
+
+            size:set_width ( t.LengthPercentage.Percent(11) )
+            size:set_height( t.LengthPercentage.Length (22) )
+
+            expect( size:get_width()  ).to.be( t.LengthPercentage.Percent(11) )
+            expect( size:get_height() ).to.be( t.LengthPercentage.Length (22) )
+        end)
+
+        it('Properties', function()
+            local size = t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20)
+            )
+
+            expect( size ).to.exist()
+            expect( size.width  ).to.be( t.LengthPercentage.Length (10) )
+            expect( size.height ).to.be( t.LengthPercentage.Percent(20) )
+
+            size.width  = t.LengthPercentage.Percent(11)
+            size.height = t.LengthPercentage.Length (22)
+
+            expect( size.width  ).to.be( t.LengthPercentage.Percent(11) )
+            expect( size.height ).to.be( t.LengthPercentage.Length (22) )
+        end)
+    end) -- Size_of_LengthPercentage
+
 end)
