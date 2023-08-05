@@ -9011,7 +9011,6 @@ static int lua_taffy_Size_of_LengthPercentage_set_height(lua_State* L)
     return 0; /* number of results */
 }
 
-
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 static int lua_taffy_Size_of_LengthPercentage_index(lua_State* L)
@@ -9166,6 +9165,477 @@ static void lua_push_table_taffy_Size_of_LengthPercentage(lua_State* L)
 
     lua_newtable(L);
     luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_LengthPercentage_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Size<Dimension> */
+
+static const char LUA_META_OBJECT_taffy_Size_of_Dimension[]           = "taffy_Size_of_Dimension_mt";
+static const char LUA_META_OBJECT_taffy_Size_of_Dimension_namespace[] = "taffy_Size_of_Dimension_namespace_mt";
+
+static int lua_taffy_Size_of_Dimension_new(lua_State* L)
+{
+    const int n = lua_gettop(L); /* Number of arguments */
+
+    switch(n) {
+    case 1:
+    {
+        if(lua_type(L, 1) == LUA_TTABLE)
+        {
+            /*
+                First attempt - try to interpret table like 'array':
+
+                    {
+                        Dimension.Length(10),
+                        Dimension.Percent(20)
+                    }
+
+                    {
+                        [1] = Dimension.Length(10),
+                        [2] = Dimension.Percent(20)
+                    }
+                    {
+                        [2] = Dimension.Percent(20),
+                        [1] = Dimension.Length(10)
+                    }
+            */
+            const size_t table_size = lua_rawlen(L, 1);
+            if(table_size == 2)
+            {
+                /* bool */ int width_found  = 0; /* false */
+                /* bool */ int height_found = 0; /* false */
+
+                taffy_Dimension* width  = NULL;
+                taffy_Dimension* height = NULL;
+
+                lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+                while( lua_next(L, 1) != 0 )
+                {
+                    /* uses 'key' (at index -2) and 'value' (at index -1) */
+                    const int value_type = lua_type(L, -1);
+                    const int key_type   = lua_type(L, -2);
+
+                    if((key_type == LUA_TNUMBER) && (value_type == LUA_TUSERDATA))
+                    {
+                        taffy_Dimension** value_value = NULL;
+                        lua_Number        key_value   = 0.0f;
+
+                        lua_pushvalue(L, -2); /* copy 'key'   */
+                        lua_pushvalue(L, -2); /* copy 'value' */
+
+                        value_value = (taffy_Dimension**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_Dimension); /* pop 'value' */
+                        key_value   = lua_tonumber(L, -2);                                                       /* pop 'key'   */
+
+                        if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'width' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                width_found = 1; /* true */
+                                width = *value_value;
+                            }
+                        }
+                        else if(key_value == 2.0f) /* 'second' index (in C its '1', in Lua its '2') is 'height' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                height_found = 1; /* true */
+                                height = *value_value;
+                            }
+                        }
+                    }
+
+                    /* removes 'value'; keeps 'key' for next iteration */
+                    lua_pop(L, 1);
+                }
+                lua_pop(L, 1); /* pop 'key' from the stack */
+
+                if( (width_found == /* true */ 1) && (height_found == /* true */ 1) )
+                {
+                    taffy_Size_of_Dimension* object_ptr = taffy_Size_of_Dimension_new(width, height);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Size_of_Dimension : taffy_Size_of_Dimension_new() failed");
+                    }
+                }
+            }
+
+            /*
+                Second attempt - try to interpret table like 'dictionary':
+
+                    {
+                        width  = Dimension.Length(10),
+                        height = Dimension.Percent(20)
+                    }
+
+                if table size != 2 OR 'width' and 'height' not in indexes '1' and '2'
+            */
+            {
+                /* bool */ int width_found  = 0; /* false */
+                /* bool */ int height_found = 0; /* false */
+
+                taffy_Dimension* width  = NULL;
+                taffy_Dimension* height = NULL;
+
+                /* Try to get 'width' */
+                {
+                    const int width_type = lua_getfield(L, 1, "width");
+                    if(width_type == LUA_TUSERDATA)
+                    {
+                        taffy_Dimension** width_value = (taffy_Dimension**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_Dimension);
+                        if(width_value != NULL)
+                        {
+                            width_found = 1; /* true */
+                            width = *width_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                /* Try to get 'height' */
+                {
+                    const int height_type = lua_getfield(L, 1, "height");
+                    if(height_type == LUA_TUSERDATA)
+                    {
+                        taffy_Dimension** height_value = (taffy_Dimension**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_Dimension);
+                        if(height_value != NULL)
+                        {
+                            height_found = 1; /* true */
+                            height = *height_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                if( (width_found == /* true */ 1) && (height_found == /* true */ 1) )
+                {
+                    taffy_Size_of_Dimension* object_ptr = taffy_Size_of_Dimension_new(width, height);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Size_of_Dimension : taffy_Size_of_Dimension_new() failed");
+                    }
+                }
+            }
+
+            /* After all, at this line all attempts to parse table are failed */
+            return luaL_error(L, "Failed to create taffy_Size_of_Dimension : provided table is invalid");
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Size_of_Dimension : provided argument is not a table");
+        }
+    } break;
+
+    case 2:
+    {
+        taffy_Dimension** width  = (taffy_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Dimension);
+        taffy_Dimension** height = (taffy_Dimension**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Dimension);
+
+        taffy_Size_of_Dimension* object_ptr = taffy_Size_of_Dimension_new(*width, *height);
+        if(object_ptr != NULL)
+        {
+            taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Size_of_Dimension : taffy_Size_of_Dimension_new() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Size_of_Dimension : wrong arguments count");
+}
+
+static int lua_taffy_Size_of_Dimension_copy(lua_State* L)
+{
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    taffy_Size_of_Dimension* copy = taffy_Size_of_Dimension_new_copy(*self);
+
+    if(copy != NULL)
+    {
+        taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Size_of_Dimension : taffy_Size_of_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Size_of_Dimension_delete(lua_State* L)
+{
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    taffy_Size_of_Dimension_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Size_of_Dimension_eq(lua_State* L)
+{
+    taffy_Size_of_Dimension** object_lhs = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+    taffy_Size_of_Dimension** object_rhs = (taffy_Size_of_Dimension**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    const int is_equal = taffy_Size_of_Dimension_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Size_of_Dimension_get_width(lua_State* L)
+{
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    const taffy_Dimension* width = taffy_Size_of_Dimension_get_width(*self);
+
+    taffy_Dimension* copy = taffy_Dimension_new_copy(width);
+    if(copy != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Dimension : taffy_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Size_of_Dimension_get_height(lua_State* L)
+{
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    const taffy_Dimension* height = taffy_Size_of_Dimension_get_height(*self);
+
+    taffy_Dimension* copy = taffy_Dimension_new_copy(height);
+    if(copy != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Dimension : taffy_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Size_of_Dimension_set_width(lua_State* L)
+{
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    taffy_Dimension** width = (taffy_Dimension**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Dimension);
+
+    taffy_Size_of_Dimension_set_width(*self, *width);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Size_of_Dimension_set_height(lua_State* L)
+{
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+    taffy_Dimension** height = (taffy_Dimension**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Dimension);
+
+    taffy_Size_of_Dimension_set_height(*self, *height);
+
+    return 0; /* number of results */
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static int lua_taffy_Size_of_Dimension_index(lua_State* L)
+{
+    /*
+        function mt.__index(table, key) <-- here is 'table' may be 'userdata'
+            return table[key]
+        end
+    */
+
+    /*
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we
+        use use this function for indexing our known 'userdata', that have only
+        function names as keys, we dont care about other types for simplicity.
+    */
+
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+    const char* key = lua_tostring(L, 2);
+
+    if(strcmp(key, "width") == 0)
+    {
+        const taffy_Dimension* width = taffy_Size_of_Dimension_get_width(*self);
+
+        taffy_Dimension* copy = taffy_Dimension_new_copy(width);
+        if(copy != NULL)
+        {
+            taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+            *user_data = copy;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_Dimension : taffy_Dimension_new_copy() failed");
+        }
+    }
+    else if(strcmp(key, "height") == 0)
+    {
+        const taffy_Dimension* height = taffy_Size_of_Dimension_get_height(*self);
+
+        taffy_Dimension* copy = taffy_Dimension_new_copy(height);
+        if(copy != NULL)
+        {
+            taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+            *user_data = copy;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_Dimension : taffy_Dimension_new_copy() failed");
+        }
+    }
+
+    /* default behavior */
+    luaL_getmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+    lua_pushstring(L, key);
+    lua_rawget(L, -2);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Size_of_Dimension_newindex(lua_State* L)
+{
+    /*
+        function mt.__newindex(self, key, value)
+            foo[key] = value
+        end
+    */
+
+    taffy_Size_of_Dimension** self = (taffy_Size_of_Dimension**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+    const char* key = luaL_checkstring(L, 2);
+    taffy_Dimension** value = (taffy_Dimension**)luaL_checkudata(L, 3, LUA_META_OBJECT_taffy_Dimension);
+
+
+    if(strcmp(key, "width") == 0)
+    {
+        taffy_Size_of_Dimension_set_width(*self, *value);
+
+        return 0; /* number of results */
+    }
+    else if( strcmp(key, "height") == 0)
+    {
+        taffy_Size_of_Dimension_set_height(*self, *value);
+
+        return 0; /* number of results */
+    }
+
+    return luaL_error(L, "taffy_Size_of_Dimension 'newindex' failed"); /* TODO: better message*/
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_Size_of_Dimension(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension) )
+    {
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_get_width);
+        lua_setfield(L, -2, "get_width");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_get_height);
+        lua_setfield(L, -2, "get_height");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_set_width);
+        lua_setfield(L, -2, "set_width");
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_set_height);
+        lua_setfield(L, -2, "set_height");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Size_of_Dimension_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension_namespace);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -9345,6 +9815,12 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             lua_push_table_taffy_Size_of_LengthPercentage(L);
             lua_setfield(L, -2, "Size_of_LengthPercentage");
+        }
+
+        /* Register Size<Dimension> */
+        {
+            lua_push_table_taffy_Size_of_Dimension(L);
+            lua_setfield(L, -2, "Size_of_Dimension");
         }
     }
 
