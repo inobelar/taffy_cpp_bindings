@@ -10152,6 +10152,930 @@ static void lua_push_table_taffy_Line_of_GridPlacement(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
+/* Option<AlingContent> */
+
+static const char LUA_META_OBJECT_taffy_Option_AlignContent[]           = "taffy_Option_AlignContent_mt";
+static const char LUA_META_OBJECT_taffy_Option_AlignContent_namespace[] = "taffy_Option_AlignContent_namespace_mt";
+
+static int lua_taffy_Option_AlignContent_new(lua_State* L)
+{
+    switch( lua_type(L, 1) ) {
+    case LUA_TNONE:
+    {
+        taffy_Option_AlignContent* object_ptr = taffy_Option_AlignContent_new_default();
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignContent** user_data = (taffy_Option_AlignContent**)lua_newuserdata(L, sizeof(taffy_Option_AlignContent*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignContent : taffy_Option_AlignContent_new_default() failed");
+        }
+    } break;
+
+    case LUA_TNIL:
+    {
+        taffy_Option_AlignContent* object_ptr = NULL;
+
+        lua_pop(L, 1);
+
+        object_ptr = taffy_Option_AlignContent_new(NULL);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignContent** user_data = (taffy_Option_AlignContent**)lua_newuserdata(L, sizeof(taffy_Option_AlignContent*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignContent : taffy_Option_AlignContent_new_some() failed");
+        }
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignContent* value = (taffy_AlignContent*)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AlignContent);
+
+        taffy_Option_AlignContent* object_ptr = taffy_Option_AlignContent_new_some(*value);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignContent** user_data = (taffy_Option_AlignContent**)lua_newuserdata(L, sizeof(taffy_Option_AlignContent*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignContent : taffy_Option_AlignContent_new_some() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Option_AlignContent : incorrect argument type");
+}
+
+static int lua_taffy_Option_AlignContent_copy(lua_State* L)
+{
+    taffy_Option_AlignContent** object = (taffy_Option_AlignContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+    taffy_Option_AlignContent* copy = taffy_Option_AlignContent_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_Option_AlignContent** user_data = (taffy_Option_AlignContent**)lua_newuserdata(L, sizeof(taffy_Option_AlignContent*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Option_AlignContent : taffy_Option_AlignContent_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Option_AlignContent_delete(lua_State* L)
+{
+    taffy_Option_AlignContent** self = (taffy_Option_AlignContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+    taffy_Option_AlignContent_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Option_AlignContent_eq(lua_State* L)
+{
+    taffy_Option_AlignContent** object_lhs = (taffy_Option_AlignContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignContent);
+    taffy_Option_AlignContent** object_rhs = (taffy_Option_AlignContent**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+    const int is_equal = taffy_Option_AlignContent_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_AlignContent_is_some(lua_State* L)
+{
+    taffy_Option_AlignContent** self = (taffy_Option_AlignContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+    const int is_some = taffy_Option_AlignContent_is_some(*self);
+
+    lua_pushboolean(L, is_some);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_AlignContent_get_value(lua_State* L)
+{
+    taffy_Option_AlignContent** self = (taffy_Option_AlignContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+    if( taffy_Option_AlignContent_is_some(*self) )
+    {
+        const taffy_AlignContent value = taffy_Option_AlignContent_get_value(*self);
+
+        taffy_AlignContent* user_data = (taffy_AlignContent*)lua_newuserdata(L, sizeof(taffy_AlignContent));
+        *user_data = value;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignContent);
+
+        return 1; /* number of results */
+    }
+    else /* None */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_Option_AlignContent_set_value(lua_State* L)
+{
+    taffy_Option_AlignContent** self = (taffy_Option_AlignContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+    switch( lua_type(L, 2) ) {
+
+    case LUA_TNIL:
+    {
+        lua_pop(L, 1);
+
+        taffy_Option_AlignContent_set_value(*self, NULL);
+
+        return 0; /* number of results */
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignContent* value = (taffy_AlignContent*)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_AlignContent);
+
+        taffy_Option_AlignContent_set_value(*self, value);
+
+        return 0; /* number of results */
+    } break;
+    }
+
+    return luaL_error(L, "Failed to set_value taffy_Option_AlignContent : incorrect argument type");
+}
+
+static void lua_push_table_taffy_Option_AlignContent(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_is_some);
+        lua_setfield(L, -2, "is_some");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_set_value);
+        lua_setfield(L, -2, "set_value");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignContent_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Option<JustifyContent> */
+
+static const char LUA_META_OBJECT_taffy_Option_JustifyContent[]           = "taffy_Option_JustifyContent_mt";
+static const char LUA_META_OBJECT_taffy_Option_JustifyContent_namespace[] = "taffy_Option_JustifyContent_namespace_mt";
+
+static int lua_taffy_Option_JustifyContent_new(lua_State* L)
+{
+    switch( lua_type(L, 1) ) {
+    case LUA_TNONE:
+    {
+        taffy_Option_JustifyContent* object_ptr = taffy_Option_JustifyContent_new_default();
+        if(object_ptr != NULL)
+        {
+            taffy_Option_JustifyContent** user_data = (taffy_Option_JustifyContent**)lua_newuserdata(L, sizeof(taffy_Option_JustifyContent*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_JustifyContent : taffy_Option_JustifyContent_new_default() failed");
+        }
+    } break;
+
+    case LUA_TNIL:
+    {
+        taffy_Option_JustifyContent* object_ptr = NULL;
+
+        lua_pop(L, 1);
+
+        object_ptr = taffy_Option_JustifyContent_new(NULL);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_JustifyContent** user_data = (taffy_Option_JustifyContent**)lua_newuserdata(L, sizeof(taffy_Option_JustifyContent*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_JustifyContent : taffy_Option_JustifyContent_new_some() failed");
+        }
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_JustifyContent* value = (taffy_JustifyContent*)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_JustifyContent);
+
+        taffy_Option_JustifyContent* object_ptr = taffy_Option_JustifyContent_new_some(*value);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_JustifyContent** user_data = (taffy_Option_JustifyContent**)lua_newuserdata(L, sizeof(taffy_Option_JustifyContent*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_JustifyContent : taffy_Option_JustifyContent_new_some() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Option_JustifyContent : incorrect argument type");
+}
+
+static int lua_taffy_Option_JustifyContent_copy(lua_State* L)
+{
+    taffy_Option_JustifyContent** object = (taffy_Option_JustifyContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+    taffy_Option_JustifyContent* copy = taffy_Option_JustifyContent_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_Option_JustifyContent** user_data = (taffy_Option_JustifyContent**)lua_newuserdata(L, sizeof(taffy_Option_JustifyContent*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Option_JustifyContent : taffy_Option_JustifyContent_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Option_JustifyContent_delete(lua_State* L)
+{
+    taffy_Option_JustifyContent** self = (taffy_Option_JustifyContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+    taffy_Option_JustifyContent_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Option_JustifyContent_eq(lua_State* L)
+{
+    taffy_Option_JustifyContent** object_lhs = (taffy_Option_JustifyContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+    taffy_Option_JustifyContent** object_rhs = (taffy_Option_JustifyContent**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+    const int is_equal = taffy_Option_JustifyContent_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_JustifyContent_is_some(lua_State* L)
+{
+    taffy_Option_JustifyContent** self = (taffy_Option_JustifyContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+    const int is_some = taffy_Option_JustifyContent_is_some(*self);
+
+    lua_pushboolean(L, is_some);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_JustifyContent_get_value(lua_State* L)
+{
+    taffy_Option_JustifyContent** self = (taffy_Option_JustifyContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+    if( taffy_Option_JustifyContent_is_some(*self) )
+    {
+        const taffy_JustifyContent value = taffy_Option_JustifyContent_get_value(*self);
+
+        taffy_JustifyContent* user_data = (taffy_JustifyContent*)lua_newuserdata(L, sizeof(taffy_JustifyContent));
+        *user_data = value;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_JustifyContent);
+
+        return 1; /* number of results */
+    }
+    else /* None */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_Option_JustifyContent_set_value(lua_State* L)
+{
+    taffy_Option_JustifyContent** self = (taffy_Option_JustifyContent**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+    switch( lua_type(L, 2) ) {
+
+    case LUA_TNIL:
+    {
+        lua_pop(L, 1);
+
+        taffy_Option_JustifyContent_set_value(*self, NULL);
+
+        return 0; /* number of results */
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_JustifyContent* value = (taffy_JustifyContent*)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_JustifyContent);
+
+        taffy_Option_JustifyContent_set_value(*self, value);
+
+        return 0; /* number of results */
+    } break;
+    }
+
+    return luaL_error(L, "Failed to set_value taffy_Option_JustifyContent : incorrect argument type");
+}
+
+static void lua_push_table_taffy_Option_JustifyContent(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_is_some);
+        lua_setfield(L, -2, "is_some");
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_set_value);
+        lua_setfield(L, -2, "set_value");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_JustifyContent_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Option<AlignItems> */
+
+static const char LUA_META_OBJECT_taffy_Option_AlignItems[]           = "taffy_Option_AlignItems_mt";
+static const char LUA_META_OBJECT_taffy_Option_AlignItems_namespace[] = "taffy_Option_AlignItems_namespace_mt";
+
+static int lua_taffy_Option_AlignItems_new(lua_State* L)
+{
+    switch( lua_type(L, 1) ) {
+    case LUA_TNONE:
+    {
+        taffy_Option_AlignItems* object_ptr = taffy_Option_AlignItems_new_default();
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignItems** user_data = (taffy_Option_AlignItems**)lua_newuserdata(L, sizeof(taffy_Option_AlignItems*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignItems : taffy_Option_AlignItems_new_default() failed");
+        }
+    } break;
+
+    case LUA_TNIL:
+    {
+        taffy_Option_AlignItems* object_ptr = NULL;
+
+        lua_pop(L, 1);
+
+        object_ptr = taffy_Option_AlignItems_new(NULL);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignItems** user_data = (taffy_Option_AlignItems**)lua_newuserdata(L, sizeof(taffy_Option_AlignItems*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignItems : taffy_Option_AlignItems_new_some() failed");
+        }
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignItems* value = (taffy_AlignItems*)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AlignItems);
+
+        taffy_Option_AlignItems* object_ptr = taffy_Option_AlignItems_new_some(*value);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignItems** user_data = (taffy_Option_AlignItems**)lua_newuserdata(L, sizeof(taffy_Option_AlignItems*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignItems : taffy_Option_AlignItems_new_some() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Option_AlignItems : incorrect argument type");
+}
+
+static int lua_taffy_Option_AlignItems_copy(lua_State* L)
+{
+    taffy_Option_AlignItems** object = (taffy_Option_AlignItems**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+    taffy_Option_AlignItems* copy = taffy_Option_AlignItems_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_Option_AlignItems** user_data = (taffy_Option_AlignItems**)lua_newuserdata(L, sizeof(taffy_Option_AlignItems*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Option_AlignItems : taffy_Option_AlignItems_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Option_AlignItems_delete(lua_State* L)
+{
+    taffy_Option_AlignItems** self = (taffy_Option_AlignItems**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+    taffy_Option_AlignItems_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Option_AlignItems_eq(lua_State* L)
+{
+    taffy_Option_AlignItems** object_lhs = (taffy_Option_AlignItems**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignItems);
+    taffy_Option_AlignItems** object_rhs = (taffy_Option_AlignItems**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+    const int is_equal = taffy_Option_AlignItems_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_AlignItems_is_some(lua_State* L)
+{
+    taffy_Option_AlignItems** self = (taffy_Option_AlignItems**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+    const int is_some = taffy_Option_AlignItems_is_some(*self);
+
+    lua_pushboolean(L, is_some);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_AlignItems_get_value(lua_State* L)
+{
+    taffy_Option_AlignItems** self = (taffy_Option_AlignItems**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+    if( taffy_Option_AlignItems_is_some(*self) )
+    {
+        const taffy_AlignItems value = taffy_Option_AlignItems_get_value(*self);
+
+        taffy_AlignItems* user_data = (taffy_AlignItems*)lua_newuserdata(L, sizeof(taffy_AlignItems));
+        *user_data = value;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignItems);
+
+        return 1; /* number of results */
+    }
+    else /* None */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_Option_AlignItems_set_value(lua_State* L)
+{
+    taffy_Option_AlignItems** self = (taffy_Option_AlignItems**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+    switch( lua_type(L, 2) ) {
+
+    case LUA_TNIL:
+    {
+        lua_pop(L, 1);
+
+        taffy_Option_AlignItems_set_value(*self, NULL);
+
+        return 0; /* number of results */
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignItems* value = (taffy_AlignItems*)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_AlignItems);
+
+        taffy_Option_AlignItems_set_value(*self, value);
+
+        return 0; /* number of results */
+    } break;
+    }
+
+    return luaL_error(L, "Failed to set_value taffy_Option_AlignItems : incorrect argument type");
+}
+
+static void lua_push_table_taffy_Option_AlignItems(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_is_some);
+        lua_setfield(L, -2, "is_some");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_set_value);
+        lua_setfield(L, -2, "set_value");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignItems_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Option<AlignSelf> */
+
+static const char LUA_META_OBJECT_taffy_Option_AlignSelf[]           = "taffy_Option_AlignSelf_mt";
+static const char LUA_META_OBJECT_taffy_Option_AlignSelf_namespace[] = "taffy_Option_AlignSelf_namespace_mt";
+
+static int lua_taffy_Option_AlignSelf_new(lua_State* L)
+{
+    switch( lua_type(L, 1) ) {
+    case LUA_TNONE:
+    {
+        taffy_Option_AlignSelf* object_ptr = taffy_Option_AlignSelf_new_default();
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignSelf** user_data = (taffy_Option_AlignSelf**)lua_newuserdata(L, sizeof(taffy_Option_AlignSelf*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignSelf : taffy_Option_AlignSelf_new_default() failed");
+        }
+    } break;
+
+    case LUA_TNIL:
+    {
+        taffy_Option_AlignSelf* object_ptr = NULL;
+
+        lua_pop(L, 1);
+
+        object_ptr = taffy_Option_AlignSelf_new(NULL);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignSelf** user_data = (taffy_Option_AlignSelf**)lua_newuserdata(L, sizeof(taffy_Option_AlignSelf*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignSelf : taffy_Option_AlignSelf_new_some() failed");
+        }
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignSelf* value = (taffy_AlignSelf*)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_AlignSelf);
+
+        taffy_Option_AlignSelf* object_ptr = taffy_Option_AlignSelf_new_some(*value);
+        if(object_ptr != NULL)
+        {
+            taffy_Option_AlignSelf** user_data = (taffy_Option_AlignSelf**)lua_newuserdata(L, sizeof(taffy_Option_AlignSelf*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Option_AlignSelf : taffy_Option_AlignSelf_new_some() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Option_AlignSelf : incorrect argument type");
+}
+
+static int lua_taffy_Option_AlignSelf_copy(lua_State* L)
+{
+    taffy_Option_AlignSelf** object = (taffy_Option_AlignSelf**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+    taffy_Option_AlignSelf* copy = taffy_Option_AlignSelf_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_Option_AlignSelf** user_data = (taffy_Option_AlignSelf**)lua_newuserdata(L, sizeof(taffy_Option_AlignSelf*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Option_AlignSelf : taffy_Option_AlignSelf_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Option_AlignSelf_delete(lua_State* L)
+{
+    taffy_Option_AlignSelf** self = (taffy_Option_AlignSelf**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+    taffy_Option_AlignSelf_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Option_AlignSelf_eq(lua_State* L)
+{
+    taffy_Option_AlignSelf** object_lhs = (taffy_Option_AlignSelf**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+    taffy_Option_AlignSelf** object_rhs = (taffy_Option_AlignSelf**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+    const int is_equal = taffy_Option_AlignSelf_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_AlignSelf_is_some(lua_State* L)
+{
+    taffy_Option_AlignSelf** self = (taffy_Option_AlignSelf**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+    const int is_some = taffy_Option_AlignSelf_is_some(*self);
+
+    lua_pushboolean(L, is_some);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Option_AlignSelf_get_value(lua_State* L)
+{
+    taffy_Option_AlignSelf** self = (taffy_Option_AlignSelf**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+    if( taffy_Option_AlignSelf_is_some(*self) )
+    {
+        const taffy_AlignSelf value = taffy_Option_AlignSelf_get_value(*self);
+
+        taffy_AlignSelf* user_data = (taffy_AlignSelf*)lua_newuserdata(L, sizeof(taffy_AlignSelf));
+        *user_data = value;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_AlignSelf);
+
+        return 1; /* number of results */
+    }
+    else /* None */
+    {
+        lua_pushnil(L);
+
+        return 1; /* number of results */
+    }
+}
+
+static int lua_taffy_Option_AlignSelf_set_value(lua_State* L)
+{
+    taffy_Option_AlignSelf** self = (taffy_Option_AlignSelf**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+    switch( lua_type(L, 2) ) {
+
+    case LUA_TNIL:
+    {
+        lua_pop(L, 1);
+
+        taffy_Option_AlignSelf_set_value(*self, NULL);
+
+        return 0; /* number of results */
+    } break;
+
+    case LUA_TUSERDATA:
+    {
+        taffy_AlignSelf* value = (taffy_AlignSelf*)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_AlignSelf);
+
+        taffy_Option_AlignSelf_set_value(*self, value);
+
+        return 0; /* number of results */
+    } break;
+    }
+
+    return luaL_error(L, "Failed to set_value taffy_Option_AlignSelf : incorrect argument type");
+}
+
+static void lua_push_table_taffy_Option_AlignSelf(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_is_some);
+        lua_setfield(L, -2, "is_some");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_get_value);
+        lua_setfield(L, -2, "get_value");
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_set_value);
+        lua_setfield(L, -2, "set_value");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Option_AlignSelf_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
 int luaopen_libtaffy_cpp_lua(lua_State* L);
 int luaopen_libtaffy_cpp_lua(lua_State* L)
@@ -10340,6 +11264,30 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             lua_push_table_taffy_Line_of_GridPlacement(L);
             lua_setfield(L, -2, "Line_of_GridPlacement");
+        }
+
+        /* Register Option<AlignContent> */
+        {
+            lua_push_table_taffy_Option_AlignContent(L);
+            lua_setfield(L, -2, "Option_AlignContent");
+        }
+
+        /* Register Option<JustifyContent> */
+        {
+            lua_push_table_taffy_Option_JustifyContent(L);
+            lua_setfield(L, -2, "Option_JustifyContent");
+        }
+
+        /* Register Option<AlignItems> */
+        {
+            lua_push_table_taffy_Option_AlignItems(L);
+            lua_setfield(L, -2, "Option_AlignItems");
+        }
+
+        /* Register Option<AlignSelf> */
+        {
+            lua_push_table_taffy_Option_AlignSelf(L);
+            lua_setfield(L, -2, "Option_AlignSelf");
         }
     }
 

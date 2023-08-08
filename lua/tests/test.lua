@@ -3180,4 +3180,324 @@ describe('taffy_cpp lua binding', function()
         end)
     end) -- Line_of_GridPlacement
 
+    describe('Option_AlignContent', function()
+        describe('Constructors', function()
+            it('Default constructor', function()
+                local opt = t.Option_AlignContent.new()
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('None constructor', function()
+                local opt = t.Option_AlignContent.new(nil)
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('Some constructor', function()
+                local opt = t.Option_AlignContent.new( t.AlignContent.FlexStart )
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( true )
+                expect( opt:get_value() ).to.be( t.AlignContent.FlexStart )
+            end)
+        end)
+
+        describe('Copying', function()
+            it('Copying none', function()
+                local opt = t.Option_AlignContent.new()
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( false )
+                expect( copy:get_value() ).to.be( nil )
+            end)
+
+            it('Copying some', function()
+                local opt = t.Option_AlignContent.new( t.AlignContent.FlexStart )
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( true )
+                expect( copy:get_value() ).to.be( t.AlignContent.FlexStart )
+            end)
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local opts_equal1 = t.Option_AlignContent.new(t.AlignContent.FlexStart) == t.Option_AlignContent.new(t.AlignContent.FlexStart)
+                local opts_equal2 = t.Option_AlignContent.new(nil) == t.Option_AlignContent.new(nil)
+                local opts_equal3 = t.Option_AlignContent.new() == t.Option_AlignContent.new(nil)
+
+                local opts_not_equal1 = t.Option_AlignContent.new(t.AlignContent.FlexStart) ~= t.Option_AlignContent.new(t.AlignContent.FlexEnd)
+                local opts_not_equal2 = t.Option_AlignContent.new(t.AlignContent.FlexStart) ~= t.Option_AlignContent.new(nil)
+
+                expect( opts_equal1 ).to.be( true )
+                expect( opts_equal2 ).to.be( true )
+                expect( opts_equal3 ).to.be( true )
+
+                expect( opts_not_equal1 ).to.be( true )
+                expect( opts_not_equal2 ).to.be( true )
+            end)
+        end)
+
+        it('Get/Set value', function()
+           local opt = t.Option_AlignContent.new( t.AlignContent.FlexStart )
+
+           expect( opt:get_value() ).to.be( t.AlignContent.FlexStart )
+
+           opt:set_value( t.AlignContent.FlexEnd )
+
+           expect( opt:get_value() ).to.be( t.AlignContent.FlexEnd )
+
+           opt:set_value(nil)
+
+           expect( opt:get_value() ).to.be( nil )
+        end)
+    end) -- Option_AlignContent
+
+    describe('Option_JustifyContent', function()
+        describe('Constructors', function()
+            it('Default constructor', function()
+                local opt = t.Option_JustifyContent.new()
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('None constructor', function()
+                local opt = t.Option_JustifyContent.new(nil)
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('Some constructor', function()
+                local opt = t.Option_JustifyContent.new( t.JustifyContent.FlexStart )
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( true )
+                expect( opt:get_value() ).to.be( t.JustifyContent.FlexStart )
+            end)
+        end)
+
+        describe('Copying', function()
+            it('Copying none', function()
+                local opt = t.Option_JustifyContent.new()
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( false )
+                expect( copy:get_value() ).to.be( nil )
+            end)
+
+            it('Copying some', function()
+                local opt = t.Option_JustifyContent.new( t.JustifyContent.FlexStart )
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( true )
+                expect( copy:get_value() ).to.be( t.JustifyContent.FlexStart )
+            end)
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local opts_equal1 = t.Option_JustifyContent.new(t.JustifyContent.FlexStart) == t.Option_JustifyContent.new(t.JustifyContent.FlexStart)
+                local opts_equal2 = t.Option_JustifyContent.new(nil) == t.Option_JustifyContent.new(nil)
+                local opts_equal3 = t.Option_JustifyContent.new() == t.Option_JustifyContent.new(nil)
+
+                local opts_not_equal1 = t.Option_JustifyContent.new(t.JustifyContent.FlexStart) ~= t.Option_JustifyContent.new(t.JustifyContent.FlexEnd)
+                local opts_not_equal2 = t.Option_JustifyContent.new(t.JustifyContent.FlexStart) ~= t.Option_JustifyContent.new(nil)
+
+                expect( opts_equal1 ).to.be( true )
+                expect( opts_equal2 ).to.be( true )
+                expect( opts_equal3 ).to.be( true )
+
+                expect( opts_not_equal1 ).to.be( true )
+                expect( opts_not_equal2 ).to.be( true )
+            end)
+        end)
+
+        it('Get/Set value', function()
+           local opt = t.Option_JustifyContent.new( t.JustifyContent.FlexStart )
+
+           expect( opt:get_value() ).to.be( t.JustifyContent.FlexStart )
+
+           opt:set_value( t.JustifyContent.FlexEnd )
+
+           expect( opt:get_value() ).to.be( t.JustifyContent.FlexEnd )
+
+           opt:set_value(nil)
+
+           expect( opt:get_value() ).to.be( nil )
+        end)
+    end) -- Option_JustifyContent
+
+    describe('Option_AlignItems', function()
+        describe('Constructors', function()
+            it('Default constructor', function()
+                local opt = t.Option_AlignItems.new()
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('None constructor', function()
+                local opt = t.Option_AlignItems.new(nil)
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('Some constructor', function()
+                local opt = t.Option_AlignItems.new( t.AlignItems.FlexStart )
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( true )
+                expect( opt:get_value() ).to.be( t.AlignItems.FlexStart )
+            end)
+        end)
+
+        describe('Copying', function()
+            it('Copying none', function()
+                local opt = t.Option_AlignItems.new()
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( false )
+                expect( copy:get_value() ).to.be( nil )
+            end)
+
+            it('Copying some', function()
+                local opt = t.Option_AlignItems.new( t.AlignItems.FlexStart )
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( true )
+                expect( copy:get_value() ).to.be( t.AlignItems.FlexStart )
+            end)
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local opts_equal1 = t.Option_AlignItems.new(t.AlignItems.FlexStart) == t.Option_AlignItems.new(t.AlignItems.FlexStart)
+                local opts_equal2 = t.Option_AlignItems.new(nil) == t.Option_AlignItems.new(nil)
+                local opts_equal3 = t.Option_AlignItems.new() == t.Option_AlignItems.new(nil)
+
+                local opts_not_equal1 = t.Option_AlignItems.new(t.AlignItems.FlexStart) ~= t.Option_AlignItems.new(t.AlignItems.FlexEnd)
+                local opts_not_equal2 = t.Option_AlignItems.new(t.AlignItems.FlexStart) ~= t.Option_AlignItems.new(nil)
+
+                expect( opts_equal1 ).to.be( true )
+                expect( opts_equal2 ).to.be( true )
+                expect( opts_equal3 ).to.be( true )
+
+                expect( opts_not_equal1 ).to.be( true )
+                expect( opts_not_equal2 ).to.be( true )
+            end)
+        end)
+
+        it('Get/Set value', function()
+           local opt = t.Option_AlignItems.new( t.AlignItems.FlexStart )
+
+           expect( opt:get_value() ).to.be( t.AlignItems.FlexStart )
+
+           opt:set_value( t.AlignItems.FlexEnd )
+
+           expect( opt:get_value() ).to.be( t.AlignItems.FlexEnd )
+
+           opt:set_value(nil)
+
+           expect( opt:get_value() ).to.be( nil )
+        end)
+    end) -- Option_AlignItems
+
+    describe('Option_AlignSelf', function()
+        describe('Constructors', function()
+            it('Default constructor', function()
+                local opt = t.Option_AlignSelf.new()
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('None constructor', function()
+                local opt = t.Option_AlignSelf.new(nil)
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( false )
+                expect( opt:get_value() ).to.be( nil )
+            end)
+
+            it('Some constructor', function()
+                local opt = t.Option_AlignSelf.new( t.AlignSelf.FlexStart )
+
+                expect( opt ).to.exist()
+                expect( opt:is_some() ).to.be( true )
+                expect( opt:get_value() ).to.be( t.AlignSelf.FlexStart )
+            end)
+        end)
+
+        describe('Copying', function()
+            it('Copying none', function()
+                local opt = t.Option_AlignSelf.new()
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( false )
+                expect( copy:get_value() ).to.be( nil )
+            end)
+
+            it('Copying some', function()
+                local opt = t.Option_AlignSelf.new( t.AlignSelf.FlexStart )
+                local copy = opt:copy()
+
+                expect( copy ).to.exist()
+                expect( copy:is_some() ).to.be( true )
+                expect( copy:get_value() ).to.be( t.AlignSelf.FlexStart )
+            end)
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local opts_equal1 = t.Option_AlignSelf.new(t.AlignSelf.FlexStart) == t.Option_AlignSelf.new(t.AlignSelf.FlexStart)
+                local opts_equal2 = t.Option_AlignSelf.new(nil) == t.Option_AlignSelf.new(nil)
+                local opts_equal3 = t.Option_AlignSelf.new() == t.Option_AlignSelf.new(nil)
+
+                local opts_not_equal1 = t.Option_AlignSelf.new(t.AlignSelf.FlexStart) ~= t.Option_AlignSelf.new(t.AlignSelf.FlexEnd)
+                local opts_not_equal2 = t.Option_AlignSelf.new(t.AlignSelf.FlexStart) ~= t.Option_AlignSelf.new(nil)
+
+                expect( opts_equal1 ).to.be( true )
+                expect( opts_equal2 ).to.be( true )
+                expect( opts_equal3 ).to.be( true )
+
+                expect( opts_not_equal1 ).to.be( true )
+                expect( opts_not_equal2 ).to.be( true )
+            end)
+        end)
+
+        it('Get/Set value', function()
+           local opt = t.Option_AlignSelf.new( t.AlignSelf.FlexStart )
+
+           expect( opt:get_value() ).to.be( t.AlignSelf.FlexStart )
+
+           opt:set_value( t.AlignSelf.FlexEnd )
+
+           expect( opt:get_value() ).to.be( t.AlignSelf.FlexEnd )
+
+           opt:set_value(nil)
+
+           expect( opt:get_value() ).to.be( nil )
+        end)
+    end) -- Option_AlignSelf
+
 end)
