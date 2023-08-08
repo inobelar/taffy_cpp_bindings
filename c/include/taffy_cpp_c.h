@@ -951,6 +951,9 @@ extern "C" {
     /* destructor */
     void taffy_Style_delete(taffy_Style* self);
 
+    /* comparison operator (is equal) */
+    /* bool */ int taffy_Style_eq(const taffy_Style* lhs, const taffy_Style* rhs);
+
     /* extra */
     taffy_Style* taffy_Style_new_DEFAULT(void);
 

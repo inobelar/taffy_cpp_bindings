@@ -2841,6 +2841,17 @@ void taffy_Style_delete(taffy_Style* self)
     self = nullptr;
 }
 
+int taffy_Style_eq(const taffy_Style* lhs, const taffy_Style* rhs)
+{
+    ASSERT_NOT_NULL(lhs);
+    ASSERT_NOT_NULL(rhs);
+
+    const taffy::Style* _lhs = reinterpret_cast<const taffy::Style*>(lhs);
+    const taffy::Style* _rhs = reinterpret_cast<const taffy::Style*>(rhs);
+
+    return (*_lhs == *_rhs) ? 1 : 0;
+}
+
 taffy_Style* taffy_Style_new_DEFAULT(void)
 {
     return reinterpret_cast<taffy_Style*>( new taffy::Style{ taffy::Style::DEFAULT() } );
