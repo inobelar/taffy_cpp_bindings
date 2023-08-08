@@ -9639,6 +9639,519 @@ static void lua_push_table_taffy_Size_of_Dimension(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
+/* Line<GridPlacement> */
+
+/*
+    IMPORTANT NOTE: in Lua (lowercase) 'end' is reserved keyword, so we must
+    name 'end' property with different name - that's why we choose (uppercase)
+    'End' for it (and, for consistency - 'start' is also named uppercase as
+    'Start').
+
+    It affects the next cases:
+
+        -- Initialization with table-as-dictionary
+        local line = taffy.Line_of_GridPlacement {
+            Start = taffy.GridPlacement.Auto()
+            End   = taffy.GridPlacement.Span(42)
+        }
+
+        -- Property getting
+        local line_start = line.Start
+        local line_end   = line.End
+
+        -- Property settings
+        line.Start = line_start
+        line.End   = line_end
+
+*/
+
+static const char LUA_META_OBJECT_taffy_Line_of_GridPlacement[]           = "taffy_Line_of_GridPlacement_mt";
+static const char LUA_META_OBJECT_taffy_Line_of_GridPlacement_namespace[] = "taffy_Line_of_GridPlacement_namespace_mt";
+
+static int lua_taffy_Line_of_GridPlacement_new(lua_State* L)
+{
+    const int n = lua_gettop(L); /* Number of arguments */
+
+    switch(n) {
+    case 0:
+    {
+        taffy_Line_of_GridPlacement* object_ptr = taffy_Line_of_GridPlacement_new_default();
+        if(object_ptr != NULL)
+        {
+            taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new_default() failed");
+        }
+    } break;
+
+    case 1:
+    {
+        if(lua_type(L, 1) == LUA_TTABLE)
+        {
+            /*
+                First attempt - try to interpret table like 'array':
+
+                    {
+                        GridPlacement.Auto(),
+                        GridPlacement.Span(20)
+                    }
+
+                    {
+                        [1] = GridPlacement.Auto(),
+                        [2] = GridPlacement.Span(20)
+                    }
+                    {
+                        [2] = GridPlacement.Auto(),
+                        [1] = GridPlacement.Span(10)
+                    }
+            */
+            const size_t table_size = lua_rawlen(L, 1);
+            if(table_size == 2)
+            {
+                /* bool */ int start_found = 0; /* false */
+                /* bool */ int end_found   = 0; /* false */
+
+                taffy_GridPlacement* start = NULL;
+                taffy_GridPlacement* end   = NULL;
+
+                lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+                while( lua_next(L, 1) != 0 )
+                {
+                    /* uses 'key' (at index -2) and 'value' (at index -1) */
+                    const int value_type = lua_type(L, -1);
+                    const int key_type   = lua_type(L, -2);
+
+                    if((key_type == LUA_TNUMBER) && (value_type == LUA_TUSERDATA))
+                    {
+                        taffy_GridPlacement** value_value = NULL;
+                        lua_Number            key_value   = 0.0f;
+
+                        lua_pushvalue(L, -2); /* copy 'key'   */
+                        lua_pushvalue(L, -2); /* copy 'value' */
+
+                        value_value = (taffy_GridPlacement**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_GridPlacement); /* pop 'value' */
+                        key_value   = lua_tonumber(L, -2);                                                               /* pop 'key'   */
+
+                        if(key_value == 1.0f) /* 'first' index (in C its '0', in Lua its '1') is 'start' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                start_found = 1; /* true */
+                                start = *value_value;
+                            }
+                        }
+                        else if(key_value == 2.0f) /* 'second' index (in C its '1', in Lua its '2') is 'end' */
+                        {
+                            if(value_value != NULL)
+                            {
+                                end_found = 1; /* true */
+                                end = *value_value;
+                            }
+                        }
+                    }
+
+                    /* removes 'value'; keeps 'key' for next iteration */
+                    lua_pop(L, 1);
+                }
+                lua_pop(L, 1); /* pop 'key' from the stack */
+
+                if( (start_found == /* true */ 1) && (end_found == /* true */ 1) )
+                {
+                    taffy_Line_of_GridPlacement* object_ptr = taffy_Line_of_GridPlacement_new(start, end);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new() failed");
+                    }
+                }
+            }
+
+            /*
+                Second attempt - try to interpret table like 'dictionary':
+
+                    {
+                        Start = GridPlacement.Auto(),
+                        End   = GridPlacement.Span(20)
+                    }
+
+                if table size != 2 OR 'start' and 'end' not in indexes '1' and '2'
+            */
+            {
+                /* bool */ int start_found = 0; /* false */
+                /* bool */ int end_found   = 0; /* false */
+
+                taffy_GridPlacement* start = NULL;
+                taffy_GridPlacement* end   = NULL;
+
+                /* Try to get 'start' */
+                {
+                    const int start_type = lua_getfield(L, 1, "Start");
+                    if(start_type == LUA_TUSERDATA)
+                    {
+                        taffy_GridPlacement** start_value = (taffy_GridPlacement**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_GridPlacement);
+                        if(start_value != NULL)
+                        {
+                            start_found = 1; /* true */
+                            start = *start_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                /* Try to get 'end' */
+                {
+                    const int end_type = lua_getfield(L, 1, "End");
+                    if(end_type == LUA_TUSERDATA)
+                    {
+                        taffy_GridPlacement** end_value = (taffy_GridPlacement**)luaL_testudata(L, -1, LUA_META_OBJECT_taffy_GridPlacement);
+                        if(end_value != NULL)
+                        {
+                            end_found = 1; /* true */
+                            end = *end_value;
+                        }
+                    }
+                    else
+                    {
+                        lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+                    }
+                }
+
+                if( (start_found == /* true */ 1) && (end_found == /* true */ 1) )
+                {
+                    taffy_Line_of_GridPlacement* object_ptr = taffy_Line_of_GridPlacement_new(start, end);
+                    if(object_ptr != NULL)
+                    {
+                        taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+                        *user_data = object_ptr;
+
+                        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+                        return 1; /* number of results */
+                    }
+                    else
+                    {
+                        return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new() failed");
+                    }
+                }
+            }
+
+            /* After all, at this line all attempts to parse table are failed */
+            return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : provided table is invalid");
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : provided argument is not a table");
+        }
+    } break;
+
+    case 2:
+    {
+        taffy_GridPlacement** start = (taffy_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_GridPlacement);
+        taffy_GridPlacement** end   = (taffy_GridPlacement**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_GridPlacement);
+
+        taffy_Line_of_GridPlacement* object_ptr = taffy_Line_of_GridPlacement_new(*start, *end);
+        if(object_ptr != NULL)
+        {
+            taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+            *user_data = object_ptr;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new() failed");
+        }
+    } break;
+    }
+
+    return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : wrong arguments count");
+}
+
+static int lua_taffy_Line_of_GridPlacement_copy(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    taffy_Line_of_GridPlacement* copy = taffy_Line_of_GridPlacement_new_copy(*self);
+
+    if(copy != NULL)
+    {
+        taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Line_of_GridPlacement_delete(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    taffy_Line_of_GridPlacement_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Line_of_GridPlacement_eq(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** object_lhs = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+    taffy_Line_of_GridPlacement** object_rhs = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    const int is_equal = taffy_Line_of_GridPlacement_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Line_of_GridPlacement_get_start(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    const taffy_GridPlacement* start = taffy_Line_of_GridPlacement_get_start(*self);
+
+    taffy_GridPlacement* copy = taffy_GridPlacement_new_copy(start);
+    if(copy != NULL)
+    {
+        taffy_GridPlacement** user_data = (taffy_GridPlacement**)lua_newuserdata(L, sizeof(taffy_GridPlacement*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridPlacement);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_GridPlacement : taffy_GridPlacement_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Line_of_GridPlacement_get_end(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    const taffy_GridPlacement* end = taffy_Line_of_GridPlacement_get_end(*self);
+
+    taffy_GridPlacement* copy = taffy_GridPlacement_new_copy(end);
+    if(copy != NULL)
+    {
+        taffy_GridPlacement** user_data = (taffy_GridPlacement**)lua_newuserdata(L, sizeof(taffy_GridPlacement*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridPlacement);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_GridPlacement : taffy_GridPlacement_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Line_of_GridPlacement_set_start(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    taffy_GridPlacement** start = (taffy_GridPlacement**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_GridPlacement);
+
+    taffy_Line_of_GridPlacement_set_start(*self, *start);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Line_of_GridPlacement_set_end(lua_State* L)
+{
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+    taffy_GridPlacement** end = (taffy_GridPlacement**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_GridPlacement);
+
+    taffy_Line_of_GridPlacement_set_end(*self, *end);
+
+    return 0; /* number of results */
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static int lua_taffy_Line_of_GridPlacement_index(lua_State* L)
+{
+    /*
+        function mt.__index(table, key) <-- here is 'table' may be 'userdata'
+            return table[key]
+        end
+    */
+
+    /*
+        NOTE: 'key' type may not be 'string' (for example: 'int'), but since we
+        use use this function for indexing our known 'userdata', that have only
+        function names as keys, we dont care about other types for simplicity.
+    */
+
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+    const char* key = lua_tostring(L, 2);
+
+    if(strcmp(key, "Start") == 0)
+    {
+        const taffy_GridPlacement* start = taffy_Line_of_GridPlacement_get_start(*self);
+
+        taffy_GridPlacement* copy = taffy_GridPlacement_new_copy(start);
+        if(copy != NULL)
+        {
+            taffy_GridPlacement** user_data = (taffy_GridPlacement**)lua_newuserdata(L, sizeof(taffy_GridPlacement*));
+            *user_data = copy;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridPlacement);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_GridPlacement : taffy_GridPlacement_new_copy() failed");
+        }
+    }
+    else if(strcmp(key, "End") == 0)
+    {
+        const taffy_GridPlacement* end = taffy_Line_of_GridPlacement_get_end(*self);
+
+        taffy_GridPlacement* copy = taffy_GridPlacement_new_copy(end);
+        if(copy != NULL)
+        {
+            taffy_GridPlacement** user_data = (taffy_GridPlacement**)lua_newuserdata(L, sizeof(taffy_GridPlacement*));
+            *user_data = copy;
+
+            luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridPlacement);
+
+            return 1; /* number of results */
+        }
+        else
+        {
+            return luaL_error(L, "Failed to copy taffy_GridPlacement : taffy_GridPlacement_new_copy() failed");
+        }
+    }
+
+    /* default behavior */
+    luaL_getmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+    lua_pushstring(L, key);
+    lua_rawget(L, -2);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Line_of_GridPlacement_newindex(lua_State* L)
+{
+    /*
+        function mt.__newindex(self, key, value)
+            foo[key] = value
+        end
+    */
+
+    taffy_Line_of_GridPlacement** self = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+    const char* key = luaL_checkstring(L, 2);
+    taffy_GridPlacement** value = (taffy_GridPlacement**)luaL_checkudata(L, 3, LUA_META_OBJECT_taffy_GridPlacement);
+
+
+    if(strcmp(key, "Start") == 0)
+    {
+        taffy_Line_of_GridPlacement_set_start(*self, *value);
+
+        return 0; /* number of results */
+    }
+    else if( strcmp(key, "End") == 0)
+    {
+        taffy_Line_of_GridPlacement_set_end(*self, *value);
+
+        return 0; /* number of results */
+    }
+
+    return luaL_error(L, "taffy_Line_of_GridPlacement 'newindex' failed"); /* TODO: better message*/
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_Line_of_GridPlacement(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement) )
+    {
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_copy);
+        lua_setfield(L, -2, "copy");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_get_start);
+        lua_setfield(L, -2, "get_start");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_get_end);
+        lua_setfield(L, -2, "get_end");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_set_start);
+        lua_setfield(L, -2, "set_start");
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_set_end);
+        lua_setfield(L, -2, "set_end");
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Line_of_GridPlacement_new);
+        lua_setfield(L, -2, "new");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
 int luaopen_libtaffy_cpp_lua(lua_State* L);
 int luaopen_libtaffy_cpp_lua(lua_State* L)
@@ -9821,6 +10334,12 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             lua_push_table_taffy_Size_of_Dimension(L);
             lua_setfield(L, -2, "Size_of_Dimension");
+        }
+
+        /* Register Line<GridPlacement> */
+        {
+            lua_push_table_taffy_Line_of_GridPlacement(L);
+            lua_setfield(L, -2, "Line_of_GridPlacement");
         }
     }
 

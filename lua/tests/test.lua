@@ -3013,4 +3013,171 @@ describe('taffy_cpp lua binding', function()
         end)
     end) -- Size_of_Dimension
 
+    describe('Line_of_GridPlacement', function()
+        describe('Constructors', function()
+            it('default', function()
+                local line = t.Line_of_GridPlacement.new()
+
+                expect( line ).to.exist()
+                expect( line:get_start() ).to.be( t.GridPlacement.Auto() )
+                expect( line:get_end()   ).to.be( t.GridPlacement.Auto() )
+            end)
+
+            it('common', function()
+                local line = t.Line_of_GridPlacement.new(
+                    t.GridPlacement.Auto(),
+                    t.GridPlacement.Span(42)
+                )
+
+                expect( line ).to.exist()
+                expect( line:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line:get_end()    ).to.be( t.GridPlacement.Span(42) )
+            end)
+
+            it('table (array)', function()
+                local line = t.Line_of_GridPlacement.new({
+                    t.GridPlacement.Auto(),
+                    t.GridPlacement.Span(42)
+                })
+
+                expect( line ).to.exist()
+                expect( line:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line:get_end()    ).to.be( t.GridPlacement.Span(42) )
+            end)
+
+            it('table (array) explicit indexes', function()
+                local line1 = t.Line_of_GridPlacement.new({
+                    [1] = t.GridPlacement.Auto(),
+                    [2] = t.GridPlacement.Span(42)
+                })
+
+                expect( line1 ).to.exist()
+                expect( line1:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line1:get_end()    ).to.be( t.GridPlacement.Span(42) )
+
+                local line2 = t.Line_of_GridPlacement.new({
+                    [2] = t.GridPlacement.Span(42),
+                    [1] = t.GridPlacement.Auto()
+                })
+
+                expect( line2 ).to.exist()
+                expect( line2:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line2:get_end()    ).to.be( t.GridPlacement.Span(42) )
+            end)
+
+            it('table (dictionary)', function()
+                local line1 = t.Line_of_GridPlacement.new({
+                    Start = t.GridPlacement.Auto(),
+                    End   = t.GridPlacement.Span(42)
+                })
+
+                expect( line1 ).to.exist()
+                expect( line1:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line1:get_end()    ).to.be( t.GridPlacement.Span(42) )
+
+                local line2 = t.Line_of_GridPlacement.new({
+                    End   = t.GridPlacement.Span(42),
+                    Start = t.GridPlacement.Auto()
+                })
+
+                expect( line2 ).to.exist()
+                expect( line2:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line2:get_end()    ).to.be( t.GridPlacement.Span(42) )
+            end)
+
+            it('table (without parentheses)', function()
+                local line1 = t.Line_of_GridPlacement.new {
+                    t.GridPlacement.Auto(),
+                    t.GridPlacement.Span(42)
+                }
+
+                expect( line1 ).to.exist()
+                expect( line1:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line1:get_end()    ).to.be( t.GridPlacement.Span(42) )
+
+                local line2 = t.Line_of_GridPlacement.new {
+                    Start = t.GridPlacement.Auto(),
+                    End   = t.GridPlacement.Span(42)
+                }
+
+                expect( line2 ).to.exist()
+                expect( line2:get_start()  ).to.be( t.GridPlacement.Auto()   )
+                expect( line2:get_end()    ).to.be( t.GridPlacement.Span(42) )
+            end)
+        end)
+
+        it('Copying', function()
+            local line = t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            )
+
+            local copy = line:copy()
+
+            expect( copy ).to.exist()
+            expect( copy:get_start()  ).to.be( t.GridPlacement.Auto()   )
+            expect( copy:get_end()    ).to.be( t.GridPlacement.Span(42) )
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+                local line = t.Line_of_GridPlacement.new(
+                    t.GridPlacement.Auto(),
+                    t.GridPlacement.Span(42)
+                )
+
+                local lines_equal      = line == t.Line_of_GridPlacement.new(
+                    t.GridPlacement.Auto(),
+                    t.GridPlacement.Span(42)
+                )
+                local lines_not_equal1 = line ~= t.Line_of_GridPlacement.new(
+                    t.GridPlacement.Auto(),
+                    t.GridPlacement.Span(10)
+                )
+                local lines_not_equal2 = line ~= t.Line_of_GridPlacement.new(
+                    t.GridPlacement.Span(42),
+                    t.GridPlacement.Auto()
+                )
+
+                expect( lines_equal     ).to.be( true )
+                expect( lines_not_equal1 ).to.be( true )
+                expect( lines_not_equal2 ).to.be( true )
+            end)
+        end)
+
+        it('Getters/Setters', function()
+            local line = t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            )
+
+            expect( line ).to.exist()
+            expect( line:get_start()  ).to.be( t.GridPlacement.Auto()   )
+            expect( line:get_end()    ).to.be( t.GridPlacement.Span(42) )
+
+            line:set_start( t.GridPlacement.Span(10) )
+            line:set_end  ( t.GridPlacement.Auto()   )
+
+            expect( line:get_start()  ).to.be( t.GridPlacement.Span(10) )
+            expect( line:get_end()    ).to.be( t.GridPlacement.Auto()   )
+        end)
+
+        it('Properties', function()
+            local line = t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            )
+
+            expect( line ).to.exist()
+            expect( line.Start ).to.be( t.GridPlacement.Auto()   )
+            expect( line.End   ).to.be( t.GridPlacement.Span(42) )
+
+            line.Start = t.GridPlacement.Span(10)
+            line.End   = t.GridPlacement.Auto()
+
+            expect( line.Start ).to.be( t.GridPlacement.Span(10) )
+            expect( line.End   ).to.be( t.GridPlacement.Auto()   )
+        end)
+    end) -- Line_of_GridPlacement
+
 end)
