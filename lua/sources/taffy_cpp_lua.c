@@ -6242,6 +6242,31 @@ static int lua_taffy_TrackSizingFunction_get_repetition(lua_State* L)
     }
 }
 
+/* Utility function: GridTrackVec<NonRepeatedTrackSizingFunction> --> lua table */
+static void lua_push_table_from_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(lua_State* L, const taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction* vec)
+{
+    lua_newtable(L);
+    {
+        size_t i = 0;
+        for(i = 0; i < vec->items_count; ++i)
+        {
+            const taffy_NonRepeatedTrackSizingFunction* func = vec->items[i];
+
+            taffy_NonRepeatedTrackSizingFunction* copy = taffy_NonRepeatedTrackSizingFunction_new_copy(func);
+            if(copy != NULL)
+            {
+                taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+                *user_data = copy;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+                /* set: table[index] = 'value' */
+                lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
+            }
+        }
+    }
+}
+
 static int lua_taffy_TrackSizingFunction_get_repeat_funcs(lua_State* L)
 {
     taffy_TrackSizingFunction** self = (taffy_TrackSizingFunction**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_TrackSizingFunction);
@@ -6250,26 +6275,7 @@ static int lua_taffy_TrackSizingFunction_get_repeat_funcs(lua_State* L)
     {
         taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction repeat_funcs = taffy_TrackSizingFunction_get_repeat_funcs(*self);
 
-        lua_newtable(L);
-        {
-            size_t i = 0;
-            for(i = 0; i < repeat_funcs.items_count; ++i)
-            {
-                const taffy_NonRepeatedTrackSizingFunction* func = repeat_funcs.items[i];
-
-                taffy_NonRepeatedTrackSizingFunction* copy = taffy_NonRepeatedTrackSizingFunction_new_copy(func);
-                if(copy != NULL)
-                {
-                    taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
-                    *user_data = copy;
-
-                     luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
-
-                    /* set: table[index] = 'value' */
-                    lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
-                }
-            }
-        }
+        lua_push_table_from_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(L, &repeat_funcs);
 
         taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete(&repeat_funcs);
 
@@ -11076,6 +11082,859 @@ static void lua_push_table_taffy_Option_AlignSelf(lua_State* L)
 }
 
 /* -------------------------------------------------------------------------- */
+/* Style */
+
+static const char LUA_META_OBJECT_taffy_Style[]           = "taffy_Style_mt";
+static const char LUA_META_OBJECT_taffy_Style_namespace[] = "taffy_Style_namespace_mt";
+
+static int lua_taffy_Style_new(lua_State* L)
+{
+    taffy_Style* object_ptr = taffy_Style_new_default();
+
+    if(object_ptr != NULL)
+    {
+        taffy_Style** user_data = (taffy_Style**)lua_newuserdata(L, sizeof(taffy_Style*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Style);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Style : taffy_Style_new_default() failed");
+    }
+}
+
+static int lua_taffy_Style_copy(lua_State* L)
+{
+    taffy_Style** object = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    taffy_Style* copy = taffy_Style_new_copy(*object);
+
+    if(copy != NULL)
+    {
+        taffy_Style** user_data = (taffy_Style**)lua_newuserdata(L, sizeof(taffy_Style*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Style);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to copy taffy_Style : taffy_Style_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_delete(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    taffy_Style_delete(*self);
+
+    return 0; /* number of results */
+}
+
+static int lua_taffy_Style_eq(lua_State* L)
+{
+    taffy_Style** object_lhs = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+    taffy_Style** object_rhs = (taffy_Style**)luaL_checkudata(L, 2, LUA_META_OBJECT_taffy_Style);
+
+    const int is_equal = taffy_Style_eq(*object_lhs, *object_rhs);
+
+    lua_pushboolean(L, is_equal);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_DEFAULT(lua_State* L)
+{
+    taffy_Style* object_ptr = taffy_Style_new_DEFAULT();
+
+    if(object_ptr != NULL)
+    {
+        taffy_Style** user_data = (taffy_Style**)lua_newuserdata(L, sizeof(taffy_Style*));
+        *user_data = object_ptr;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Style);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Style : taffy_Style_new_DEFAULT() failed");
+    }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Style :: getters */
+
+static int lua_taffy_Style_get_display(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Display display = taffy_Style_get_display(*self);
+
+    taffy_Display* user_data = (taffy_Display*)lua_newuserdata(L, sizeof(taffy_Display));
+    *user_data = display;
+
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Display);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_overflow(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Point_of_Overflow* overflow = taffy_Style_get_overflow(*self);
+
+    taffy_Point_of_Overflow* copy = taffy_Point_of_Overflow_new_copy(overflow);
+    if(copy != NULL)
+    {
+        taffy_Point_of_Overflow** user_data = (taffy_Point_of_Overflow**)lua_newuserdata(L, sizeof(taffy_Point_of_Overflow*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Point_of_Overflow);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Point_of_Overflow : taffy_Point_of_Overflow_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_scrollbar_width(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const float scrollbar_width = taffy_Style_get_scrollbar_width(*self);
+
+    lua_pushnumber(L, scrollbar_width);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_position(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Position position = taffy_Style_get_position(*self);
+
+    taffy_Position* user_data = (taffy_Position*)lua_newuserdata(L, sizeof(taffy_Position));
+    *user_data = position;
+
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Position);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_inset(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Rect_of_LengthPercentageAuto* inset = taffy_Style_get_inset(*self);
+
+    taffy_Rect_of_LengthPercentageAuto* copy = taffy_Rect_of_LengthPercentageAuto_new_copy(inset);
+    if(copy != NULL)
+    {
+        taffy_Rect_of_LengthPercentageAuto** user_data = (taffy_Rect_of_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentageAuto*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentageAuto);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentageAuto : taffy_Rect_of_LengthPercentageAuto_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_size(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Size_of_Dimension* size = taffy_Style_get_size(*self);
+
+    taffy_Size_of_Dimension* copy = taffy_Size_of_Dimension_new_copy(size);
+    if(copy != NULL)
+    {
+        taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Size_of_Dimension : taffy_Size_of_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_min_size(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Size_of_Dimension* min_size = taffy_Style_get_min_size(*self);
+
+    taffy_Size_of_Dimension* copy = taffy_Size_of_Dimension_new_copy(min_size);
+    if(copy != NULL)
+    {
+        taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Size_of_Dimension : taffy_Size_of_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_max_size(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Size_of_Dimension* max_size = taffy_Style_get_max_size(*self);
+
+    taffy_Size_of_Dimension* copy = taffy_Size_of_Dimension_new_copy(max_size);
+    if(copy != NULL)
+    {
+        taffy_Size_of_Dimension** user_data = (taffy_Size_of_Dimension**)lua_newuserdata(L, sizeof(taffy_Size_of_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Size_of_Dimension : taffy_Size_of_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_aspect_ratio(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_float* aspect_ratio = taffy_Style_get_aspect_ratio(*self);
+
+    taffy_Option_float* copy = taffy_Option_float_new_copy(aspect_ratio);
+    if(copy != NULL)
+    {
+        taffy_Option_float** user_data = (taffy_Option_float**)lua_newuserdata(L, sizeof(taffy_Option_float*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_float);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_float : taffy_Option_float_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_margin(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Rect_of_LengthPercentageAuto* margin = taffy_Style_get_margin(*self);
+
+    taffy_Rect_of_LengthPercentageAuto* copy = taffy_Rect_of_LengthPercentageAuto_new_copy(margin);
+    if(copy != NULL)
+    {
+        taffy_Rect_of_LengthPercentageAuto** user_data = (taffy_Rect_of_LengthPercentageAuto**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentageAuto*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentageAuto);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentageAuto : taffy_Rect_of_LengthPercentageAuto_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_padding(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Rect_of_LengthPercentage* padding = taffy_Style_get_padding(*self);
+
+    taffy_Rect_of_LengthPercentage* copy = taffy_Rect_of_LengthPercentage_new_copy(padding);
+    if(copy != NULL)
+    {
+        taffy_Rect_of_LengthPercentage** user_data = (taffy_Rect_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentage*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : taffy_Rect_of_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_border(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Rect_of_LengthPercentage* border = taffy_Style_get_border(*self);
+
+    taffy_Rect_of_LengthPercentage* copy = taffy_Rect_of_LengthPercentage_new_copy(border);
+    if(copy != NULL)
+    {
+        taffy_Rect_of_LengthPercentage** user_data = (taffy_Rect_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Rect_of_LengthPercentage*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Rect_of_LengthPercentage : taffy_Rect_of_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_align_items(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_AlignItems* align_items = taffy_Style_get_align_items(*self);
+
+    taffy_Option_AlignItems* copy = taffy_Option_AlignItems_new_copy(align_items);
+    if(copy != NULL)
+    {
+        taffy_Option_AlignItems** user_data = (taffy_Option_AlignItems**)lua_newuserdata(L, sizeof(taffy_Option_AlignItems*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_AlignItems : taffy_Option_AlignItems_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_align_self(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_AlignSelf* align_self = taffy_Style_get_align_self(*self);
+
+    taffy_Option_AlignSelf* copy = taffy_Option_AlignSelf_new_copy(align_self);
+    if(copy != NULL)
+    {
+        taffy_Option_AlignSelf** user_data = (taffy_Option_AlignSelf**)lua_newuserdata(L, sizeof(taffy_Option_AlignSelf*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_AlignSelf : taffy_Option_AlignSelf_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_justify_items(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_AlignItems* justify_items = taffy_Style_get_justify_items(*self);
+
+    taffy_Option_AlignItems* copy = taffy_Option_AlignItems_new_copy(justify_items);
+    if(copy != NULL)
+    {
+        taffy_Option_AlignItems** user_data = (taffy_Option_AlignItems**)lua_newuserdata(L, sizeof(taffy_Option_AlignItems*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_AlignItems : taffy_Option_AlignItems_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_justify_self(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_AlignSelf* justify_self = taffy_Style_get_justify_self(*self);
+
+    taffy_Option_AlignSelf* copy = taffy_Option_AlignSelf_new_copy(justify_self);
+    if(copy != NULL)
+    {
+        taffy_Option_AlignSelf** user_data = (taffy_Option_AlignSelf**)lua_newuserdata(L, sizeof(taffy_Option_AlignSelf*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_AlignSelf : taffy_Option_AlignSelf_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_align_content(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_AlignContent* align_content = taffy_Style_get_align_content(*self);
+
+    taffy_Option_AlignContent* copy = taffy_Option_AlignContent_new_copy(align_content);
+    if(copy != NULL)
+    {
+        taffy_Option_AlignContent** user_data = (taffy_Option_AlignContent**)lua_newuserdata(L, sizeof(taffy_Option_AlignContent*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_AlignContent : taffy_Option_AlignContent_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_justify_content(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Option_JustifyContent* justify_content = taffy_Style_get_justify_content(*self);
+
+    taffy_Option_JustifyContent* copy = taffy_Option_JustifyContent_new_copy(justify_content);
+    if(copy != NULL)
+    {
+        taffy_Option_JustifyContent** user_data = (taffy_Option_JustifyContent**)lua_newuserdata(L, sizeof(taffy_Option_JustifyContent*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Option_JustifyContent : taffy_Option_JustifyContent_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_gap(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Size_of_LengthPercentage* gap = taffy_Style_get_gap(*self);
+
+    taffy_Size_of_LengthPercentage* copy = taffy_Size_of_LengthPercentage_new_copy(gap);
+    if(copy != NULL)
+    {
+        taffy_Size_of_LengthPercentage** user_data = (taffy_Size_of_LengthPercentage**)lua_newuserdata(L, sizeof(taffy_Size_of_LengthPercentage*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Size_of_LengthPercentage);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Size_of_LengthPercentage : taffy_Size_of_LengthPercentage_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_flex_direction(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_FlexDirection flex_direction = taffy_Style_get_flex_direction(*self);
+
+    taffy_FlexDirection* user_data = (taffy_FlexDirection*)lua_newuserdata(L, sizeof(taffy_FlexDirection));
+    *user_data = flex_direction;
+
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_FlexDirection);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_flex_wrap(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_FlexWrap flex_wrap = taffy_Style_get_flex_wrap(*self);
+
+    taffy_FlexWrap* user_data = (taffy_FlexWrap*)lua_newuserdata(L, sizeof(taffy_FlexWrap));
+    *user_data = flex_wrap;
+
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_FlexWrap);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_flex_basis(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Dimension* flex_basis = taffy_Style_get_flex_basis(*self);
+
+    taffy_Dimension* copy = taffy_Dimension_new_copy(flex_basis);
+    if(copy != NULL)
+    {
+        taffy_Dimension** user_data = (taffy_Dimension**)lua_newuserdata(L, sizeof(taffy_Dimension*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Dimension);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Dimension : taffy_Dimension_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_flex_grow(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const float flex_grow = taffy_Style_get_flex_grow(*self);
+
+    lua_pushnumber(L, flex_grow);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_flex_shrink(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const float flex_shrink = taffy_Style_get_flex_shrink(*self);
+
+    lua_pushnumber(L, flex_shrink);
+
+    return 1; /* number of results */
+}
+
+/* Utility function: GridTracVec<TrackSizingFunction> --> lua table */
+static void lua_push_table_from_taffy_GridTrackVec_of_TrackSizingFunction(lua_State* L, const taffy_GridTrackVec_of_TrackSizingFunction* vec)
+{
+    lua_newtable(L);
+    {
+        size_t i = 0;
+        for(i = 0; i < vec->items_count; ++i)
+        {
+            const taffy_TrackSizingFunction* func = vec->items[i];
+
+            taffy_TrackSizingFunction* copy = taffy_TrackSizingFunction_new_copy(func);
+            if(copy != NULL)
+            {
+                taffy_TrackSizingFunction** user_data = (taffy_TrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_TrackSizingFunction*));
+                *user_data = copy;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+                /* set: table[index] = 'value' */
+                lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
+            }
+        }
+    }
+}
+
+static int lua_taffy_Style_get_grid_template_rows(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    taffy_GridTrackVec_of_TrackSizingFunction grid_template_rows = taffy_Style_get_grid_template_rows(*self);
+
+    lua_push_table_from_taffy_GridTrackVec_of_TrackSizingFunction(L, &grid_template_rows);
+
+    taffy_GridTrackVec_of_TrackSizingFunction_delete(&grid_template_rows);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_grid_template_columns(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    taffy_GridTrackVec_of_TrackSizingFunction grid_template_columns = taffy_Style_get_grid_template_columns(*self);
+
+    lua_push_table_from_taffy_GridTrackVec_of_TrackSizingFunction(L, &grid_template_columns);
+
+    taffy_GridTrackVec_of_TrackSizingFunction_delete(&grid_template_columns);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_grid_auto_rows(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction grid_auto_rows = taffy_Style_get_grid_auto_rows(*self);
+
+    lua_push_table_from_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(L, &grid_auto_rows);
+
+    taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete(&grid_auto_rows);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_grid_auto_columns(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction grid_auto_columns = taffy_Style_get_grid_auto_columns(*self);
+
+    lua_push_table_from_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(L, &grid_auto_columns);
+
+    taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction_delete(&grid_auto_columns);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_grid_auto_flow(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_GridAutoFlow grid_auto_flow = taffy_Style_get_grid_auto_flow(*self);
+
+    taffy_GridAutoFlow* user_data = (taffy_GridAutoFlow*)lua_newuserdata(L, sizeof(taffy_GridAutoFlow));
+    *user_data = grid_auto_flow;
+
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_GridAutoFlow);
+
+    return 1; /* number of results */
+}
+
+static int lua_taffy_Style_get_grid_row(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Line_of_GridPlacement* grid_row = taffy_Style_get_grid_row(*self);
+
+    taffy_Line_of_GridPlacement* copy = taffy_Line_of_GridPlacement_new_copy(grid_row);
+    if(copy != NULL)
+    {
+        taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new_copy() failed");
+    }
+}
+
+static int lua_taffy_Style_get_grid_column(lua_State* L)
+{
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    const taffy_Line_of_GridPlacement* grid_column = taffy_Style_get_grid_column(*self);
+
+    taffy_Line_of_GridPlacement* copy = taffy_Line_of_GridPlacement_new_copy(grid_column);
+    if(copy != NULL)
+    {
+        taffy_Line_of_GridPlacement** user_data = (taffy_Line_of_GridPlacement**)lua_newuserdata(L, sizeof(taffy_Line_of_GridPlacement*));
+        *user_data = copy;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_Line_of_GridPlacement : taffy_Line_of_GridPlacement_new_copy() failed");
+    }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Style :: setters */
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static int lua_taffy_Style_index(lua_State* L)
+{
+    /* TODO */ (void)L; return 1;
+}
+
+static int lua_taffy_Style_newindex(lua_State* L)
+{
+    /* TODO */ (void)L; return 1;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+static void lua_push_table_taffy_Style(lua_State* L)
+{
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Style) )
+    {
+        lua_pushcfunction(L, lua_taffy_Style_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_taffy_Style_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, lua_taffy_Style_delete);
+        lua_setfield(L, -2, "__gc");
+
+        lua_pushcfunction(L, lua_taffy_Style_eq);
+        lua_setfield(L, -2, "__eq");
+
+        /* metatable.__metatable = "message" <-- metatable protection */
+        lua_pushstring(L, LUA_METATABLE_PROTECTION_MESSAGE);
+        lua_setfield(L, -2, "__metatable");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Style_copy);
+        lua_setfield(L, -2, "copy");
+
+        /* ------------------------------------------------------------------ */
+        /* Getters */
+
+        lua_pushcfunction(L, lua_taffy_Style_get_display);
+        lua_setfield(L, -2, "get_display");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_overflow);
+        lua_setfield(L, -2, "get_overflow");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_scrollbar_width);
+        lua_setfield(L, -2, "get_scrollbar_width");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_position);
+        lua_setfield(L, -2, "get_position");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_inset);
+        lua_setfield(L, -2, "get_inset");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_size);
+        lua_setfield(L, -2, "get_size");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_min_size);
+        lua_setfield(L, -2, "get_min_size");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_max_size);
+        lua_setfield(L, -2, "get_max_size");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_aspect_ratio);
+        lua_setfield(L, -2, "get_aspect_ratio");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_margin);
+        lua_setfield(L, -2, "get_margin");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_padding);
+        lua_setfield(L, -2, "get_padding");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_border);
+        lua_setfield(L, -2, "get_border");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_align_items);
+        lua_setfield(L, -2, "get_align_items");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_align_self);
+        lua_setfield(L, -2, "get_align_self");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_justify_items);
+        lua_setfield(L, -2, "get_justify_items");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_justify_self);
+        lua_setfield(L, -2, "get_justify_self");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_align_content);
+        lua_setfield(L, -2, "get_align_content");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_justify_content);
+        lua_setfield(L, -2, "get_justify_content");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_gap);
+        lua_setfield(L, -2, "get_gap");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_flex_direction);
+        lua_setfield(L, -2, "get_flex_direction");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_flex_wrap);
+        lua_setfield(L, -2, "get_flex_wrap");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_flex_basis);
+        lua_setfield(L, -2, "get_flex_basis");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_flex_grow);
+        lua_setfield(L, -2, "get_flex_grow");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_flex_shrink);
+        lua_setfield(L, -2, "get_flex_shrink");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_template_rows);
+        lua_setfield(L, -2, "get_grid_template_rows");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_template_columns);
+        lua_setfield(L, -2, "get_grid_template_columns");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_auto_rows);
+        lua_setfield(L, -2, "get_grid_auto_rows");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_auto_columns);
+        lua_setfield(L, -2, "get_grid_auto_columns");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_auto_flow);
+        lua_setfield(L, -2, "get_grid_auto_flow");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_row);
+        lua_setfield(L, -2, "get_grid_row");
+
+        lua_pushcfunction(L, lua_taffy_Style_get_grid_column);
+        lua_setfield(L, -2, "get_grid_column");
+
+        /* ------------------------------------------------------------------ */
+        /* Setters */
+    }
+    lua_pop(L, 1);
+
+    if( luaL_newmetatable(L, LUA_META_OBJECT_taffy_Style_namespace) )
+    {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, lua_newindex_disabled);
+        lua_setfield(L, -2, "__newindex");
+
+        /* ------------------------------------------------------------------ */
+
+        lua_pushcfunction(L, lua_taffy_Style_new);
+        lua_setfield(L, -2, "new");
+
+        lua_pushcfunction(L, lua_taffy_Style_DEFAULT);
+        lua_setfield(L, -2, "DEFAULT");
+    }
+    lua_pop(L, 1);
+
+    lua_newtable(L);
+    luaL_setmetatable(L, LUA_META_OBJECT_taffy_Style_namespace);
+}
+
+/* -------------------------------------------------------------------------- */
 /* luaopen_<name_as_required>*/
 int luaopen_libtaffy_cpp_lua(lua_State* L);
 int luaopen_libtaffy_cpp_lua(lua_State* L)
@@ -11288,6 +12147,12 @@ int luaopen_libtaffy_cpp_lua(lua_State* L)
         {
             lua_push_table_taffy_Option_AlignSelf(L);
             lua_setfield(L, -2, "Option_AlignSelf");
+        }
+
+        /* Register Style */
+        {
+            lua_push_table_taffy_Style(L);
+            lua_setfield(L, -2, "Style");
         }
     }
 
