@@ -1191,8 +1191,8 @@ extern "C" {
         /* TaffyResult<bool> ------------------------------------------------ */
 
         typedef struct {
-
             taffy_TaffyError error;
+
             /* bool */ int value;
         } taffy_TaffyResult_of_bool;
 
