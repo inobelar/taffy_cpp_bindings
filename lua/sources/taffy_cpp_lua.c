@@ -6001,6 +6001,95 @@ static void lua_push_table_taffy_NonRepeatedTrackSizingFunction(lua_State* L)
 /* -------------------------------------------------------------------------- */
 /* TrackSizingFunction */
 
+/* Utility function: GridTrackVec<NonRepeatedTrackSizingFunction> --> lua table */
+static void lua_push_table_from_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+    lua_State* L, const taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction* vec
+)
+{
+    lua_newtable(L);
+    {
+        size_t i = 0;
+        for(i = 0; i < vec->items_count; ++i)
+        {
+            const taffy_NonRepeatedTrackSizingFunction* func = vec->items[i];
+
+            taffy_NonRepeatedTrackSizingFunction* copy = taffy_NonRepeatedTrackSizingFunction_new_copy(func);
+            if(copy != NULL)
+            {
+                taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
+                *user_data = copy;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+                /* set: table[index] = 'value' */
+                lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
+            }
+        }
+    }
+}
+
+/*
+    Utility function: lua table --> GridTrackVec<NonRepeatedTrackSizingFunction>
+
+    ATTENTION: after use - dont forget to 'free()' memory, allocated by 'malloc()':
+
+        if(items != NULL)
+        {
+            free(items);
+            items = NULL;
+        }
+*/
+static void lua_from_table_get_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+    lua_State* L, int table_index,
+
+    const taffy_NonRepeatedTrackSizingFunction** * out_items,
+    size_t * out_items_count
+)
+{
+    const taffy_NonRepeatedTrackSizingFunction** items = NULL;
+    size_t items_count = 0;
+
+    const size_t table_size = lua_rawlen(L, table_index);
+    if(table_size > 0)
+    {
+        size_t index = 0;
+
+        /* Allocate array with pointers into 'NonRepeatedTrackSizingFunction's */
+        items = (const taffy_NonRepeatedTrackSizingFunction**)malloc(table_size * sizeof(taffy_NonRepeatedTrackSizingFunction*));
+        items_count = table_size;
+
+
+        /* Iterate table */
+        lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+        while( lua_next(L, table_index) != 0 )
+        {
+            /* uses 'key' (at index -2) and 'value' (at index -1) */
+            /* const int value_type = lua_type(L, -1); */
+            /* const int key_type   = lua_type(L, -2); */
+
+            /*
+                NOTE: here (for simplicity) we dont care about 'key'
+                type and order - table may be array, sparced array,
+                dictionary, anything, BUT its 'values' must be only
+                'taffy_NonRepeatedTrackSizingFunction' type.
+            */
+            taffy_NonRepeatedTrackSizingFunction** value_value = (taffy_NonRepeatedTrackSizingFunction**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
+
+            items[index] = *value_value;
+
+            index += 1;
+
+            /* pop 'value' from the stack*/
+            lua_pop(L, 1);
+        }
+        lua_pop(L, 1); /* pop 'key' from the stack */
+    }
+
+    /* return */
+    *out_items       = items;
+    *out_items_count = items_count;
+}
+
 static const char LUA_META_OBJECT_taffy_TrackSizingFunction[]           = "taffy_TrackSizingFunction_mt";
 static const char LUA_META_OBJECT_taffy_TrackSizingFunction_namespace[] = "taffy_TrackSizingFunction_namespace_mt";
 
@@ -6034,49 +6123,17 @@ static int lua_taffy_TrackSizingFunction_Repeat(lua_State *L)
     taffy_TrackSizingFunction* object_ptr = NULL;
 
     /* Interpret table - extract pointers to items */
+    if( lua_type(L, 2) == LUA_TTABLE )
     {
-        if( lua_type(L, 2) == LUA_TTABLE )
-        {
-            const size_t table_size = lua_rawlen(L, 2);
-            if(table_size > 0)
-            {
-                size_t index = 0;
+        lua_from_table_get_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+            L, 2,
 
-                /* Allocate array with pointers into 'NonRepeatedTrackSizingFunction's */
-                items = (const taffy_NonRepeatedTrackSizingFunction**)malloc(table_size * sizeof(taffy_NonRepeatedTrackSizingFunction*));
-                items_count = table_size;
-
-
-                /* Iterate table */
-                lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
-                while( lua_next(L, 2) != 0 )
-                {
-                    /* uses 'key' (at index -2) and 'value' (at index -1) */
-                    /* const int value_type = lua_type(L, -1); */
-                    /* const int key_type   = lua_type(L, -2); */
-
-                    /*
-                        NOTE: here (for simplicity) we dont care about 'key'
-                        type and order - table may be array, sparced array,
-                        dictionary, anything, BUT its 'values' must be only
-                        'taffy_NonRepeatedTrackSizingFunction' type.
-                    */
-                    taffy_NonRepeatedTrackSizingFunction** value_value = (taffy_NonRepeatedTrackSizingFunction**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
-
-                    items[index] = *value_value;
-
-                    index += 1;
-
-                    /* pop 'value' from the stack*/
-                    lua_pop(L, 1);
-                }
-                lua_pop(L, 1); /* pop 'key' from the stack */
-            }
-        }
-        else
-        {
-            return luaL_error(L, "Failed to create taffy_TrackSizingFunction : second argument is not table of taffy_NonRepeatedTrackSizingFunction");
-        }
+            &items, &items_count
+        );
+    }
+    else
+    {
+        return luaL_error(L, "Failed to create taffy_TrackSizingFunction : second argument is not table of taffy_NonRepeatedTrackSizingFunction");
     }
 
     object_ptr = taffy_TrackSizingFunction_new_Repeat(*repetition, items, items_count);
@@ -6239,31 +6296,6 @@ static int lua_taffy_TrackSizingFunction_get_repetition(lua_State* L)
         lua_pushnil(L);
 
         return 1; /* number of results */
-    }
-}
-
-/* Utility function: GridTrackVec<NonRepeatedTrackSizingFunction> --> lua table */
-static void lua_push_table_from_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(lua_State* L, const taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction* vec)
-{
-    lua_newtable(L);
-    {
-        size_t i = 0;
-        for(i = 0; i < vec->items_count; ++i)
-        {
-            const taffy_NonRepeatedTrackSizingFunction* func = vec->items[i];
-
-            taffy_NonRepeatedTrackSizingFunction* copy = taffy_NonRepeatedTrackSizingFunction_new_copy(func);
-            if(copy != NULL)
-            {
-                taffy_NonRepeatedTrackSizingFunction** user_data = (taffy_NonRepeatedTrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_NonRepeatedTrackSizingFunction*));
-                *user_data = copy;
-
-                luaL_setmetatable(L, LUA_META_OBJECT_taffy_NonRepeatedTrackSizingFunction);
-
-                /* set: table[index] = 'value' */
-                lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
-            }
-        }
     }
 }
 
@@ -11084,6 +11116,93 @@ static void lua_push_table_taffy_Option_AlignSelf(lua_State* L)
 /* -------------------------------------------------------------------------- */
 /* Style */
 
+/* Utility function: GridTracVec<TrackSizingFunction> --> lua table */
+static void lua_push_table_from_taffy_GridTrackVec_of_TrackSizingFunction(lua_State* L, const taffy_GridTrackVec_of_TrackSizingFunction* vec)
+{
+    lua_newtable(L);
+    {
+        size_t i = 0;
+        for(i = 0; i < vec->items_count; ++i)
+        {
+            const taffy_TrackSizingFunction* func = vec->items[i];
+
+            taffy_TrackSizingFunction* copy = taffy_TrackSizingFunction_new_copy(func);
+            if(copy != NULL)
+            {
+                taffy_TrackSizingFunction** user_data = (taffy_TrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_TrackSizingFunction*));
+                *user_data = copy;
+
+                luaL_setmetatable(L, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+                /* set: table[index] = 'value' */
+                lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
+            }
+        }
+    }
+}
+
+/*
+    Utility function: lua table --> GridTrackVec<TrackSizingFunction>
+
+    ATTENTION: after use - dont forget to 'free()' memory, allocated by 'malloc()':
+
+        if(items != NULL)
+        {
+            free(items);
+            items = NULL;
+        }
+*/
+static void lua_from_table_get_taffy_GridTrackVec_of_TrackSizingFunction(
+    lua_State* L, int table_index,
+
+    const taffy_TrackSizingFunction** * out_items,
+    size_t * out_items_count
+)
+{
+    const taffy_TrackSizingFunction** items = NULL;
+    size_t items_count = 0;
+
+    const size_t table_size = lua_rawlen(L, table_index);
+    if(table_size > 0)
+    {
+        size_t index = 0;
+
+        /* Allocate array with pointers into 'TrackSizingFunction's */
+        items = (const taffy_TrackSizingFunction**)malloc(table_size * sizeof(taffy_TrackSizingFunction*));
+        items_count = table_size;
+
+
+        /* Iterate table */
+        lua_pushnil(L); /* key ( reusable by 'lua_next()' ) */
+        while( lua_next(L, table_index) != 0 )
+        {
+            /* uses 'key' (at index -2) and 'value' (at index -1) */
+            /* const int value_type = lua_type(L, -1); */
+            /* const int key_type   = lua_type(L, -2); */
+
+            /*
+                NOTE: here (for simplicity) we dont care about 'key'
+                type and order - table may be array, sparced array,
+                dictionary, anything, BUT its 'values' must be only
+                'taffy_TrackSizingFunction' type.
+            */
+            taffy_TrackSizingFunction** value_value = (taffy_TrackSizingFunction**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_TrackSizingFunction);
+
+            items[index] = *value_value;
+
+            index += 1;
+
+            /* pop 'value' from the stack*/
+            lua_pop(L, 1);
+        }
+        lua_pop(L, 1); /* pop 'key' from the stack */
+    }
+
+    /* return */
+    *out_items       = items;
+    *out_items_count = items_count;
+}
+
 static const char LUA_META_OBJECT_taffy_Style[]           = "taffy_Style_mt";
 static const char LUA_META_OBJECT_taffy_Style_namespace[] = "taffy_Style_namespace_mt";
 
@@ -11633,31 +11752,6 @@ static int lua_taffy_Style_get_flex_shrink(lua_State* L)
     return 1; /* number of results */
 }
 
-/* Utility function: GridTracVec<TrackSizingFunction> --> lua table */
-static void lua_push_table_from_taffy_GridTrackVec_of_TrackSizingFunction(lua_State* L, const taffy_GridTrackVec_of_TrackSizingFunction* vec)
-{
-    lua_newtable(L);
-    {
-        size_t i = 0;
-        for(i = 0; i < vec->items_count; ++i)
-        {
-            const taffy_TrackSizingFunction* func = vec->items[i];
-
-            taffy_TrackSizingFunction* copy = taffy_TrackSizingFunction_new_copy(func);
-            if(copy != NULL)
-            {
-                taffy_TrackSizingFunction** user_data = (taffy_TrackSizingFunction**)lua_newuserdata(L, sizeof(taffy_TrackSizingFunction*));
-                *user_data = copy;
-
-                luaL_setmetatable(L, LUA_META_OBJECT_taffy_TrackSizingFunction);
-
-                /* set: table[index] = 'value' */
-                lua_rawseti(L, -2, (i+1)); /* NOTE: in Lua indexes starts from 1, thats why here: 'Lua-index = C-index + 1;' */
-            }
-        }
-    }
-}
-
 static int lua_taffy_Style_get_grid_template_rows(lua_State* L)
 {
     taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
@@ -12037,22 +12131,134 @@ static int lua_taffy_Style_set_flex_shrink(lua_State* L)
 
 static int lua_taffy_Style_set_grid_template_rows(lua_State* L)
 {
-    /* TODO */ return 0;
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    /* Interpret table - extract pointers to items */
+    if( lua_type(L, 2) == LUA_TTABLE )
+    {
+        const taffy_TrackSizingFunction** items = NULL;
+        size_t items_count = 0;
+
+        lua_from_table_get_taffy_GridTrackVec_of_TrackSizingFunction(
+            L, 2,
+
+            &items, &items_count
+        );
+
+        taffy_Style_set_grid_template_rows(*self, items, items_count);
+
+        /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+        if(items != NULL)
+        {
+            free(items);
+            items = NULL;
+        }
+
+        return 0; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to set 'grid_template_rows' : second argument is not table of taffy_TrackSizingFunction");
+    }
 }
 
 static int lua_taffy_Style_set_grid_template_columns(lua_State* L)
 {
-    /* TODO */ return 0;
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    /* Interpret table - extract pointers to items */
+    if( lua_type(L, 2) == LUA_TTABLE )
+    {
+        const taffy_TrackSizingFunction** items = NULL;
+        size_t items_count = 0;
+
+        lua_from_table_get_taffy_GridTrackVec_of_TrackSizingFunction(
+            L, 2,
+
+            &items, &items_count
+        );
+
+        taffy_Style_set_grid_template_columns(*self, items, items_count);
+
+        /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+        if(items != NULL)
+        {
+            free(items);
+            items = NULL;
+        }
+
+        return 0; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to set 'grid_template_columns' : second argument is not table of taffy_TrackSizingFunction");
+    }
 }
 
 static int lua_taffy_Style_set_grid_auto_rows(lua_State* L)
 {
-    /* TODO */ return 0;
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    /* Interpret table - extract pointers to items */
+    if( lua_type(L, 2) == LUA_TTABLE )
+    {
+        const taffy_NonRepeatedTrackSizingFunction** items = NULL;
+        size_t items_count = 0;
+
+        lua_from_table_get_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+            L, 2,
+
+            &items, &items_count
+        );
+
+        taffy_Style_set_grid_auto_rows(*self, items, items_count);
+
+        /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+        if(items != NULL)
+        {
+            free(items);
+            items = NULL;
+        }
+
+        return 0; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to set 'grid_auto_rows' : second argument is not table of taffy_NonRepeatedTrackSizingFunction");
+    }
 }
 
 static int lua_taffy_Style_set_grid_auto_columns(lua_State* L)
 {
-    /* TODO */ return 0;
+    taffy_Style** self = (taffy_Style**)luaL_checkudata(L, 1, LUA_META_OBJECT_taffy_Style);
+
+    /* Interpret table - extract pointers to items */
+    if( lua_type(L, 2) == LUA_TTABLE )
+    {
+        const taffy_NonRepeatedTrackSizingFunction** items = NULL;
+        size_t items_count = 0;
+
+        lua_from_table_get_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+            L, 2,
+
+            &items, &items_count
+        );
+
+        taffy_Style_set_grid_auto_columns(*self, items, items_count);
+
+        /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+        if(items != NULL)
+        {
+            free(items);
+            items = NULL;
+        }
+
+        return 0; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Failed to set 'grid_auto_columns' : second argument is not table of taffy_NonRepeatedTrackSizingFunction");
+    }
 }
 
 static int lua_taffy_Style_set_grid_auto_flow(lua_State* L)
