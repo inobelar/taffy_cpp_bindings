@@ -12441,6 +12441,110 @@ static int lua_taffy_Style_set_grid_column(lua_State* L)
     return 0; /* number of results */
 }
 
+static int lua_taffy_Style_build(lua_State* L)
+{
+    if( lua_type(L, 1) == LUA_TTABLE )
+    {
+        taffy_Style* style = taffy_Style_new_default();
+        if(style == NULL)
+        {
+            return luaL_error(L, "Failed to create taffy_Style : taffy_Style_new_default() failed");
+        }
+
+        /* ------------------------------------------------------------------ */
+
+        /* Try to get 'display' */
+        {
+            const int field_type = lua_getfield(L, 1, "display");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Display* display = (taffy_Display*)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Display);
+
+                taffy_Style_set_display(style, *display);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+            }
+        }
+
+        /* Try to get 'overflow' */
+        {
+            const int field_type = lua_getfield(L, 1, "overflow");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Point_of_Overflow** overflow = (taffy_Point_of_Overflow**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Point_of_Overflow);
+
+                taffy_Style_set_overflow(style, *overflow);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+            }
+        }
+
+        /* Try to get 'scrollbar_width' */
+        {
+            const int field_type = lua_getfield(L, 1, "scrollbar_width");
+            if(field_type == LUA_TNUMBER)
+            {
+                const lua_Number scrollbar_width = lua_tonumber(L, -1);
+
+                taffy_Style_set_scrollbar_width(style, scrollbar_width);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+            }
+        }
+
+        /* Try to get 'position' */
+        {
+            const int field_type = lua_getfield(L, 1, "position");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Position* position = (taffy_Position*)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Position);
+
+                taffy_Style_set_position(style, *position);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+            }
+        }
+
+        /* Try to get 'inset' */
+        {
+            const int field_type = lua_getfield(L, 1, "inset");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Rect_of_LengthPercentageAuto** inset = (taffy_Rect_of_LengthPercentageAuto**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentageAuto);
+
+                taffy_Style_set_inset(style, *inset);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+            }
+        }
+
+        /* ... TODO ... */
+
+        /* ------------------------------------------------------------------ */
+
+        taffy_Style** user_data = (taffy_Style**)lua_newuserdata(L, sizeof(taffy_Style*));
+        *user_data = style;
+
+        luaL_setmetatable(L, LUA_META_OBJECT_taffy_Style);
+
+        return 1; /* number of results */
+    }
+    else
+    {
+        return luaL_error(L, "Cannot 'build' taffy_Style : provided argument is not a table");
+    }
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 static int lua_taffy_Style_index(lua_State* L)
@@ -13538,6 +13642,9 @@ static void lua_push_table_taffy_Style(lua_State* L)
 
         lua_pushcfunction(L, lua_taffy_Style_DEFAULT);
         lua_setfield(L, -2, "DEFAULT");
+
+        lua_pushcfunction(L, lua_taffy_Style_build);
+        lua_setfield(L, -2, "build");
     }
     lua_pop(L, 1);
 

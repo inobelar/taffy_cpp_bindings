@@ -3583,8 +3583,24 @@ describe('taffy_cpp lua binding', function()
 
         describe('Operators', function()
             it('Comparison', function()
+                local styles_equal = t.Style.new() == t.Style.DEFAULT()
 
+                local style_changed = t.Style.new()
+                style_changed:set_scrollbar_width(42)
+                local styles_not_equal = t.Style.new() ~= style_changed
+
+                expect( styles_equal ).to.be( true )
+                expect( styles_not_equal ).to.be( true )
             end)
+        end)
+
+        it('Style builder', function()
+            local style = t.Style.build {
+                display = t.Display.Block
+            }
+            expect( style:get_display() ).to.be( t.Display.Block )
+
+            -- ... TODO ...
         end)
 
         it('Getters/Setters', function()
