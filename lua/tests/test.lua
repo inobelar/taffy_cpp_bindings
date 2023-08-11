@@ -96,7 +96,7 @@ describe('taffy_cpp lua binding', function()
             end)
         end)
 
-        it('Get/Set value', function()
+        it('Getters/Setters', function()
            local opt = t.Option_float.new(10)
 
            expect( opt:get_value() ).to.be( 10 )
@@ -2394,6 +2394,16 @@ describe('taffy_cpp lua binding', function()
                 expect( rect2:get_top()    ).to.be( t.LengthPercentage.Length (30) )
                 expect( rect2:get_bottom() ).to.be( t.LengthPercentage.Percent(40) )
             end)
+
+            it('Named constructors', function()
+                local rect = t.Rect_of_LengthPercentage.zero()
+
+                expect( rect ).to.exist()
+                expect( rect:get_left()   ).to.be( t.LengthPercentage.Length(0) )
+                expect( rect:get_right()  ).to.be( t.LengthPercentage.Length(0) )
+                expect( rect:get_top()    ).to.be( t.LengthPercentage.Length(0) )
+                expect( rect:get_bottom() ).to.be( t.LengthPercentage.Length(0) )
+            end)
         end)
 
         it('Copying', function()
@@ -2607,6 +2617,24 @@ describe('taffy_cpp lua binding', function()
                 expect( rect2:get_top()    ).to.be( t.LengthPercentageAuto.Length (30) )
                 expect( rect2:get_bottom() ).to.be( t.LengthPercentageAuto.Percent(40) )
             end)
+
+            it('Named constructors', function()
+                local rect1 = t.Rect_of_LengthPercentageAuto.AUTO()
+
+                expect( rect1 ).to.exist()
+                expect( rect1:get_left()   ).to.be( t.LengthPercentageAuto.Auto() )
+                expect( rect1:get_right()  ).to.be( t.LengthPercentageAuto.Auto() )
+                expect( rect1:get_top()    ).to.be( t.LengthPercentageAuto.Auto() )
+                expect( rect1:get_bottom() ).to.be( t.LengthPercentageAuto.Auto() )
+
+                local rect2 = t.Rect_of_LengthPercentageAuto.zero()
+
+                expect( rect2 ).to.exist()
+                expect( rect2:get_left()   ).to.be( t.LengthPercentageAuto.Length(0) )
+                expect( rect2:get_right()  ).to.be( t.LengthPercentageAuto.Length(0) )
+                expect( rect2:get_top()    ).to.be( t.LengthPercentageAuto.Length(0) )
+                expect( rect2:get_bottom() ).to.be( t.LengthPercentageAuto.Length(0) )
+            end)
         end)
 
         it('Copying', function()
@@ -2788,6 +2816,14 @@ describe('taffy_cpp lua binding', function()
                 expect( size2:get_width()  ).to.be( t.LengthPercentage.Length (10) )
                 expect( size2:get_height() ).to.be( t.LengthPercentage.Percent(20) )
             end)
+
+            it('Named constructors', function()
+                local size = t.Size_of_LengthPercentage.zero()
+
+                expect( size ).to.exist()
+                expect( size:get_width()  ).to.be( t.LengthPercentage.Length(0) )
+                expect( size:get_height() ).to.be( t.LengthPercentage.Length(0) )
+            end)
         end)
 
         it('Copying', function()
@@ -2941,6 +2977,20 @@ describe('taffy_cpp lua binding', function()
                 expect( size2 ).to.exist()
                 expect( size2:get_width()  ).to.be( t.Dimension.Length (10) )
                 expect( size2:get_height() ).to.be( t.Dimension.Percent(20) )
+            end)
+
+            it('Named constructors', function()
+                local size1 = t.Size_of_Dimension.AUTO()
+
+                expect( size1 ).to.exist()
+                expect( size1:get_width()  ).to.be( t.Dimension.Auto() )
+                expect( size1:get_height() ).to.be( t.Dimension.Auto() )
+
+                local size2 = t.Size_of_Dimension.zero()
+
+                expect( size2 ).to.exist()
+                expect( size2:get_width()  ).to.be( t.Dimension.Length(0) )
+                expect( size2:get_height() ).to.be( t.Dimension.Length(0) )
             end)
         end)
 
@@ -3104,6 +3154,14 @@ describe('taffy_cpp lua binding', function()
                 expect( line2:get_start()  ).to.be( t.GridPlacement.Auto()   )
                 expect( line2:get_end()    ).to.be( t.GridPlacement.Span(42) )
             end)
+
+            it('Named constructors', function()
+                local line = t.Line_of_GridPlacement.AUTO()
+
+                expect( line ).to.exist()
+                expect( line:get_start()  ).to.be( t.GridPlacement.Auto() )
+                expect( line:get_end()    ).to.be( t.GridPlacement.Auto() )
+            end)
         end)
 
         it('Copying', function()
@@ -3245,7 +3303,7 @@ describe('taffy_cpp lua binding', function()
             end)
         end)
 
-        it('Get/Set value', function()
+        it('Getters/Setters', function()
            local opt = t.Option_AlignContent.new( t.AlignContent.FlexStart )
 
            expect( opt:get_value() ).to.be( t.AlignContent.FlexStart )
@@ -3325,7 +3383,7 @@ describe('taffy_cpp lua binding', function()
             end)
         end)
 
-        it('Get/Set value', function()
+        it('Getters/Setters', function()
            local opt = t.Option_JustifyContent.new( t.JustifyContent.FlexStart )
 
            expect( opt:get_value() ).to.be( t.JustifyContent.FlexStart )
@@ -3405,7 +3463,7 @@ describe('taffy_cpp lua binding', function()
             end)
         end)
 
-        it('Get/Set value', function()
+        it('Getters/Setters', function()
            local opt = t.Option_AlignItems.new( t.AlignItems.FlexStart )
 
            expect( opt:get_value() ).to.be( t.AlignItems.FlexStart )
@@ -3485,7 +3543,7 @@ describe('taffy_cpp lua binding', function()
             end)
         end)
 
-        it('Get/Set value', function()
+        it('Getters/Setters', function()
            local opt = t.Option_AlignSelf.new( t.AlignSelf.FlexStart )
 
            expect( opt:get_value() ).to.be( t.AlignSelf.FlexStart )
@@ -3499,5 +3557,769 @@ describe('taffy_cpp lua binding', function()
            expect( opt:get_value() ).to.be( nil )
         end)
     end) -- Option_AlignSelf
+
+    describe('Style', function()
+        describe('Constructors', function()
+            it('default', function()
+                local style = t.Style.new()
+
+                expect( style ).to.exist()
+            end)
+
+            it('Named constructors', function()
+                local style = t.Style.DEFAULT()
+
+                expect( style ).to.exist()
+            end)
+        end)
+
+        it('Copying', function()
+            local style = t.Style.new()
+
+            local copy = style:copy()
+
+            expect( copy ).to.exist()
+        end)
+
+        describe('Operators', function()
+            it('Comparison', function()
+
+            end)
+        end)
+
+        it('Getters/Setters', function()
+            local style = t.Style.new()
+
+            -- display
+            expect( style:get_display() ).to.be( t.Display.Flex )
+            style:set_display( t.Display.Grid )
+            expect( style:get_display() ).to.be( t.Display.Grid )
+
+            -- overflow
+            expect( style:get_overflow() ).to.be( t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Visible) )
+            style:set_overflow( t.Point_of_Overflow.new(t.Overflow.Hidden, t.Overflow.Hidden) )
+            expect( style:get_overflow() ).to.be( t.Point_of_Overflow.new(t.Overflow.Hidden, t.Overflow.Hidden) )
+
+            -- scrollbar_width
+            expect( style:get_scrollbar_width() ).to.be( 0.0 )
+            style:set_scrollbar_width(42.5)
+            expect( style:get_scrollbar_width() ).to.be(42.5)
+
+            -- position
+            expect( style:get_position() ).to.be( t.Position.Relative )
+            style:set_position( t.Position.Absolute )
+            expect( style:get_position() ).to.be( t.Position.Absolute )
+
+            -- inset
+            expect( style:get_inset() ).to.be( t.Rect_of_LengthPercentageAuto.AUTO() )
+            style:set_inset( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            ) )
+            expect( style:get_inset() ).to.be( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            ) )
+
+            -- size
+            expect( style:get_size() ).to.be( t.Size_of_Dimension.AUTO() )
+            style:set_size( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+            expect( style:get_size() ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+
+            -- min_size
+            expect( style:get_min_size() ).to.be( t.Size_of_Dimension.AUTO() )
+            style:set_min_size( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+            expect( style:get_min_size() ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+
+            -- max_size
+            expect( style:get_max_size() ).to.be( t.Size_of_Dimension.AUTO() )
+            style:set_max_size( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+            expect( style:get_max_size() ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+
+            -- aspect_ratio
+            expect( style:get_aspect_ratio() ).to.be( t.Option_float.new() )
+            style:set_aspect_ratio( t.Option_float.new(42) )
+            expect( style:get_aspect_ratio() ).to.be( t.Option_float.new(42) )
+
+            -- margin
+            expect( style:get_margin() ).to.be( t.Rect_of_LengthPercentageAuto.zero() )
+            style:set_margin( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            ) )
+            expect( style:get_margin() ).to.be( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            ) )
+
+            -- padding
+            expect( style:get_padding() ).to.be( t.Rect_of_LengthPercentage.zero() )
+            style:set_padding( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            ) )
+            expect( style:get_padding() ).to.be( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            ) )
+
+            -- border
+            expect( style:get_border() ).to.be( t.Rect_of_LengthPercentage.zero() )
+            style:set_border( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            ) )
+            expect( style:get_border() ).to.be( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            ) )
+
+            -- align_items
+            expect( style:get_align_items() ).to.be( t.Option_AlignItems.new() )
+            style:set_align_items( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+            expect( style:get_align_items() ).to.be( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+
+            -- align_self
+            expect( style:get_align_self() ).to.be( t.Option_AlignSelf.new() )
+            style:set_align_self( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+            expect( style:get_align_self() ).to.be( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+
+            -- justify_items
+            expect( style:get_justify_items() ).to.be( t.Option_AlignItems.new() )
+            style:set_justify_items( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+            expect( style:get_justify_items() ).to.be( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+
+            -- justify_self
+            expect( style:get_justify_self() ).to.be( t.Option_AlignSelf.new() )
+            style:set_justify_self( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+            expect( style:get_justify_self() ).to.be( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+
+            -- align_content
+            expect( style:get_align_content() ).to.be( t.Option_AlignContent.new() )
+            style:set_align_content( t.Option_AlignContent.new(t.AlignContent.FlexStart) )
+            expect( style:get_align_content() ).to.be( t.Option_AlignContent.new(t.AlignContent.FlexStart) )
+
+            -- justify_content
+            expect( style:get_justify_content() ).to.be( t.Option_JustifyContent.new() )
+            style:set_justify_content( t.Option_JustifyContent.new(t.JustifyContent.FlexStart) )
+            expect( style:get_justify_content() ).to.be( t.Option_JustifyContent.new(t.JustifyContent.FlexStart) )
+
+            -- gap
+            expect( style:get_gap() ).to.be( t.Size_of_LengthPercentage.zero() )
+            style:set_gap( t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20)
+            ) )
+            expect( style:get_gap() ).to.be( t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20)
+            ) )
+
+            -- flex_direction
+            expect( style:get_flex_direction() ).to.be( t.FlexDirection.Row )
+            style:set_flex_direction( t.FlexDirection.Column )
+            expect( style:get_flex_direction() ).to.be( t.FlexDirection.Column )
+
+            -- flex_wrap
+            expect( style:get_flex_wrap() ).to.be( t.FlexWrap.NoWrap )
+            style:set_flex_wrap( t.FlexWrap.Wrap )
+            expect( style:get_flex_wrap() ).to.be( t.FlexWrap.Wrap )
+
+            -- flex_basis
+            expect( style:get_flex_basis() ).to.be( t.Dimension.Auto() )
+            style:set_flex_basis( t.Dimension.Length(10) )
+            expect( style:get_flex_basis() ).to.be( t.Dimension.Length(10) )
+
+            -- flex_grow
+            expect( style:get_flex_grow() ).to.be( 0.0 )
+            style:set_flex_grow( 42.5 )
+            expect( style:get_flex_grow() ).to.be( 42.5 )
+
+            -- flex_shrink
+            expect( style:get_flex_shrink() ).to.be( 1.0 )
+            style:set_flex_shrink( 42.5 )
+            expect( style:get_flex_shrink() ).to.be( 42.5 )
+
+            -- grid_template_rows
+            expect( style:get_grid_template_rows() ).to.equal( {} )
+            style:set_grid_template_rows( {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            } )
+            expect( style:get_grid_template_rows() ).to.equal( {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            } )
+
+            -- grid_template_columns
+            expect( style:get_grid_template_columns() ).to.equal( {} )
+            style:set_grid_template_columns( {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            } )
+            expect( style:get_grid_template_columns() ).to.equal( {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            } )
+
+            -- grid_auto_rows
+            expect( style:get_grid_auto_rows() ).to.equal( {} )
+            style:set_grid_auto_rows( {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            } )
+            expect( style:get_grid_auto_rows() ).to.equal( {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            } )
+
+            -- grid_auto_columns
+            expect( style:get_grid_auto_columns() ).to.equal( {} )
+            style:set_grid_auto_columns( {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            } )
+            expect( style:get_grid_auto_columns() ).to.equal( {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            } )
+
+            -- grid_auto_flow
+            expect( style:get_grid_auto_flow() ).to.be( t.GridAutoFlow.Row )
+            style:set_grid_auto_flow( t.GridAutoFlow.Column )
+            expect( style:get_grid_auto_flow() ).to.be( t.GridAutoFlow.Column )
+
+            -- grid_row
+            expect( style:get_grid_row() ).to.be( t.Line_of_GridPlacement.AUTO() )
+            style:set_grid_row( t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            ) )
+            expect( style:get_grid_row() ).to.be( t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            ) )
+
+            -- grid_column
+            expect( style:get_grid_column() ).to.be( t.Line_of_GridPlacement.AUTO() )
+            style:set_grid_column( t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            ) )
+            expect( style:get_grid_column() ).to.be( t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            ) )
+        end)
+
+        it('Properties', function()
+            local style = t.Style.new()
+
+            -- display
+            expect( style.display ).to.be( t.Display.Flex )
+            style.display = t.Display.Grid
+            expect( style.display ).to.be( t.Display.Grid )
+
+            -- overflow
+            expect( style.overflow ).to.be( t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Visible) )
+            style.overflow = t.Point_of_Overflow.new(t.Overflow.Hidden, t.Overflow.Hidden)
+            expect( style.overflow ).to.be( t.Point_of_Overflow.new(t.Overflow.Hidden, t.Overflow.Hidden) )
+
+            -- scrollbar_width
+            expect( style.scrollbar_width ).to.be( 0.0 )
+            style.scrollbar_width = 42.5
+            expect( style.scrollbar_width ).to.be(42.5)
+
+            -- position
+            expect( style.position ).to.be( t.Position.Relative )
+            style.position = t.Position.Absolute
+            expect( style.position ).to.be( t.Position.Absolute )
+
+            -- inset
+            expect( style.inset ).to.be( t.Rect_of_LengthPercentageAuto.AUTO() )
+            style.inset = t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            )
+            expect( style.inset ).to.be( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            ) )
+
+            -- size
+            expect( style.size ).to.be( t.Size_of_Dimension.AUTO() )
+            style.size = t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            )
+            expect( style.size ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+
+            -- min_size
+            expect( style.min_size ).to.be( t.Size_of_Dimension.AUTO() )
+            style.min_size = t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            )
+            expect( style.min_size ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+
+            -- max_size
+            expect( style.max_size ).to.be( t.Size_of_Dimension.AUTO() )
+            style.max_size = t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            )
+            expect( style.max_size ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Length(20)
+            ) )
+
+            -- aspect_ratio
+            expect( style.aspect_ratio ).to.be( t.Option_float.new() )
+            style.aspect_ratio = t.Option_float.new(42)
+            expect( style.aspect_ratio ).to.be( t.Option_float.new(42) )
+
+            -- margin
+            expect( style.margin ).to.be( t.Rect_of_LengthPercentageAuto.zero() )
+            style.margin = t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            )
+            expect( style.margin ).to.be( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Length(20),
+                t.LengthPercentageAuto.Length(30),
+                t.LengthPercentageAuto.Length(40)
+            ) )
+
+            -- padding
+            expect( style.padding ).to.be( t.Rect_of_LengthPercentage.zero() )
+            style.padding = t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            )
+            expect( style.padding ).to.be( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            ) )
+
+            -- border
+            expect( style.border ).to.be( t.Rect_of_LengthPercentage.zero() )
+            style.border = t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            )
+            expect( style.border ).to.be( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20),
+                t.LengthPercentage.Length(30),
+                t.LengthPercentage.Length(40)
+            ) )
+
+            -- align_items
+            expect( style.align_items ).to.be( t.Option_AlignItems.new() )
+            style.align_items = t.Option_AlignItems.new(t.AlignItems.FlexStart)
+            expect( style.align_items ).to.be( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+
+            -- align_self
+            expect( style.align_self ).to.be( t.Option_AlignSelf.new() )
+            style.align_self = t.Option_AlignSelf.new(t.AlignSelf.FlexStart)
+            expect( style.align_self ).to.be( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+
+            -- justify_items
+            expect( style.justify_items ).to.be( t.Option_AlignItems.new() )
+            style.justify_items = t.Option_AlignItems.new(t.AlignItems.FlexStart)
+            expect( style.justify_items ).to.be( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+
+            -- justify_self
+            expect( style.justify_self ).to.be( t.Option_AlignSelf.new() )
+            style.justify_self = t.Option_AlignSelf.new(t.AlignSelf.FlexStart)
+            expect( style.justify_self ).to.be( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+
+            -- align_content
+            expect( style.align_content ).to.be( t.Option_AlignContent.new() )
+            style.align_content = t.Option_AlignContent.new(t.AlignContent.FlexStart)
+            expect( style.align_content ).to.be( t.Option_AlignContent.new(t.AlignContent.FlexStart) )
+
+            -- justify_content
+            expect( style.justify_content ).to.be( t.Option_JustifyContent.new() )
+            style.justify_content = t.Option_JustifyContent.new(t.JustifyContent.FlexStart)
+            expect( style.justify_content ).to.be( t.Option_JustifyContent.new(t.JustifyContent.FlexStart) )
+
+            -- gap
+            expect( style.gap ).to.be( t.Size_of_LengthPercentage.zero() )
+            style.gap = t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20)
+            )
+            expect( style.gap ).to.be( t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length(10),
+                t.LengthPercentage.Length(20)
+            ) )
+
+            -- flex_direction
+            expect( style.flex_direction ).to.be( t.FlexDirection.Row )
+            style.flex_direction = t.FlexDirection.Column
+            expect( style.flex_direction ).to.be( t.FlexDirection.Column )
+
+            -- flex_wrap
+            expect( style.flex_wrap ).to.be( t.FlexWrap.NoWrap )
+            style.flex_wrap = t.FlexWrap.Wrap
+            expect( style.flex_wrap ).to.be( t.FlexWrap.Wrap )
+
+            -- flex_basis
+            expect( style.flex_basis ).to.be( t.Dimension.Auto() )
+            style.flex_basis = t.Dimension.Length(10)
+            expect( style.flex_basis ).to.be( t.Dimension.Length(10) )
+
+            -- flex_grow
+            expect( style.flex_grow ).to.be( 0.0 )
+            style.flex_grow = 42.5
+            expect( style.flex_grow ).to.be( 42.5 )
+
+            -- flex_shrink
+            expect( style.flex_shrink ).to.be( 1.0 )
+            style.flex_shrink = 42.5
+            expect( style.flex_shrink ).to.be( 42.5 )
+
+            -- grid_template_rows
+            expect( style.grid_template_rows ).to.equal( {} )
+            style.grid_template_rows = {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            }
+            expect( style.grid_template_rows ).to.equal( {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            } )
+
+            -- grid_template_columns
+            expect( style.grid_template_columns ).to.equal( {} )
+            style.grid_template_columns = {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            }
+            expect( style.grid_template_columns ).to.equal( {
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                t.TrackSizingFunction.Repeat(
+                    t.GridTrackRepetition.AutoFill(),
+                    {
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MinContent(),
+                            t.MaxTrackSizingFunction.MaxContent()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.MaxContent(),
+                            t.MaxTrackSizingFunction.Auto()
+                        ),
+                        t.NonRepeatedTrackSizingFunction.new(
+                            t.MinTrackSizingFunction.Auto(),
+                            t.MaxTrackSizingFunction.Fraction(42)
+                        )
+                    }
+                )
+            } )
+
+            -- grid_auto_rows
+            expect( style.grid_auto_rows ).to.equal( {} )
+            style.grid_auto_rows = {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            }
+            expect( style.grid_auto_rows ).to.equal( {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            } )
+
+            -- grid_auto_columns
+            expect( style.grid_auto_columns ).to.equal( {} )
+            style.grid_auto_columns = {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            }
+            expect( style.grid_auto_columns ).to.equal( {
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MinContent(),
+                    t.MaxTrackSizingFunction.MaxContent()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.MaxContent(),
+                    t.MaxTrackSizingFunction.Auto()
+                ),
+                t.NonRepeatedTrackSizingFunction.new(
+                    t.MinTrackSizingFunction.Auto(),
+                    t.MaxTrackSizingFunction.Fraction(42)
+                )
+            } )
+
+            -- grid_auto_flow
+            expect( style.grid_auto_flow ).to.be( t.GridAutoFlow.Row )
+            style.grid_auto_flow = t.GridAutoFlow.Column
+            expect( style.grid_auto_flow ).to.be( t.GridAutoFlow.Column )
+
+            -- grid_row
+            expect( style.grid_row ).to.be( t.Line_of_GridPlacement.AUTO() )
+            style.grid_row = t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            )
+            expect( style.grid_row ).to.be( t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            ) )
+
+            -- grid_column
+            expect( style.grid_column ).to.be( t.Line_of_GridPlacement.AUTO() )
+            style.grid_column = t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            )
+            expect( style.grid_column ).to.be( t.Line_of_GridPlacement.new(
+                t.GridPlacement.Auto(),
+                t.GridPlacement.Span(42)
+            ) )
+        end)
+    end)
 
 end)
