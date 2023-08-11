@@ -2077,6 +2077,13 @@ taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_bottom(taffy_Rect
     return reinterpret_cast<taffy_LengthPercentage*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentage>*>(self)->bottom ) );
 }
 
+taffy_Rect_of_LengthPercentage* taffy_Rect_of_LengthPercentage_new_zero(void)
+{
+    return reinterpret_cast<taffy_Rect_of_LengthPercentage*>(
+        new taffy::Rect<taffy::LengthPercentage>{ taffy::Rect<taffy::LengthPercentage>::zero() }
+    );
+}
+
 // -----------------------------------------------------------------------------
 // Rect<LengthPercentageAuto>
 
@@ -2221,6 +2228,20 @@ taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_bottom(ta
     return reinterpret_cast<taffy_LengthPercentageAuto*>( &( reinterpret_cast<taffy::Rect<taffy::LengthPercentageAuto>*>(self)->bottom ) );
 }
 
+taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new_AUTO(void)
+{
+    return reinterpret_cast<taffy_Rect_of_LengthPercentageAuto*>(
+        new taffy::Rect<taffy::LengthPercentageAuto>{ taffy::Rect<taffy::LengthPercentageAuto>::AUTO() }
+    );
+}
+
+taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new_zero(void)
+{
+    return reinterpret_cast<taffy_Rect_of_LengthPercentageAuto*>(
+        new taffy::Rect<taffy::LengthPercentageAuto>{ taffy::Rect<taffy::LengthPercentageAuto>::zero() }
+    );
+}
+
 // -----------------------------------------------------------------------------
 // Size<LengthPercentage>
 
@@ -2310,6 +2331,13 @@ taffy_LengthPercentage* taffy_Size_of_LengthPercentage_get_mut_height(taffy_Size
     return reinterpret_cast<taffy_LengthPercentage*>( &( reinterpret_cast<taffy::Size<taffy::LengthPercentage>*>(self)->height ) );
 }
 
+taffy_Size_of_LengthPercentage* taffy_Size_of_LengthPercentage_new_zero(void)
+{
+    return reinterpret_cast<taffy_Size_of_LengthPercentage*>(
+        new taffy::Size<taffy::LengthPercentage>{ taffy::Size<taffy::LengthPercentage>::zero() }
+    );
+}
+
 // -----------------------------------------------------------------------------
 // Size<Dimension>
 
@@ -2397,6 +2425,20 @@ taffy_Dimension* taffy_Size_of_Dimension_get_mut_height(taffy_Size_of_Dimension*
     ASSERT_NOT_NULL(self);
 
     return reinterpret_cast<taffy_Dimension*>( &( reinterpret_cast<taffy::Size<taffy::Dimension>*>(self)->height ) );
+}
+
+taffy_Size_of_Dimension* taffy_Size_of_Dimension_new_AUTO(void)
+{
+    return reinterpret_cast<taffy_Size_of_Dimension*>(
+        new taffy::Size<taffy::Dimension>{ taffy::Size<taffy::Dimension>::AUTO() }
+    );
+}
+
+taffy_Size_of_Dimension* taffy_Size_of_Dimension_new_zero(void)
+{
+    return reinterpret_cast<taffy_Size_of_Dimension*>(
+        new taffy::Size<taffy::Dimension>{ taffy::Size<taffy::Dimension>::zero() }
+    );
 }
 
 // -----------------------------------------------------------------------------
@@ -2493,6 +2535,13 @@ taffy_GridPlacement* taffy_Line_of_GridPlacement_get_mut_end(taffy_Line_of_GridP
     ASSERT_NOT_NULL(self);
 
     return reinterpret_cast<taffy_GridPlacement*>( &( reinterpret_cast<taffy::Line<taffy::GridPlacement>*>(self)->end ) );
+}
+
+taffy_Line_of_GridPlacement* taffy_Line_of_GridPlacement_new_AUTO(void)
+{
+    return reinterpret_cast<taffy_Line_of_GridPlacement*>(
+        new taffy::Line<taffy::GridPlacement>( taffy::Line<taffy::GridPlacement>::AUTO() )
+    );
 }
 
 // -----------------------------------------------------------------------------

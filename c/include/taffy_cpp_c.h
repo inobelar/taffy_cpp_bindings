@@ -699,6 +699,9 @@ extern "C" {
             taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_top   (taffy_Rect_of_LengthPercentage* self);
             taffy_LengthPercentage* taffy_Rect_of_LengthPercentage_get_mut_bottom(taffy_Rect_of_LengthPercentage* self);
 
+            /* extras*/
+            taffy_Rect_of_LengthPercentage* taffy_Rect_of_LengthPercentage_new_zero(void);
+
             /* Rect<LengthPercentageAuto> ----------------------------------- */
 
             typedef struct taffy_Rect_of_LengthPercentageAuto taffy_Rect_of_LengthPercentageAuto;
@@ -738,6 +741,10 @@ extern "C" {
             taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_top   (taffy_Rect_of_LengthPercentageAuto* self);
             taffy_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_get_mut_bottom(taffy_Rect_of_LengthPercentageAuto* self);
 
+            /* extras */
+            taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new_AUTO(void);
+            taffy_Rect_of_LengthPercentageAuto* taffy_Rect_of_LengthPercentageAuto_new_zero(void);
+
             /* Size<LengthPercentage> ---------------------------------------------- */
 
             typedef struct taffy_Size_of_LengthPercentage taffy_Size_of_LengthPercentage;
@@ -765,6 +772,9 @@ extern "C" {
             /* mutators */
             taffy_LengthPercentage* taffy_Size_of_LengthPercentage_get_mut_width (taffy_Size_of_LengthPercentage* self);
             taffy_LengthPercentage* taffy_Size_of_LengthPercentage_get_mut_height(taffy_Size_of_LengthPercentage* self);
+
+            /* extras */
+            taffy_Size_of_LengthPercentage* taffy_Size_of_LengthPercentage_new_zero(void);
 
             /* Size<Dimension> ---------------------------------------------- */
 
@@ -794,6 +804,10 @@ extern "C" {
             taffy_Dimension* taffy_Size_of_Dimension_get_mut_width (taffy_Size_of_Dimension* self);
             taffy_Dimension* taffy_Size_of_Dimension_get_mut_height(taffy_Size_of_Dimension* self);
 
+            /* extras */
+            taffy_Size_of_Dimension* taffy_Size_of_Dimension_new_AUTO(void);
+            taffy_Size_of_Dimension* taffy_Size_of_Dimension_new_zero(void);
+
             /* Line<GridPlacement> ------------------------------------------ */
 
             typedef struct taffy_Line_of_GridPlacement taffy_Line_of_GridPlacement;
@@ -822,6 +836,9 @@ extern "C" {
             /* mutators */
             taffy_GridPlacement* taffy_Line_of_GridPlacement_get_mut_start(taffy_Line_of_GridPlacement* self);
             taffy_GridPlacement* taffy_Line_of_GridPlacement_get_mut_end  (taffy_Line_of_GridPlacement* self);
+
+            /* extras */
+            taffy_Line_of_GridPlacement* taffy_Line_of_GridPlacement_new_AUTO(void);
 
             /* Option<AlignContent> ----------------------------------------- */
 
