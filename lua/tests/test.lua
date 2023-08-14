@@ -3595,13 +3595,163 @@ describe('taffy_cpp lua binding', function()
         end)
 
         it('Style builder', function()
-            local style = t.Style.build {
+            local style = t.Style.build( {
                 display = t.Display.Block,
                 overflow = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden),
+                scrollbar_width = 42.5,
+                position = t.Position.Absolute,
+                inset = t.Rect_of_LengthPercentageAuto.new(
+                    t.LengthPercentageAuto.Length(10),
+                    t.LengthPercentageAuto.Percent(20),
+                    t.LengthPercentageAuto.Auto(),
+                    t.LengthPercentageAuto.Length(42.5)
+                ),
+                size = t.Size_of_Dimension.new(
+                    t.Dimension.Length(10),
+                    t.Dimension.Percent(20)
+                ),
+                min_size = t.Size_of_Dimension.new(
+                    t.Dimension.Length(10),
+                    t.Dimension.Percent(20)
+                ),
+                max_size = t.Size_of_Dimension.new(
+                    t.Dimension.Length(10),
+                    t.Dimension.Percent(20)
+                ),
+                aspect_ratio = t.Option_float.new(42.5),
+                margin = t.Rect_of_LengthPercentageAuto.new(
+                    t.LengthPercentageAuto.Length(10),
+                    t.LengthPercentageAuto.Percent(20),
+                    t.LengthPercentageAuto.Auto(),
+                    t.LengthPercentageAuto.Length(42.5)
+                ),
+                padding = t.Rect_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20),
+                    t.LengthPercentage.Length (30),
+                    t.LengthPercentage.Percent(40)
+                ),
+                border = t.Rect_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20),
+                    t.LengthPercentage.Length (30),
+                    t.LengthPercentage.Percent(40)
+                ),
+                align_items     = t.Option_AlignItems.new(t.AlignItems.FlexStart),
+                align_self      = t.Option_AlignSelf.new(t.AlignSelf.FlexStart),
+                justify_items   = t.Option_AlignItems.new(t.AlignItems.FlexStart),
+                justify_self    = t.Option_AlignSelf.new(t.AlignSelf.FlexStart),
+                align_content   = t.Option_AlignContent.new(t.AlignContent.FlexStart),
+                justify_content = t.Option_JustifyContent.new(t.JustifyContent.FlexStart),
+                gap = t.Size_of_LengthPercentage.new(
+                    t.LengthPercentage.Length (10),
+                    t.LengthPercentage.Percent(20)
+                ),
+                flex_direction = t.FlexDirection.Column,
+                flex_wrap = t.FlexWrap.Wrap,
+                flex_basis = t.Dimension.Length(42.5),
+                flex_grow = 42.5,
+                flex_shrink = 42.5,
+                grid_template_rows = {
+                    t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+                    t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+                    t.TrackSizingFunction.Repeat(
+                        t.GridTrackRepetition.AutoFill(),
+                        {
+                            t.NonRepeatedTrackSizingFunction.new(
+                                t.MinTrackSizingFunction.MinContent(),
+                                t.MaxTrackSizingFunction.MaxContent()
+                            ),
+                            t.NonRepeatedTrackSizingFunction.new(
+                                t.MinTrackSizingFunction.MaxContent(),
+                                t.MaxTrackSizingFunction.Auto()
+                            ),
+                            t.NonRepeatedTrackSizingFunction.new(
+                                t.MinTrackSizingFunction.Auto(),
+                                t.MaxTrackSizingFunction.Fraction(42)
+                            )
+                        }
+                    )
+                }
+            } )
 
-            }
             expect( style:get_display() ).to.be( t.Display.Block )
             expect( style:get_overflow() ).to.be( t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden) )
+            expect( style:get_scrollbar_width() ).to.be( 42.5 )
+            expect( style:get_position() ).to.be( t.Position.Absolute )
+            expect( style:get_inset() ).to.be( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Percent(20),
+                t.LengthPercentageAuto.Auto(),
+                t.LengthPercentageAuto.Length(42.5)
+            ) )
+            expect( style:get_size() ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Percent(20)
+            ))
+            expect( style:get_min_size() ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Percent(20)
+            ))
+            expect( style:get_max_size() ).to.be( t.Size_of_Dimension.new(
+                t.Dimension.Length(10),
+                t.Dimension.Percent(20)
+            ))
+            expect( style:get_aspect_ratio() ).to.be( t.Option_float.new(42.5) )
+            expect( style:get_margin() ).to.be( t.Rect_of_LengthPercentageAuto.new(
+                t.LengthPercentageAuto.Length(10),
+                t.LengthPercentageAuto.Percent(20),
+                t.LengthPercentageAuto.Auto(),
+                t.LengthPercentageAuto.Length(42.5)
+            ) )
+            expect( style:get_padding() ).to.be( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20),
+                t.LengthPercentage.Length (30),
+                t.LengthPercentage.Percent(40)
+            ) )
+            expect( style:get_border() ).to.be( t.Rect_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20),
+                t.LengthPercentage.Length (30),
+                t.LengthPercentage.Percent(40)
+            ) )
+            expect( style:get_align_items() ).to.be( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+            expect( style:get_align_self() ).to.be( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+            expect( style:get_justify_items() ).to.be( t.Option_AlignItems.new(t.AlignItems.FlexStart) )
+            expect( style:get_justify_self() ).to.be( t.Option_AlignSelf.new(t.AlignSelf.FlexStart) )
+            expect( style:get_align_content() ).to.be( t.Option_AlignContent.new(t.AlignContent.FlexStart) )
+            expect( style:get_justify_content() ).to.be( t.Option_JustifyContent.new(t.JustifyContent.FlexStart) )
+            expect( style:get_gap() ).to.be( t.Size_of_LengthPercentage.new(
+                t.LengthPercentage.Length (10),
+                t.LengthPercentage.Percent(20)
+            ) )
+            expect( style:get_flex_direction() ).to.be( t.FlexDirection.Column )
+            expect( style:get_flex_wrap() ).to.be( t.FlexWrap.Wrap )
+            expect( style:get_flex_basis() ).to.be( t.Dimension.Length(42.5) )
+            expect( style:get_flex_grow() ).to.be( 42.5 )
+            expect( style:get_flex_shrink() ).to.be( 42.5 )
+            -- expect( style:get_grid_template_rows() ).to.equal( {
+            --     t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MIN_CONTENT() ),
+            --     t.TrackSizingFunction.Single( t.NonRepeatedTrackSizingFunction.MAX_CONTENT() ),
+            --     t.TrackSizingFunction.Repeat(
+            --         t.GridTrackRepetition.AutoFill(),
+            --         {
+            --             t.NonRepeatedTrackSizingFunction.new(
+            --                 t.MinTrackSizingFunction.MinContent(),
+            --                 t.MaxTrackSizingFunction.MaxContent()
+            --             ),
+            --             t.NonRepeatedTrackSizingFunction.new(
+            --                 t.MinTrackSizingFunction.MaxContent(),
+            --                 t.MaxTrackSizingFunction.Auto()
+            --             ),
+            --             t.NonRepeatedTrackSizingFunction.new(
+            --                 t.MinTrackSizingFunction.Auto(),
+            --                 t.MaxTrackSizingFunction.Fraction(42)
+            --             )
+            --         }
+            --     )
+            -- } )
 
             -- ... TODO ...
         end)
