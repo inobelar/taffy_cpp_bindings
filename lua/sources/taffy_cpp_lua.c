@@ -12453,6 +12453,11 @@ static int lua_taffy_Style_build(lua_State* L)
 
         /* ------------------------------------------------------------------ */
 
+        /*
+            NOTE: if value of invalid type specified for known property, we dont
+            simply (and silently) ignore it, but throw an error!
+        */
+
         /* Try to get 'display' */
         {
             const int field_type = lua_getfield(L, 1, "display");
@@ -12465,6 +12470,9 @@ static int lua_taffy_Style_build(lua_State* L)
             else
             {
                 lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'display' property");
             }
         }
 
@@ -12480,6 +12488,9 @@ static int lua_taffy_Style_build(lua_State* L)
             else
             {
                 lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'overflow' property");
             }
         }
 
@@ -12495,6 +12506,9 @@ static int lua_taffy_Style_build(lua_State* L)
             else
             {
                 lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'scrollbar_width' property");
             }
         }
 
@@ -12510,6 +12524,9 @@ static int lua_taffy_Style_build(lua_State* L)
             else
             {
                 lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'position' property");
             }
         }
 
@@ -12525,10 +12542,535 @@ static int lua_taffy_Style_build(lua_State* L)
             else
             {
                 lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'inset' property");
             }
         }
 
-        /* ... TODO ... */
+        /* Try to get 'size' */
+        {
+            const int field_type = lua_getfield(L, 1, "size");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Size_of_Dimension** size = (taffy_Size_of_Dimension**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+                taffy_Style_set_size(style, *size);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'size' property");
+            }
+        }
+
+        /* Try to get 'min_size' */
+        {
+            const int field_type = lua_getfield(L, 1, "min_size");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Size_of_Dimension** min_size = (taffy_Size_of_Dimension**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+                taffy_Style_set_min_size(style, *min_size);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'min_size' property");
+            }
+        }
+
+        /* Try to get 'max_size' */
+        {
+            const int field_type = lua_getfield(L, 1, "max_size");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Size_of_Dimension** max_size = (taffy_Size_of_Dimension**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Size_of_Dimension);
+
+                taffy_Style_set_max_size(style, *max_size);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'max_size' property");
+            }
+        }
+
+        /* Try to get 'aspect_ratio' */
+        {
+            const int field_type = lua_getfield(L, 1, "aspect_ratio");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_float** aspect_ratio = (taffy_Option_float**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_float);
+
+                taffy_Style_set_aspect_ratio(style, *aspect_ratio);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'aspect_ratio' property");
+            }
+        }
+
+        /* Try to get 'margin' */
+        {
+            const int field_type = lua_getfield(L, 1, "margin");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Rect_of_LengthPercentageAuto** margin = (taffy_Rect_of_LengthPercentageAuto**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentageAuto);
+
+                taffy_Style_set_margin(style, *margin);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'margin' property");
+            }
+        }
+
+        /* Try to get 'padding' */
+        {
+            const int field_type = lua_getfield(L, 1, "padding");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Rect_of_LengthPercentage** padding = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+                taffy_Style_set_padding(style, *padding);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'padding' property");
+            }
+        }
+
+        /* Try to get 'border' */
+        {
+            const int field_type = lua_getfield(L, 1, "border");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Rect_of_LengthPercentage** border = (taffy_Rect_of_LengthPercentage**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Rect_of_LengthPercentage);
+
+                taffy_Style_set_border(style, *border);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'border' property");
+            }
+        }
+
+        /* Try to get 'align_items' */
+        {
+            const int field_type = lua_getfield(L, 1, "align_items");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_AlignItems** align_items = (taffy_Option_AlignItems**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+                taffy_Style_set_align_items(style, *align_items);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'align_items' property");
+            }
+        }
+
+        /* Try to get 'align_self' */
+        {
+            const int field_type = lua_getfield(L, 1, "align_self");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_AlignSelf** align_self = (taffy_Option_AlignSelf**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+                taffy_Style_set_align_self(style, *align_self);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'align_self' property");
+            }
+        }
+
+        /* Try to get 'justify_items' */
+        {
+            const int field_type = lua_getfield(L, 1, "justify_items");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_AlignItems** justify_items = (taffy_Option_AlignItems**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_AlignItems);
+
+                taffy_Style_set_justify_items(style, *justify_items);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'justify_items' property");
+            }
+        }
+
+        /* Try to get 'justify_self' */
+        {
+            const int field_type = lua_getfield(L, 1, "justify_self");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_AlignSelf** justify_self = (taffy_Option_AlignSelf**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_AlignSelf);
+
+                taffy_Style_set_justify_self(style, *justify_self);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'justify_self' property");
+            }
+        }
+
+        /* Try to get 'align_content' */
+        {
+            const int field_type = lua_getfield(L, 1, "align_content");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_AlignContent** align_content = (taffy_Option_AlignContent**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_AlignContent);
+
+                taffy_Style_set_align_content(style, *align_content);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'align_content' property");
+            }
+        }
+
+        /* Try to get 'justify_content' */
+        {
+            const int field_type = lua_getfield(L, 1, "justify_content");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Option_JustifyContent** justify_content = (taffy_Option_JustifyContent**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Option_JustifyContent);
+
+                taffy_Style_set_justify_content(style, *justify_content);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'justify_content' property");
+            }
+        }
+
+        /* Try to get 'gap' */
+        {
+            const int field_type = lua_getfield(L, 1, "gap");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Size_of_LengthPercentage** gap = (taffy_Size_of_LengthPercentage**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Size_of_LengthPercentage);
+
+                taffy_Style_set_gap(style, *gap);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'gap' property");
+            }
+        }
+
+        /* Try to get 'flex_direction' */
+        {
+            const int field_type = lua_getfield(L, 1, "flex_direction");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_FlexDirection* flex_direction = (taffy_FlexDirection*)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_FlexDirection);
+
+                taffy_Style_set_flex_direction(style, *flex_direction);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'flex_direction' property");
+            }
+        }
+
+        /* Try to get 'flex_wrap' */
+        {
+            const int field_type = lua_getfield(L, 1, "flex_wrap");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_FlexWrap* flex_wrap = (taffy_FlexWrap*)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_FlexWrap);
+
+                taffy_Style_set_flex_wrap(style, *flex_wrap);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'flex_wrap' property");
+            }
+        }
+
+        /* Try to get 'flex_basis' */
+        {
+            const int field_type = lua_getfield(L, 1, "flex_basis");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Dimension** flex_basis = (taffy_Dimension**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Dimension);
+
+                taffy_Style_set_flex_basis(style, *flex_basis);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'flex_basis' property");
+            }
+        }
+
+        /* Try to get 'flex_grow' */
+        {
+            const int field_type = lua_getfield(L, 1, "flex_grow");
+            if(field_type == LUA_TNUMBER)
+            {
+                const lua_Number flex_grow = lua_tonumber(L, -1);
+
+                taffy_Style_set_flex_grow(style, flex_grow);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'flex_grow' property");
+            }
+        }
+
+        /* Try to get 'flex_shrink' */
+        {
+            const int field_type = lua_getfield(L, 1, "flex_shrink");
+            if(field_type == LUA_TNUMBER)
+            {
+                const lua_Number flex_shrink = lua_tonumber(L, -1);
+
+                taffy_Style_set_flex_shrink(style, flex_shrink);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'flex_shrink' property");
+            }
+        }
+
+        /* Try to get 'grid_template_rows' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_template_rows");
+            if(field_type == LUA_TTABLE)
+            {
+                const taffy_TrackSizingFunction** items = NULL;
+                size_t items_count = 0;
+
+                lua_from_table_get_taffy_GridTrackVec_of_TrackSizingFunction(
+                    L, -1,
+
+                    &items, &items_count
+                );
+
+                taffy_Style_set_grid_template_rows(style, items, items_count);
+
+                /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+                if(items != NULL)
+                {
+                    free(items);
+                    items = NULL;
+                }
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_template_rows' property");
+            }
+        }
+
+        /* Try to get 'grid_template_columns' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_template_columns");
+            if(field_type == LUA_TTABLE)
+            {
+                const taffy_TrackSizingFunction** items = NULL;
+                size_t items_count = 0;
+
+                lua_from_table_get_taffy_GridTrackVec_of_TrackSizingFunction(
+                    L, -1,
+
+                    &items, &items_count
+                );
+
+                taffy_Style_set_grid_template_columns(style, items, items_count);
+
+                /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+                if(items != NULL)
+                {
+                    free(items);
+                    items = NULL;
+                }
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_template_columns' property");
+            }
+        }
+
+        /* Try to get 'grid_auto_rows' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_auto_rows");
+            if(field_type == LUA_TTABLE)
+            {
+                const taffy_NonRepeatedTrackSizingFunction** items = NULL;
+                size_t items_count = 0;
+
+                lua_from_table_get_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+                    L, -1,
+
+                    &items, &items_count
+                );
+
+                taffy_Style_set_grid_auto_rows(style, items, items_count);
+
+                /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+                if(items != NULL)
+                {
+                    free(items);
+                    items = NULL;
+                }
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_auto_rows' property");
+            }
+        }
+
+        /* Try to get 'grid_auto_columns' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_auto_columns");
+            if(field_type == LUA_TTABLE)
+            {
+                const taffy_NonRepeatedTrackSizingFunction** items = NULL;
+                size_t items_count = 0;
+
+                lua_from_table_get_taffy_GridTrackVec_of_NonRepeatedTrackSizingFunction(
+                    L, -1,
+
+                    &items, &items_count
+                );
+
+                taffy_Style_set_grid_auto_columns(style, items, items_count);
+
+                /* Dont forget to 'free()' memory, allocated by 'malloc()' */
+                if(items != NULL)
+                {
+                    free(items);
+                    items = NULL;
+                }
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_auto_columns' property");
+            }
+        }
+
+        /* Try to get 'grid_auto_flow' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_auto_flow");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_GridAutoFlow* grid_auto_flow = (taffy_GridAutoFlow*)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_GridAutoFlow);
+
+                taffy_Style_set_grid_auto_flow(style, *grid_auto_flow);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_auto_flow' property");
+            }
+        }
+
+        /* Try to get 'grid_row' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_row");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Line_of_GridPlacement** grid_row = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+                taffy_Style_set_grid_row(style, *grid_row);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_row' property");
+            }
+        }
+
+        /* Try to get 'grid_column' */
+        {
+            const int field_type = lua_getfield(L, 1, "grid_column");
+            if(field_type == LUA_TUSERDATA)
+            {
+                taffy_Line_of_GridPlacement** grid_column = (taffy_Line_of_GridPlacement**)luaL_checkudata(L, -1, LUA_META_OBJECT_taffy_Line_of_GridPlacement);
+
+                taffy_Style_set_grid_column(style, *grid_column);
+            }
+            else
+            {
+                lua_pop(L, 1); /* pop 'value' pushed by 'lua_getfield' */
+
+                taffy_Style_delete(style);
+                return luaL_error(L, "Value of invalid type specified for 'grid_column' property");
+            }
+        }
 
         /* ------------------------------------------------------------------ */
 

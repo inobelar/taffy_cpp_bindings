@@ -3596,9 +3596,12 @@ describe('taffy_cpp lua binding', function()
 
         it('Style builder', function()
             local style = t.Style.build {
-                display = t.Display.Block
+                display = t.Display.Block,
+                overflow = t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden),
+
             }
             expect( style:get_display() ).to.be( t.Display.Block )
+            expect( style:get_overflow() ).to.be( t.Point_of_Overflow.new(t.Overflow.Visible, t.Overflow.Hidden) )
 
             -- ... TODO ...
         end)
